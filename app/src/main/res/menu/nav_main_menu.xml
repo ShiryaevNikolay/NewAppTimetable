@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:title=""
+        android:visible="false"/>
+
+    <item
+        android:id="@+id/nav_items"
+        android:icon="@drawable/ic_lesson"
+        android:title="@string/nav_main_btn_lesson"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/nav_teacher"
+        android:icon="@drawable/ic_people"
+        android:title="@string/nav_main_btn_teacher"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/nav_schedule"
+        android:icon="@drawable/ic_calendar"
+        android:title="@string/nav_main_btn_schedule"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/nav_homework"
+        android:icon="@drawable/ic_task"
+        android:title="@string/nav_main_btn_homework"
+        app:showAsAction="ifRoom"/>
+</menu>

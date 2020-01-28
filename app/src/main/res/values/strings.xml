@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">NewTimetable</string>
+
+    <string name="nav_main_btn_lesson">Занятия</string>
+    <string name="nav_main_btn_teacher">Преподаватели</string>
+    <string name="nav_main_btn_schedule">Расписание</string>
+    <string name="nav_main_btn_homework">Домашняя работа</string>
 </resources>
