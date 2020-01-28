@@ -1,9 +1,12 @@
 package com.example.newtimetable
 
+import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.TextView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import java.util.*
 
@@ -38,9 +41,33 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-//        val navigationView: NavigationView = findViewById(R.id.nav_view_main_activity)
-//        navigationView.setNavigationItemSelectedListener {
-//
-//        }
+        val navigationView: BottomNavigationView = findViewById(R.id.nav_view_main_activity)
+        navigationView.setOnNavigationItemSelectedListener {
+            when(it.itemId) {
+                R.id.nav_lesson -> {
+                    val intent = Intent(this, ListActivity::class.java)
+                    intent.putExtra("onBtn", "btn_lesson")
+                    startActivity(intent)
+                    true
+                }
+                R.id.nav_teacher -> {
+                    val intent = Intent(this, ListActivity::class.java)
+                    intent.putExtra("onBtn", "btn_teacher")
+                    startActivity(intent)
+                    true
+                }
+                R.id.nav_schedule -> {
+                    val intent = Intent(this, ListActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.nav_homework -> {
+                    val intent = Intent(this, ListActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                else -> false
+            }
+        }
     }
 }

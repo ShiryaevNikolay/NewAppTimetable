@@ -12,6 +12,9 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
+            android:name=".ListActivity"
+            android:label="" />
+        <activity
             android:name=".MainActivity"
             android:label="">
             <intent-filter>

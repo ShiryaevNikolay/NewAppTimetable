@@ -44,5 +44,6 @@
         android:layout_alignParentBottom="true"
         app:itemTextColor="@drawable/selector"
         app:itemIconTint="@drawable/selector"
-        app:itemHorizontalTranslationEnabled="false"/>
+        app:itemHorizontalTranslationEnabled="false"
+        app:labelVisibilityMode="unlabeled"/>
 </RelativeLayout>
