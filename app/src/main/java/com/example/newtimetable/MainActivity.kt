@@ -8,6 +8,7 @@ import android.view.MenuItem
 import android.widget.TextView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
+import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -16,33 +17,31 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val textView: TextView = findViewById(R.id.tv_day_main_activity)
         when (Calendar.getInstance().get(Calendar.DAY_OF_WEEK)) {
             Calendar.MONDAY -> {
-                textView.text = "Понедельник"
+                tv_day_main_activity.text = "Понедельник"
             }
             Calendar.TUESDAY -> {
-                textView.text = "Вторник"
+                tv_day_main_activity.text = "Вторник"
             }
             Calendar.WEDNESDAY -> {
-                textView.text = "Среда"
+                tv_day_main_activity.text = "Среда"
             }
             Calendar.THURSDAY -> {
-                textView.text = "Четверг"
+                tv_day_main_activity.text = "Четверг"
             }
             Calendar.FRIDAY -> {
-                textView.text = "Пятница"
+                tv_day_main_activity.text = "Пятница"
             }
             Calendar.SATURDAY -> {
-                textView.text = "Суббота"
+                tv_day_main_activity.text = "Суббота"
             }
             Calendar.SUNDAY -> {
-                textView.text = "Воскресенье"
+                tv_day_main_activity.text = "Воскресенье"
             }
         }
 
-        val navigationView: BottomNavigationView = findViewById(R.id.nav_view_main_activity)
-        navigationView.setOnNavigationItemSelectedListener {
+        nav_view_main_activity.setOnNavigationItemSelectedListener {
             when(it.itemId) {
                 R.id.nav_lesson -> {
                     val intent = Intent(this, ListActivity::class.java)

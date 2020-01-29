@@ -8,9 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.newtimetable.R
 import com.example.newtimetable.RecyclerItem
 
-class LessonTeacherAdapter : RecyclerView.Adapter<LessonTeacherAdapter.LessonTeacherHolder>() {
-
-    private lateinit var listItem: ArrayList<RecyclerItem>
+class LessonTeacherAdapter(private var listItem: ArrayList<RecyclerItem>) :
+    RecyclerView.Adapter<LessonTeacherAdapter.LessonTeacherHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LessonTeacherHolder {
         return LessonTeacherHolder(LayoutInflater.from(parent.context).inflate(R.layout.recycler_item, parent, false))
@@ -21,7 +20,7 @@ class LessonTeacherAdapter : RecyclerView.Adapter<LessonTeacherAdapter.LessonTea
     }
 
     override fun onBindViewHolder(holder: LessonTeacherHolder, position: Int) {
-        val itemList: RecyclerItem = listItem.get(position)
+        val itemList: RecyclerItem = listItem[position]
         holder.textView.text = itemList.text
     }
 
