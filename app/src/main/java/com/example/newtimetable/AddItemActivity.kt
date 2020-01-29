@@ -92,13 +92,20 @@ class AddItemActivity : AppCompatActivity(), TextWatcher, MenuItem.OnMenuItemCli
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {
         if (item?.itemId == R.id.done_btn_toolbar) {
-            if (intent?.getStringExtra("requestCode").equals("btn_lesson")) {
-                text = textInputLesson.text.toString()
-            } else if (intent?.getStringExtra("requestCode").equals("btn_teacher")) {
-                text = textInputSurname.text.toString() + " " + textInputName.text.toString() + " " + textInputPatronymic.text.toString()
-            }
             val data = Intent()
-            data.putExtra("text", text)
+            data.putExtra("requestCode", intent.getStringExtra("requestCode"))
+            if (intent?.getStringExtra("requestCode").equals("btn_lesson")) {
+                if (textInputLesson.text.toString() != "") {
+                    text = textInputLesson.text.toString()
+                    data.putExtra("text", text)
+                }
+            } else if (intent?.getStringExtra("requestCode").equals("btn_teacher")) {
+                if (textInputSurname.text.toString() != "" || textInputName.text.toString() != "" || textInputPatronymic.text.toString() != "") {
+                    data.putExtra("surname", textInputSurname.text.toString())
+                    data.putExtra("name", textInputName.text.toString())
+                    data.putExtra("patronymic", textInputPatronymic.text.toString())
+                }
+            }
             setResult(Activity.RESULT_OK, data)
             finish()
         }
@@ -106,16 +113,21 @@ class AddItemActivity : AppCompatActivity(), TextWatcher, MenuItem.OnMenuItemCli
     }
 
     override fun onClick(v: View?) {
-        if (textInputLesson.text.toString() != "") {
-            if (intent?.getStringExtra("requestCode").equals("btn_lesson")) {
+        val data = Intent()
+        data.putExtra("requestCode", intent.getStringExtra("requestCode"))
+        if (intent?.getStringExtra("requestCode").equals("btn_lesson")) {
+            if (textInputLesson.text.toString() != "") {
                 text = textInputLesson.text.toString()
-            } else if (intent?.getStringExtra("requestCode").equals("btn_teacher")) {
-                text = textInputSurname.text.toString() + " " + textInputName.text.toString() + " " + textInputPatronymic.text.toString()
+                data.putExtra("text", text)
             }
-            val data = Intent()
-            data.putExtra("text", text)
-            setResult(Activity.RESULT_OK, data)
-            finish()
+        } else if (intent?.getStringExtra("requestCode").equals("btn_teacher")) {
+            if (textInputSurname.text.toString() != "" || textInputName.text.toString() != "" || textInputPatronymic.text.toString() != "") {
+                data.putExtra("surname", textInputSurname.text.toString())
+                data.putExtra("name", textInputName.text.toString())
+                data.putExtra("patronymic", textInputPatronymic.text.toString())
+            }
         }
+        setResult(Activity.RESULT_OK, data)
+        finish()
     }
 }
