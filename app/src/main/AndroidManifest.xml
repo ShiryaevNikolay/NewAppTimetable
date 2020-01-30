@@ -11,9 +11,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".AddItemActivity"></activity>
+        <activity
+            android:name=".ListActivity"
+            android:label="" />
         <activity
             android:name=".MainActivity"
-            android:label="">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
