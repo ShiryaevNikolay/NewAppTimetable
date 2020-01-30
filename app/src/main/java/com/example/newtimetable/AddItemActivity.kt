@@ -27,16 +27,25 @@ class AddItemActivity : AppCompatActivity(), TextWatcher, MenuItem.OnMenuItemCli
             finish()
         }
 
-        if (intent?.getStringExtra("requestCode").equals("btn_lesson")) {
+        if (intent?.getStringExtra("onBtn").equals("btn_lesson")) {
             textInputLayoutLesson.visibility = View.VISIBLE
+            if (intent.extras?.getInt("requestCode") == 1) {
+                text = intent?.getStringExtra("text").toString()
+                textInputLesson.setText(text)
+            }
             textInputLayoutSurname.visibility = View.GONE
             textInputLayoutName.visibility = View.GONE
             textInputLayoutPatronymic.visibility = View.GONE
-        } else if (intent?.getStringExtra("requestCode").equals("btn_teacher")) {
+        } else if (intent?.getStringExtra("onBtn").equals("btn_teacher")) {
             textInputLayoutLesson.visibility = View.GONE
             textInputLayoutSurname.visibility = View.VISIBLE
             textInputLayoutName.visibility = View.VISIBLE
             textInputLayoutPatronymic.visibility = View.VISIBLE
+            if (intent.extras?.getInt("requestCode") == 1) {
+                textInputSurname.setText(intent.getStringExtra("surname"))
+                textInputName.setText(intent.getStringExtra("name"))
+                textInputPatronymic.setText(intent.getStringExtra("patronymic"))
+            }
         }
 
         btn_cancel.setOnClickListener {
@@ -45,9 +54,9 @@ class AddItemActivity : AppCompatActivity(), TextWatcher, MenuItem.OnMenuItemCli
         }
         btn_ok.setOnClickListener(this)
 
-        if (intent?.getStringExtra("requestCode").equals("btn_lesson")) {
+        if (intent?.getStringExtra("onBtn").equals("btn_lesson")) {
             textInputLesson.addTextChangedListener(this)
-        } else if (intent?.getStringExtra("requestCode").equals("btn_teacher")) {
+        } else if (intent?.getStringExtra("onBtn").equals("btn_teacher")) {
             textInputSurname.addTextChangedListener(this)
             textInputName.addTextChangedListener(this)
             textInputPatronymic.addTextChangedListener(this)
@@ -63,7 +72,7 @@ class AddItemActivity : AppCompatActivity(), TextWatcher, MenuItem.OnMenuItemCli
             background.setTint(ContextCompat.getColor(this, R.color.colorAccent))
             toolbar.menu.getItem(0).isVisible = true
         }
-        btn_ok.setBackgroundDrawable(background)
+        btn_ok.background = background
     }
 
     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -75,7 +84,7 @@ class AddItemActivity : AppCompatActivity(), TextWatcher, MenuItem.OnMenuItemCli
             background.setTint(ContextCompat.getColor(this, R.color.colorAccent))
             toolbar.menu.getItem(0).isVisible = true
         }
-        btn_ok.setBackgroundDrawable(background)
+        btn_ok.background = background
     }
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -87,19 +96,22 @@ class AddItemActivity : AppCompatActivity(), TextWatcher, MenuItem.OnMenuItemCli
             background.setTint(ContextCompat.getColor(this, R.color.colorAccent))
             toolbar.menu.getItem(0).isVisible = true
         }
-        btn_ok.setBackgroundDrawable(background)
+        btn_ok.background = background
     }
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {
         if (item?.itemId == R.id.done_btn_toolbar) {
             val data = Intent()
-            data.putExtra("requestCode", intent.getStringExtra("requestCode"))
-            if (intent?.getStringExtra("requestCode").equals("btn_lesson")) {
+            data.putExtra("onBtn", intent.getStringExtra("onBtn"))
+            if (intent.extras?.getInt("requestCode") == 1) {
+                data.putExtra("position", intent.extras!!.getInt("position"))
+            }
+            if (intent?.getStringExtra("onBtn").equals("btn_lesson")) {
                 if (textInputLesson.text.toString() != "") {
                     text = textInputLesson.text.toString()
                     data.putExtra("text", text)
                 }
-            } else if (intent?.getStringExtra("requestCode").equals("btn_teacher")) {
+            } else if (intent?.getStringExtra("onBtn").equals("btn_teacher")) {
                 if (textInputSurname.text.toString() != "" || textInputName.text.toString() != "" || textInputPatronymic.text.toString() != "") {
                     data.putExtra("surname", textInputSurname.text.toString())
                     data.putExtra("name", textInputName.text.toString())
@@ -114,13 +126,16 @@ class AddItemActivity : AppCompatActivity(), TextWatcher, MenuItem.OnMenuItemCli
 
     override fun onClick(v: View?) {
         val data = Intent()
-        data.putExtra("requestCode", intent.getStringExtra("requestCode"))
-        if (intent?.getStringExtra("requestCode").equals("btn_lesson")) {
+        data.putExtra("onBtn", intent.getStringExtra("onBtn"))
+        if (intent.extras?.getInt("requestCode") == 1) {
+            data.putExtra("position", intent.extras!!.getInt("position"))
+        }
+        if (intent?.getStringExtra("onBtn").equals("btn_lesson")) {
             if (textInputLesson.text.toString() != "") {
                 text = textInputLesson.text.toString()
                 data.putExtra("text", text)
             }
-        } else if (intent?.getStringExtra("requestCode").equals("btn_teacher")) {
+        } else if (intent?.getStringExtra("onBtn").equals("btn_teacher")) {
             if (textInputSurname.text.toString() != "" || textInputName.text.toString() != "" || textInputPatronymic.text.toString() != "") {
                 data.putExtra("surname", textInputSurname.text.toString())
                 data.putExtra("name", textInputName.text.toString())

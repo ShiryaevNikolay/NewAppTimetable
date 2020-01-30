@@ -7,8 +7,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.newtimetable.R
 import com.example.newtimetable.RecyclerItem
+import com.example.newtimetable.interfaces.OnClickItemListener
 
-class LessonTeacherAdapter(private var listItem: ArrayList<RecyclerItem>) :
+class LessonTeacherAdapter(private var listItem: ArrayList<RecyclerItem>, private var onClickItemListener: OnClickItemListener) :
     RecyclerView.Adapter<LessonTeacherAdapter.LessonTeacherHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LessonTeacherHolder {
@@ -22,6 +23,9 @@ class LessonTeacherAdapter(private var listItem: ArrayList<RecyclerItem>) :
     override fun onBindViewHolder(holder: LessonTeacherHolder, position: Int) {
         val itemList: RecyclerItem = listItem[position]
         holder.textView.text = itemList.text
+        holder.itemView.setOnClickListener {
+            onClickItemListener.onClickItemListener(holder.adapterPosition)
+        }
     }
 
     inner class LessonTeacherHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
