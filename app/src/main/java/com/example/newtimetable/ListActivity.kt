@@ -8,15 +8,24 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentManager
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.newtimetable.adapters.LessonTeacherAdapter
 import com.example.newtimetable.database.LessonDBHelper
 import com.example.newtimetable.database.TeacherDBHelper
+import com.example.newtimetable.dialogs.DeleteDialog
+import com.example.newtimetable.interfaces.DialogListener
+import com.example.newtimetable.interfaces.ItemTouchHelperLestener
 import com.example.newtimetable.interfaces.OnClickItemListener
+import com.example.newtimetable.modules.SwipeDragItemHelper
 import kotlinx.android.synthetic.main.activity_list.*
 import kotlinx.android.synthetic.main.content_list.*
 
-class ListActivity : AppCompatActivity(), OnClickItemListener {
+class ListActivity :
+    AppCompatActivity(), OnClickItemListener, ItemTouchHelperLestener, DialogListener {
+
     private val REQUEST_CODE_LIST = 0
     private val REQUEST_CODE_LIST_CHANGE = 1
     private var listItem = ArrayList<RecyclerItem>()
@@ -25,6 +34,7 @@ class ListActivity : AppCompatActivity(), OnClickItemListener {
     private lateinit var lessonDBHelper: LessonDBHelper
     private lateinit var teacherDBHelper: TeacherDBHelper
     private lateinit var cursor: Cursor
+    private lateinit var itemList: RecyclerItem
 
     @SuppressLint("Recycle")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,6 +76,10 @@ class ListActivity : AppCompatActivity(), OnClickItemListener {
         rv_list_activity.setHasFixedSize(true)
         itemAdapter = LessonTeacherAdapter(listItem, this)
         rv_list_activity.adapter = itemAdapter
+
+        val callback: ItemTouchHelper.Callback = SwipeDragItemHelper(this, this)
+        val itemTouckHelper = ItemTouchHelper(callback)
+        itemTouckHelper.attachToRecyclerView(rv_list_activity)
     }
 
     @SuppressLint("Recycle")
@@ -138,5 +152,27 @@ class ListActivity : AppCompatActivity(), OnClickItemListener {
         }
         intent.putExtra("itemId", listItem[position].itemId)
         startActivityForResult(intent, REQUEST_CODE_LIST_CHANGE)
+    }
+
+    override fun onItemDismixx(position: Int) {
+        itemList = listItem[position]
+        listItem.removeAt(position)
+        itemAdapter.notifyItemRemoved(position)
+
+        val dialogDelete: DialogFragment = DeleteDialog(this, position)
+        dialogDelete.show(this.supportFragmentManager, "dialogDelete")
+    }
+
+    override fun onClickPositiveDialog() {
+        if (intent.getStringExtra("onBtn") == "btn_lesson") {
+            database.delete(lessonDBHelper.TABLE_LESSON, lessonDBHelper.KEY_ID + " = " + itemList.itemId, null)
+        } else if (intent.getStringExtra("onBtn") == "btn_teacher") {
+            database.delete(teacherDBHelper.TABLE_TEACHER, teacherDBHelper.KEY_ID + " = " + itemList.itemId, null)
+        }
+    }
+
+    override fun onClickNegativeFialog(position: Int) {
+        listItem.add(position, itemList)
+        itemAdapter.notifyItemInserted(position)
     }
 }

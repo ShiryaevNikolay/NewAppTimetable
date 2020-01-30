@@ -14,4 +14,8 @@
     <string name="input_text_surname">Фамилия</string>
     <string name="input_text_name">Имя</string>
     <string name="input_text_patronymic">Отчество</string>
+    
+    <string name="dialog_delete_title">Удалить элемент(ы)?</string>
+    <string name="dialog_delete_btn_positive">Удалить</string>
+    <string name="dialog_delete_btn_negative">Отмена</string>
 </resources>
