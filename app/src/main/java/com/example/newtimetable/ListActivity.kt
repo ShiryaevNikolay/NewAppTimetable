@@ -9,7 +9,6 @@ import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.newtimetable.adapters.LessonTeacherAdapter
@@ -78,8 +77,8 @@ class ListActivity :
         rv_list_activity.adapter = itemAdapter
 
         val callback: ItemTouchHelper.Callback = SwipeDragItemHelper(this, this)
-        val itemTouckHelper = ItemTouchHelper(callback)
-        itemTouckHelper.attachToRecyclerView(rv_list_activity)
+        val itemTouchHelper = ItemTouchHelper(callback)
+        itemTouchHelper.attachToRecyclerView(rv_list_activity)
     }
 
     @SuppressLint("Recycle")
@@ -154,7 +153,7 @@ class ListActivity :
         startActivityForResult(intent, REQUEST_CODE_LIST_CHANGE)
     }
 
-    override fun onItemDismixx(position: Int) {
+    override fun onItemDismiss(position: Int) {
         itemList = listItem[position]
         listItem.removeAt(position)
         itemAdapter.notifyItemRemoved(position)

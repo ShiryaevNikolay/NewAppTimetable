@@ -56,7 +56,8 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_schedule -> {
-
+                    val intent = Intent(this, ScheduleActivity::class.java)
+                    startActivity(intent)
                     true
                 }
                 R.id.nav_homework -> {
