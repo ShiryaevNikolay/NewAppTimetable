@@ -9,6 +9,7 @@ import android.text.TextWatcher
 import android.view.MenuItem
 import android.view.View
 import androidx.core.content.ContextCompat
+import com.example.newtimetable.util.RequestCode
 import kotlinx.android.synthetic.main.activity_add_item.*
 
 class AddItemActivity : AppCompatActivity(), TextWatcher, MenuItem.OnMenuItemClickListener, View.OnClickListener {
@@ -29,7 +30,7 @@ class AddItemActivity : AppCompatActivity(), TextWatcher, MenuItem.OnMenuItemCli
 
         if (intent?.getStringExtra("onBtn").equals("btn_lesson")) {
             textInputLayoutLesson.visibility = View.VISIBLE
-            if (intent.extras?.getInt("requestCode") == 1) {
+            if (intent.extras?.getInt("requestCode") == RequestCode().REQUEST_CODE_LIST_CHANGE) {
                 text = intent?.getStringExtra("text").toString()
                 textInputLesson.setText(text)
             }
@@ -41,7 +42,7 @@ class AddItemActivity : AppCompatActivity(), TextWatcher, MenuItem.OnMenuItemCli
             textInputLayoutSurname.visibility = View.VISIBLE
             textInputLayoutName.visibility = View.VISIBLE
             textInputLayoutPatronymic.visibility = View.VISIBLE
-            if (intent.extras?.getInt("requestCode") == 1) {
+            if (intent.extras?.getInt("requestCode") == RequestCode().REQUEST_CODE_LIST_CHANGE) {
                 textInputSurname.setText(intent.getStringExtra("surname"))
                 textInputName.setText(intent.getStringExtra("name"))
                 textInputPatronymic.setText(intent.getStringExtra("patronymic"))
@@ -101,33 +102,19 @@ class AddItemActivity : AppCompatActivity(), TextWatcher, MenuItem.OnMenuItemCli
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {
         if (item?.itemId == R.id.done_btn_toolbar) {
-            val data = Intent()
-            data.putExtra("onBtn", intent.getStringExtra("onBtn"))
-            if (intent.extras?.getInt("requestCode") == 1) {
-                data.putExtra("position", intent.extras!!.getInt("position"))
-            }
-            if (intent?.getStringExtra("onBtn").equals("btn_lesson")) {
-                if (textInputLesson.text.toString() != "") {
-                    text = textInputLesson.text.toString()
-                    data.putExtra("text", text)
-                }
-            } else if (intent?.getStringExtra("onBtn").equals("btn_teacher")) {
-                if (textInputSurname.text.toString() != "" || textInputName.text.toString() != "" || textInputPatronymic.text.toString() != "") {
-                    data.putExtra("surname", textInputSurname.text.toString())
-                    data.putExtra("name", textInputName.text.toString())
-                    data.putExtra("patronymic", textInputPatronymic.text.toString())
-                }
-            }
-            setResult(Activity.RESULT_OK, data)
-            finish()
+            clickBtnOk()
         }
         return true
     }
 
     override fun onClick(v: View?) {
+        clickBtnOk()
+    }
+
+    private fun clickBtnOk() {
         val data = Intent()
         data.putExtra("onBtn", intent.getStringExtra("onBtn"))
-        if (intent.extras?.getInt("requestCode") == 1) {
+        if (intent.extras?.getInt("requestCode") == RequestCode().REQUEST_CODE_LIST_CHANGE) {
             data.putExtra("position", intent.extras!!.getInt("position"))
         }
         if (intent?.getStringExtra("onBtn").equals("btn_lesson")) {

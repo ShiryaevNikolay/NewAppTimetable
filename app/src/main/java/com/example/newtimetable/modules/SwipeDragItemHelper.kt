@@ -37,7 +37,7 @@ class SwipeDragItemHelper(var itemTouchHelperListener: ItemTouchHelperLestener, 
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        itemTouchHelperListener.onItemDismixx(viewHolder.adapterPosition)
+        itemTouchHelperListener.onItemDismiss(viewHolder.adapterPosition)
     }
 
     override fun onChildDraw(

@@ -1,6 +1,6 @@
 package com.example.newtimetable.interfaces
 
-interface DialogListener {
+interface DialogDeleteListener {
     fun onClickPositiveDialog()
-    fun onClickNegativeFialog(position: Int)
+    fun onClickNegativeDialog(position: Int)
 }

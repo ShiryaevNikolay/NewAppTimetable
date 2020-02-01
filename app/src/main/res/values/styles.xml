@@ -14,7 +14,7 @@
     </style>
 
     <style name="AppTheme.ButtonNegative" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="android:colorAccent">@color/colorRed</item>
+        <item name="colorAccent">@color/colorRed</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
