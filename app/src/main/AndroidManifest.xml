@@ -11,7 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ScheduleActivity"/>
+        <activity android:name=".SelectItemListActivity" />
+        <activity android:name=".AddScheduleActivity" />
+        <activity android:name=".ScheduleActivity" />
         <activity android:name=".AddItemActivity" />
         <activity
             android:name=".ListActivity"

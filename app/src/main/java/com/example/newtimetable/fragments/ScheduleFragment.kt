@@ -16,14 +16,12 @@ import com.example.newtimetable.R
 import com.example.newtimetable.RecyclerSchedule
 import com.example.newtimetable.adapters.ScheduleAdapter
 import com.example.newtimetable.database.ScheduleDBHelper
-import com.example.newtimetable.dialogs.DeleteDialog
-import com.example.newtimetable.interfaces.DialogListener
+import com.example.newtimetable.dialogs.CustomDialog
+import com.example.newtimetable.interfaces.DialogDeleteListener
 import com.example.newtimetable.interfaces.ItemTouchHelperLestener
-import com.example.newtimetable.interfaces.OnClickBtnListener
 import com.example.newtimetable.modules.SwipeDragItemHelper
-import kotlinx.android.synthetic.main.fragment_schedule.*
 
-class ScheduleFragment : AbstractTabFragment(), OnClickBtnListener, ItemTouchHelperLestener, DialogListener {
+class ScheduleFragment : AbstractTabFragment(), ItemTouchHelperLestener, DialogDeleteListener {
     private lateinit var daySchedule: String
     private var itemId: Int? = null
     private var clock: String? = null
@@ -94,6 +92,7 @@ class ScheduleFragment : AbstractTabFragment(), OnClickBtnListener, ItemTouchHel
                     lesson = cursor.getString(cursor.getColumnIndex(ScheduleDBHelper(context).KEY_LESSON))
                     teacher = cursor.getString(cursor.getColumnIndex(ScheduleDBHelper(context).KEY_TEACHER))
                     nameClass = cursor.getString(cursor.getColumnIndex(ScheduleDBHelper(context).KEY_CLASS))
+                    sortList(hours!!, minutes!!)
                 }
             } while (cursor.moveToNext())
         }
@@ -109,16 +108,12 @@ class ScheduleFragment : AbstractTabFragment(), OnClickBtnListener, ItemTouchHel
         return view
     }
 
-    override fun onClickBtnListener(position: Int) {
-
-    }
-
     override fun onItemDismiss(position: Int) {
         item = listItem[position]
         listItem.removeAt(position)
         itemAdapter.notifyItemRemoved(position)
 
-        val dialogDelete: DialogFragment = DeleteDialog(this, position)
+        val dialogDelete: DialogFragment = CustomDialog(this, position)
         fragmentManager?.let { dialogDelete.show(it, "deleteDialog") }
     }
 
@@ -126,8 +121,37 @@ class ScheduleFragment : AbstractTabFragment(), OnClickBtnListener, ItemTouchHel
         database.delete(ScheduleDBHelper(context).TABLE_SCHEDULE, ScheduleDBHelper(context).KEY_ID + " = " + item.itemId, null)
     }
 
-    override fun onClickNegativeFialog(position: Int) {
+    override fun onClickNegativeDialog(position: Int) {
         listItem.add(position, item)
         itemAdapter.notifyItemInserted(position)
+    }
+
+    private fun sortList(hours: Int, minutes: Int) {
+        if (listItem.isNotEmpty()) {
+            var flagLoopOne = false
+            for (i in 0..listItem.size) {
+                if (flagLoopOne) break
+                if (hours == listItem[i].hours) {
+                    flagLoopOne = true
+                    var flagLoopTwo = false
+                    var indexI = 0
+                    for (j in 0..listItem.size) {
+                        if (flagLoopTwo) break
+                        if (hours == listItem[j].hours) {
+                            indexI = j
+                            if (minutes < listItem[j].minutes) {
+                                flagLoopTwo = true
+                                listItem.add(indexI, RecyclerSchedule(itemId!!, clock!!, hours, minutes, lesson!!, teacher!!, nameClass!!))
+                            }
+                        }
+                    }
+                    if (!flagLoopTwo) listItem.add(++indexI, RecyclerSchedule(itemId!!, clock!!, hours, minutes, lesson!!, teacher!!, nameClass!!))
+                } else if (hours < listItem[i].hours) {
+                    flagLoopOne = true
+                    listItem.add(i, RecyclerSchedule(itemId!!, clock!!, hours, minutes, lesson!!, teacher!!, nameClass!!))
+                }
+            }
+            if (!flagLoopOne) listItem.add(RecyclerSchedule(itemId!!, clock!!, hours, minutes, lesson!!, teacher!!, nameClass!!))
+        } else listItem.add(RecyclerSchedule(itemId!!, clock!!, hours, minutes, lesson!!, teacher!!, nameClass!!))
     }
 }

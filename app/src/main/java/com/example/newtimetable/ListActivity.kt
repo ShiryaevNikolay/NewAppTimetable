@@ -14,19 +14,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.newtimetable.adapters.LessonTeacherAdapter
 import com.example.newtimetable.database.LessonDBHelper
 import com.example.newtimetable.database.TeacherDBHelper
-import com.example.newtimetable.dialogs.DeleteDialog
-import com.example.newtimetable.interfaces.DialogListener
+import com.example.newtimetable.dialogs.CustomDialog
+import com.example.newtimetable.interfaces.DialogDeleteListener
 import com.example.newtimetable.interfaces.ItemTouchHelperLestener
 import com.example.newtimetable.interfaces.OnClickItemListener
 import com.example.newtimetable.modules.SwipeDragItemHelper
+import com.example.newtimetable.util.RequestCode
 import kotlinx.android.synthetic.main.activity_list.*
 import kotlinx.android.synthetic.main.content_list.*
 
 class ListActivity :
-    AppCompatActivity(), OnClickItemListener, ItemTouchHelperLestener, DialogListener {
+    AppCompatActivity(), OnClickItemListener, ItemTouchHelperLestener, DialogDeleteListener {
 
-    private val REQUEST_CODE_LIST = 0
-    private val REQUEST_CODE_LIST_CHANGE = 1
     private var listItem = ArrayList<RecyclerItem>()
     private lateinit var database: SQLiteDatabase
     private lateinit var itemAdapter: LessonTeacherAdapter
@@ -58,7 +57,7 @@ class ListActivity :
         fab.setOnClickListener {
             val intent = Intent(this, AddItemActivity::class.java)
             intent.putExtra("onBtn", getIntent().getStringExtra("onBtn"))
-            startActivityForResult(intent, REQUEST_CODE_LIST)
+            startActivityForResult(intent, RequestCode().REQUEST_CODE_LIST)
         }
 
         if (cursor.moveToFirst()) {
@@ -87,9 +86,9 @@ class ListActivity :
             val contentValues = ContentValues()
             if (data?.getStringExtra("onBtn") == "btn_lesson") {
                 contentValues.put(lessonDBHelper.KEY_TEXT, data.getStringExtra("text"))
-                if (requestCode == REQUEST_CODE_LIST_CHANGE) {
+                if (requestCode == RequestCode().REQUEST_CODE_LIST_CHANGE) {
                     database.update(lessonDBHelper.TABLE_LESSON, contentValues, lessonDBHelper.KEY_ID + " = " + listItem[data.extras?.getInt("position")!!].itemId, null)
-                } else if (requestCode == REQUEST_CODE_LIST) {
+                } else if (requestCode == RequestCode().REQUEST_CODE_LIST) {
                     database.insert(lessonDBHelper.TABLE_LESSON, null, contentValues)
                 }
                 cursor = database.query(lessonDBHelper.TABLE_LESSON, null, null, null, null, null, null)
@@ -97,9 +96,9 @@ class ListActivity :
                 contentValues.put(teacherDBHelper.KEY_SURNAME, data.getStringExtra("surname"))
                 contentValues.put(teacherDBHelper.KEY_NAME, data.getStringExtra("name"))
                 contentValues.put(teacherDBHelper.KEY_PATRONYMIC, data.getStringExtra("patronymic"))
-                if (requestCode == REQUEST_CODE_LIST_CHANGE) {
+                if (requestCode == RequestCode().REQUEST_CODE_LIST_CHANGE) {
                     database.update(teacherDBHelper.TABLE_TEACHER, contentValues, teacherDBHelper.KEY_ID + " = " + listItem[data.extras?.getInt("position")!!].itemId, null)
-                } else if (requestCode == REQUEST_CODE_LIST) {
+                } else if (requestCode == RequestCode().REQUEST_CODE_LIST) {
                     database.insert(teacherDBHelper.TABLE_TEACHER, null, contentValues)
                 }
                 cursor = database.query(teacherDBHelper.TABLE_TEACHER, null, null, null, null, null, null)
@@ -138,7 +137,7 @@ class ListActivity :
     override fun onClickItemListener(position: Int) {
         val intent = Intent(this, AddItemActivity::class.java)
         intent.putExtra("onBtn", getIntent().getStringExtra("onBtn"))
-        intent.putExtra("requestCode", REQUEST_CODE_LIST_CHANGE)
+        intent.putExtra("requestCode", RequestCode().REQUEST_CODE_LIST_CHANGE)
         intent.putExtra("position", position)
         if (this.intent.getStringExtra("onBtn") == "btn_lesson") {
             intent.putExtra("text", listItem[position].text)
@@ -150,7 +149,7 @@ class ListActivity :
             intent.putExtra("patronymic", cursor.getString(cursor.getColumnIndex(teacherDBHelper.KEY_PATRONYMIC)))
         }
         intent.putExtra("itemId", listItem[position].itemId)
-        startActivityForResult(intent, REQUEST_CODE_LIST_CHANGE)
+        startActivityForResult(intent, RequestCode().REQUEST_CODE_LIST_CHANGE)
     }
 
     override fun onItemDismiss(position: Int) {
@@ -158,7 +157,7 @@ class ListActivity :
         listItem.removeAt(position)
         itemAdapter.notifyItemRemoved(position)
 
-        val dialogDelete: DialogFragment = DeleteDialog(this, position)
+        val dialogDelete: DialogFragment = CustomDialog(this, position)
         dialogDelete.show(this.supportFragmentManager, "dialogDelete")
     }
 
@@ -170,7 +169,7 @@ class ListActivity :
         }
     }
 
-    override fun onClickNegativeFialog(position: Int) {
+    override fun onClickNegativeDialog(position: Int) {
         listItem.add(position, itemList)
         itemAdapter.notifyItemInserted(position)
     }
