@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">Расписание</string>
 
+    <string name="main_activity_day_off">Выходной день</string>
+
+    <string name="schedule_adapter_teacher">Преподаватель:</string>
+    <string name="schedule_adapter_class">Аудитория:</string>
+
     <string name="nav_main_btn_lesson">Занятия</string>
     <string name="nav_main_btn_teacher">Преподаватели</string>
     <string name="nav_main_btn_schedule">Расписание</string>

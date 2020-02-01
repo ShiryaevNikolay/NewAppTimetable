@@ -27,7 +27,7 @@
             android:id="@+id/tv_day_off_main_activity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Выходной день"
+            android:text="@string/main_activity_day_off"
             android:gravity="center"/>
 
         <androidx.recyclerview.widget.RecyclerView

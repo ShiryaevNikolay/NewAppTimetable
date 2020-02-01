@@ -31,7 +31,7 @@ class ScheduleFragment : AbstractTabFragment(), ItemTouchHelperLestener, DialogD
     private var teacher: String? = null
     private var nameClass: String? = null
     private lateinit var database: SQLiteDatabase
-    private lateinit var listItem: ArrayList<RecyclerSchedule>
+    private var listItem: ArrayList<RecyclerSchedule> = ArrayList()
     private lateinit var itemAdapter: ScheduleAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var item: RecyclerSchedule
@@ -79,7 +79,6 @@ class ScheduleFragment : AbstractTabFragment(), ItemTouchHelperLestener, DialogD
         val view: View = inflater.inflate(R.layout.fragment_schedule, container, false)
 
         val cursor: Cursor = database.query(ScheduleDBHelper(context).TABLE_SCHEDULE, null, null, null, null, null, null)
-        listItem = ArrayList()
         // добавляем в список данные (названия предметов) из базы данных
         if (cursor.moveToFirst()) {
             do {
@@ -129,13 +128,13 @@ class ScheduleFragment : AbstractTabFragment(), ItemTouchHelperLestener, DialogD
     private fun sortList(hours: Int, minutes: Int) {
         if (listItem.isNotEmpty()) {
             var flagLoopOne = false
-            for (i in 0..listItem.size) {
+            for (i in 0 until listItem.size) {
                 if (flagLoopOne) break
                 if (hours == listItem[i].hours) {
                     flagLoopOne = true
                     var flagLoopTwo = false
                     var indexI = 0
-                    for (j in 0..listItem.size) {
+                    for (j in 0 until listItem.size) {
                         if (flagLoopTwo) break
                         if (hours == listItem[j].hours) {
                             indexI = j

@@ -1,5 +1,7 @@
 package com.example.newtimetable.adapters
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +12,10 @@ import com.example.newtimetable.RecyclerSchedule
 
 class ScheduleAdapter(private var listItem: ArrayList<RecyclerSchedule>) : RecyclerView.Adapter<ScheduleAdapter.ScheduleViewHolder>() {
 
+    private lateinit var context: Context
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScheduleViewHolder {
+        context = parent.context
         return ScheduleViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.recycler_schedule, parent, false))
     }
 
@@ -18,12 +23,13 @@ class ScheduleAdapter(private var listItem: ArrayList<RecyclerSchedule>) : Recyc
         return listItem.size
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ScheduleViewHolder, position: Int) {
         val itemList = listItem[position]
         holder.clock.text = itemList.clock
         holder.lesson.text = itemList.lesson
-        holder.teacher.text = itemList.teacher
-        holder.nameClass.text = itemList.nameClass
+        holder.teacher.text = context.resources.getString(R.string.schedule_adapter_teacher) + " " + itemList.teacher
+        holder.nameClass.text = context.resources.getString(R.string.schedule_adapter_class) + " " + itemList.nameClass
     }
 
     inner class ScheduleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
