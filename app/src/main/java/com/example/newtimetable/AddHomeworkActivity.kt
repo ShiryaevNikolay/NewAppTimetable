@@ -47,7 +47,7 @@ class AddHomeworkActivity : AppCompatActivity(), View.OnClickListener {
         tv_date_homework.setOnClickListener(this)
         tv_date_homework_icon.setOnClickListener(this)
 
-        textAddDate = java.text.SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(Date())
+        textAddDate = java.text.SimpleDateFormat("dd.MMMyyyy", Locale.getDefault()).format(Date())
 
         if (intent.extras?.getInt("requestCode") == RequestCode().REQUEST_CODE_HOMEWORK_CHANGE) {
             textInputHomeworkTask.setText(intent.extras!!.getString("task"))
