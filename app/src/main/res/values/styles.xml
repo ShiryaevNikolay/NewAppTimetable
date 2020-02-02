@@ -16,6 +16,10 @@
     <style name="AppTheme.ButtonNegative" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorAccent">@color/colorRed</item>
     </style>
+    
+    <style name="CheckBoxStyle" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/selector_checkbox</item>
+    </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 

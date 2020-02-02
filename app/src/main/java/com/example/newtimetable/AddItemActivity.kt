@@ -4,15 +4,15 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.MenuItem
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import com.example.newtimetable.util.RequestCode
 import kotlinx.android.synthetic.main.activity_add_item.*
 
-class AddItemActivity : AppCompatActivity(), TextWatcher, MenuItem.OnMenuItemClickListener, View.OnClickListener {
+class AddItemActivity : AppCompatActivity(), MenuItem.OnMenuItemClickListener, View.OnClickListener {
 
     var text: String = ""
 
@@ -28,20 +28,22 @@ class AddItemActivity : AppCompatActivity(), TextWatcher, MenuItem.OnMenuItemCli
             finish()
         }
 
+        textInputLayoutHomeworkTask.isVisible = false
+        homework_choose_date.isVisible = false
         if (intent?.getStringExtra("onBtn").equals("btn_lesson")) {
-            textInputLayoutLesson.visibility = View.VISIBLE
+            textInputLayoutLesson.isVisible = true
             if (intent.extras?.getInt("requestCode") == RequestCode().REQUEST_CODE_LIST_CHANGE) {
                 text = intent?.getStringExtra("text").toString()
                 textInputLesson.setText(text)
             }
-            textInputLayoutSurname.visibility = View.GONE
-            textInputLayoutName.visibility = View.GONE
-            textInputLayoutPatronymic.visibility = View.GONE
+            textInputLayoutSurname.isVisible = false
+            textInputLayoutName.isVisible = false
+            textInputLayoutPatronymic.isVisible = false
         } else if (intent?.getStringExtra("onBtn").equals("btn_teacher")) {
-            textInputLayoutLesson.visibility = View.GONE
-            textInputLayoutSurname.visibility = View.VISIBLE
-            textInputLayoutName.visibility = View.VISIBLE
-            textInputLayoutPatronymic.visibility = View.VISIBLE
+            textInputLayoutLesson.isVisible = false
+            textInputLayoutSurname.isVisible = true
+            textInputLayoutName.isVisible = true
+            textInputLayoutPatronymic.isVisible = true
             if (intent.extras?.getInt("requestCode") == RequestCode().REQUEST_CODE_LIST_CHANGE) {
                 textInputSurname.setText(intent.getStringExtra("surname"))
                 textInputName.setText(intent.getStringExtra("name"))
@@ -56,48 +58,52 @@ class AddItemActivity : AppCompatActivity(), TextWatcher, MenuItem.OnMenuItemCli
         btn_ok.setOnClickListener(this)
 
         if (intent?.getStringExtra("onBtn").equals("btn_lesson")) {
-            textInputLesson.addTextChangedListener(this)
+            textInputLesson.addTextChangedListener {
+                val background = btn_ok.background
+                if (it.toString() == "") {
+                    background.setTint(ContextCompat.getColor(this, R.color.colorNotActive))
+                    toolbar.menu.getItem(0).isVisible = false
+                } else {
+                    background.setTint(ContextCompat.getColor(this, R.color.colorAccent))
+                    toolbar.menu.getItem(0).isVisible = true
+                }
+                btn_ok.background = background
+            }
         } else if (intent?.getStringExtra("onBtn").equals("btn_teacher")) {
-            textInputSurname.addTextChangedListener(this)
-            textInputName.addTextChangedListener(this)
-            textInputPatronymic.addTextChangedListener(this)
+            textInputSurname.addTextChangedListener {
+                val background = btn_ok.background
+                if (it.toString() == "") {
+                    background.setTint(ContextCompat.getColor(this, R.color.colorNotActive))
+                    toolbar.menu.getItem(0).isVisible = false
+                } else {
+                    background.setTint(ContextCompat.getColor(this, R.color.colorAccent))
+                    toolbar.menu.getItem(0).isVisible = true
+                }
+                btn_ok.background = background
+            }
+            textInputName.addTextChangedListener {
+                val background = btn_ok.background
+                if (it.toString() == "") {
+                    background.setTint(ContextCompat.getColor(this, R.color.colorNotActive))
+                    toolbar.menu.getItem(0).isVisible = false
+                } else {
+                    background.setTint(ContextCompat.getColor(this, R.color.colorAccent))
+                    toolbar.menu.getItem(0).isVisible = true
+                }
+                btn_ok.background = background
+            }
+            textInputPatronymic.addTextChangedListener {
+                val background = btn_ok.background
+                if (it.toString() == "") {
+                    background.setTint(ContextCompat.getColor(this, R.color.colorNotActive))
+                    toolbar.menu.getItem(0).isVisible = false
+                } else {
+                    background.setTint(ContextCompat.getColor(this, R.color.colorAccent))
+                    toolbar.menu.getItem(0).isVisible = true
+                }
+                btn_ok.background = background
+            }
         }
-    }
-
-    override fun afterTextChanged(s: Editable?) {
-        val background = btn_ok.background
-        if (s.toString() == "") {
-            background.setTint(ContextCompat.getColor(this, R.color.colorNotActive))
-            toolbar.menu.getItem(0).isVisible = false
-        } else {
-            background.setTint(ContextCompat.getColor(this, R.color.colorAccent))
-            toolbar.menu.getItem(0).isVisible = true
-        }
-        btn_ok.background = background
-    }
-
-    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-        val background = btn_ok.background
-        if (s.toString() == "") {
-            background.setTint(ContextCompat.getColor(this, R.color.colorNotActive))
-            toolbar.menu.getItem(0).isVisible = false
-        } else {
-            background.setTint(ContextCompat.getColor(this, R.color.colorAccent))
-            toolbar.menu.getItem(0).isVisible = true
-        }
-        btn_ok.background = background
-    }
-
-    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-        val background = btn_ok.background
-        if (s.toString() == "") {
-            background.setTint(ContextCompat.getColor(this, R.color.colorNotActive))
-            toolbar.menu.getItem(0).isVisible = false
-        } else {
-            background.setTint(ContextCompat.getColor(this, R.color.colorAccent))
-            toolbar.menu.getItem(0).isVisible = true
-        }
-        btn_ok.background = background
     }
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {
