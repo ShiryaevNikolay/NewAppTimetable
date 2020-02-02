@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.newtimetable.R
 import com.example.newtimetable.RecyclerSchedule
+import kotlinx.android.synthetic.main.recycler_schedule.view.*
 
 class ScheduleAdapter(private var listItem: ArrayList<RecyclerSchedule>) : RecyclerView.Adapter<ScheduleAdapter.ScheduleViewHolder>() {
 
@@ -26,16 +27,11 @@ class ScheduleAdapter(private var listItem: ArrayList<RecyclerSchedule>) : Recyc
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ScheduleViewHolder, position: Int) {
         val itemList = listItem[position]
-        holder.clock.text = itemList.clock
-        holder.lesson.text = itemList.lesson
-        holder.teacher.text = context.resources.getString(R.string.schedule_adapter_teacher) + " " + itemList.teacher
-        holder.nameClass.text = context.resources.getString(R.string.schedule_adapter_class) + " " + itemList.nameClass
+        holder.itemView.clock_rv_schedule.text = itemList.clock
+        holder.itemView.lesson_rv_schedule.text = itemList.lesson
+        holder.itemView.teacher_rv_schedule.text = context.resources.getString(R.string.schedule_adapter_teacher) + " " + itemList.teacher
+        holder.itemView.class_rv_schedule.text = context.resources.getString(R.string.schedule_adapter_class) + " " + itemList.nameClass
     }
 
-    inner class ScheduleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val clock: TextView = itemView.findViewById(R.id.clock_rv_schedule)
-        val lesson: TextView = itemView.findViewById(R.id.lesson_rv_schedule)
-        val teacher: TextView = itemView.findViewById(R.id.teacher_rv_schedule)
-        val nameClass: TextView = itemView.findViewById(R.id.class_rv_schedule)
-    }
+    inner class ScheduleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 }

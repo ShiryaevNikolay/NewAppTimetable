@@ -39,4 +39,10 @@
     <string name="schedule_lesson">Выбрыть предмет</string>
     <string name="schedule_teacher">Выбрыть преподавателя</string>
     <string name="schedule_class">Выбрыть аудиторию</string>
+
+    <string name="homework_title">Домашнее задание</string>
+    <string name="homework_add_date">Добавлено:</string>
+    <string name="homework_to_date">Выполнить к:</string>
+    <string name="homework_choose_date">Выбрать дату</string>
+    <string name="homework_hint_task">Задания</string>
 </resources>

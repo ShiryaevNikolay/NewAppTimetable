@@ -16,17 +16,20 @@ import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
-    private var day = ""
-    private var itemId: Int? = null
-    private var clock: String? = null
-    private var hours: Int? = null
-    private var minutes: Int? = null
-    private var lesson: String? = null
-    private var teacher: String? = null
-    private var nameClass: String? = null
-    private var listItem: ArrayList<RecyclerSchedule> = ArrayList()
-    private lateinit var database: SQLiteDatabase
-    private lateinit var itemAdapter: ScheduleAdapter
+
+    companion object {
+        private var day = ""
+        private var itemId: Int? = null
+        private var clock: String? = null
+        private var hours: Int? = null
+        private var minutes: Int? = null
+        private var lesson: String? = null
+        private var teacher: String? = null
+        private var nameClass: String? = null
+        private var listItem: ArrayList<RecyclerSchedule> = ArrayList()
+        private lateinit var database: SQLiteDatabase
+        private lateinit var itemAdapter: ScheduleAdapter
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,12 +86,11 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_schedule -> {
-                    val intent = Intent(this, ScheduleActivity::class.java)
-                    startActivityForResult(intent, RequestCode().REQUEST_CODE_MAIN)
+                    startActivityForResult(Intent(this, ScheduleActivity::class.java), RequestCode().REQUEST_CODE_MAIN)
                     true
                 }
                 R.id.nav_homework -> {
-
+                    startActivity(Intent(this, HomeworkActivity::class.java))
                     true
                 }
                 else -> false
@@ -127,6 +129,7 @@ class MainActivity : AppCompatActivity() {
                 }
             } while (cursor.moveToNext())
         }
+        cursor.close()
         itemAdapter = ScheduleAdapter(listItem)
         tv_day_off_main_activity.isVisible = !flag
         rv_main_activity.adapter = itemAdapter
