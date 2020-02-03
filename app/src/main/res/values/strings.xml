@@ -53,6 +53,9 @@
     <string name="title_activity_settings">Настройки</string>
     <string name="category_one_title">Основные настройки</string>
     <string name="number_0f_week">Число повторяющихся недель</string>
+    <string name="info_number_0f_week">Это чисто соответствует количеству недель, которые повторяются.
+        Если ваше расписание каждую неделю одно и то же, вам нужно выбрать "1", что означает, что повторятся будет только одна неделя.
+        Или, например, если у вас есть неделя А и неделя Б, вам нужно выбрать "2", что означает, что недели будут повторяться как АБАБАБ…</string>
     <string name="this_week">Текущая неделя</string>
     <string name="week1">Неделя 1</string>
     <string name="week2">Неделя 2</string>

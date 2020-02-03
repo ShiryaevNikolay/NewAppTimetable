@@ -29,6 +29,11 @@
             app:title="@string/number_0f_week"
             app:useSimpleSummaryProvider="true"/>
 
+        <Preference
+            app:iconSpaceReserved="false"
+            app:key="info_num_week"
+            app:layout="@layout/pref_info_num_week"/>
+
         <ListPreference
             app:iconSpaceReserved="false"
             app:defaultValue="1"
@@ -38,11 +43,15 @@
             app:title="@string/this_week"
             app:useSimpleSummaryProvider="true" />
 
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:iconSpaceReserved="false">
+
         <SwitchPreferenceCompat
             app:iconSpaceReserved="false"
             app:key="dark_theme"
             app:title="@string/theme_title" />
-
     </PreferenceCategory>
 
 </PreferenceScreen>
