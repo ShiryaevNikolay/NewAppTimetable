@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="BottomNavStyleLight" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="itemIconTint">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="BottomNavStyleDark" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="android:background">@color/gray_900</item>
+        <item name="itemIconTint">@color/gray_100</item>
+    </style>
+
+    <style name="TabLayoutStyleLight" parent="Widget.MaterialComponents.TabLayout">
+        <item name="tabIndicatorColor">@color/colorPrimaryDark</item>
+        <item name="tabIndicatorGravity">stretch</item>
+        <item name="tabTextColor">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="TabLayoutStyleDark" parent="Widget.MaterialComponents.TabLayout">
+        <item name="android:background">@color/gray_900</item>
+    </style>
+
+    <style name="DatePickerStyleDark" parent="@android:style/Widget.DeviceDefault.DatePicker">
+        <item name="android:background">@color/gray_900</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:headerBackground">@color/gray_800</item>
+    </style>
+</resources>

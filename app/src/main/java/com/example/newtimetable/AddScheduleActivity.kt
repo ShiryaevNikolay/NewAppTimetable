@@ -3,6 +3,7 @@ package com.example.newtimetable
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.TimePickerDialog
+import android.content.Context
 import android.content.Intent
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
@@ -30,6 +31,8 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
     private lateinit var database: SQLiteDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(getSharedPreferences("MyPref", Context.MODE_PRIVATE).getInt("THEME", R.style.AppTheme))
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_schedule)
 
@@ -117,8 +120,7 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
         val calendar = Calendar.getInstance()
         val hour = calendar.get(Calendar.HOUR_OF_DAY)
         val minute = calendar.get(Calendar.MINUTE)
-
-        TimePickerDialog(this, TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
+        val dialog = TimePickerDialog(this, TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
             run {
                 var flag = true
                 var fullTime: String = if (hourOfDay < 10) "0$hourOfDay:" else "$hourOfDay:"
@@ -143,7 +145,9 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
                     Toast.makeText(this, "В это время уже есть занятие", Toast.LENGTH_SHORT).show()
                 }
             }
-        }, hour, minute, true).show()
+        }, hour, minute, true)
+        dialog.show()
+        dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_style)
     }
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {

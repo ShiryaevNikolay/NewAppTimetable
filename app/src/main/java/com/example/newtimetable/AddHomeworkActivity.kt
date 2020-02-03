@@ -2,6 +2,7 @@ package com.example.newtimetable
 
 import android.app.Activity
 import android.app.DatePickerDialog
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -19,6 +20,8 @@ class AddHomeworkActivity : AppCompatActivity(), View.OnClickListener {
     private var textToDate: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(getSharedPreferences("MyPref", Context.MODE_PRIVATE).getInt("THEME", R.style.AppTheme))
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_item)
 
@@ -82,7 +85,7 @@ class AddHomeworkActivity : AppCompatActivity(), View.OnClickListener {
         val day = calendar.get(Calendar.DAY_OF_MONTH)
         val monthCurrent = calendar.get(Calendar.MONTH)
         val yearCurrent = calendar.get(Calendar.YEAR)
-        DatePickerDialog(this, DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+        val dialog = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
             run {
                 var fullDateFix: String = if (dayOfMonth < 10) "0$dayOfMonth." else "$dayOfMonth."
                 when (month) {
@@ -104,7 +107,9 @@ class AddHomeworkActivity : AppCompatActivity(), View.OnClickListener {
                 textToDate = fullDateFix
                 checkSendBtn(textInputHomeworkTask.text.toString())
             }
-        }, yearCurrent, monthCurrent, day).show()
+        }, yearCurrent, monthCurrent, day)
+        dialog.show()
+        dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_style)
     }
 
     private fun sendTask() {

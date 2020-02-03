@@ -79,6 +79,7 @@ class ScheduleFragment : AbstractTabFragment(), ItemTouchHelperLestener, DialogD
         val view: View = inflater.inflate(R.layout.fragment_schedule, container, false)
 
         val cursor: Cursor = database.query(ScheduleDBHelper(context).TABLE_SCHEDULE, null, null, null, null, null, null)
+        listItem.clear()
         // добавляем в список данные (названия предметов) из базы данных
         if (cursor.moveToFirst()) {
             do {
