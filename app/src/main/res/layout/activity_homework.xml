@@ -18,7 +18,7 @@
             app:popupTheme="@style/AppTheme.PopupOverlay"
             app:navigationIcon="@drawable/ic_back"
             app:title="@string/homework_title"
-            app:titleTextColor="@color/colorPrimaryDark"
+            app:titleTextColor="?android:attr/textColorTertiary"
             app:menu="@menu/toolbar_menu"/>
     </com.google.android.material.appbar.AppBarLayout>
 

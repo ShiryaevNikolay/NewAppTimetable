@@ -9,6 +9,10 @@
         <item name="android:navigationBarColor">@color/colorWhite</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:textColor">@color/gray_800</item>
+        <item name="android:textColorSecondary">@color/gray_600</item>
+        <item name="android:textColorSecondaryInverse">@color/gray_600</item>
+        <item name="android:textColorTertiary">@color/colorPrimaryDark</item>
         <item name="android:windowBackground">@color/colorWhite</item>
         <item name="android:statusBarColor">@color/colorPrimaryDark</item>
         <item name="bottomNavigationStyle">@style/BottomNavStyleLight</item>
@@ -24,6 +28,9 @@
         <item name="android:windowBackground">@color/gray_900</item>
         <item name="android:statusBarColor">@color/gray_900</item>
         <item name="android:textColor">@color/gray_100</item>
+        <item name="android:textColorSecondary">@color/gray_400</item>
+        <item name="android:textColorSecondaryInverse">@color/gray_300</item>
+        <item name="android:textColorTertiary">@color/gray_100</item>
         <item name="bottomNavigationStyle">@style/BottomNavStyleDark</item>
         <item name="materialCardViewStyle">@style/CardView.Dark</item>
         <item name="tabStyle">@style/TabLayoutStyleDark</item>

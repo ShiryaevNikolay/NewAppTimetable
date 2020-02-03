@@ -16,18 +16,18 @@
             android:layout_height="?attr/actionBarSize"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             app:navigationIcon="@drawable/ic_back"
-            app:titleTextColor="@color/colorPrimaryDark"
+            app:titleTextColor="?android:attr/textColorTertiary"
             app:title="@string/app_name" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabIndicatorColor="@color/colorPrimaryDark"
+            app:tabIndicatorColor="?android:attr/textColorTertiary"
             app:tabIndicatorHeight="1dp"
             app:tabIndicatorGravity="stretch"
-            app:tabSelectedTextColor="@color/colorWhite"
-            app:tabTextColor="@color/colorPrimaryDark" />
+            app:tabSelectedTextColor="?android:attr/colorPrimary"
+            app:tabTextColor="?android:attr/textColorTertiary" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.viewpager.widget.ViewPager
