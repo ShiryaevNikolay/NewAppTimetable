@@ -85,7 +85,7 @@ class AddHomeworkActivity : AppCompatActivity(), View.OnClickListener {
         val day = calendar.get(Calendar.DAY_OF_MONTH)
         val monthCurrent = calendar.get(Calendar.MONTH)
         val yearCurrent = calendar.get(Calendar.YEAR)
-        DatePickerDialog(this, DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+        val dialog = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
             run {
                 var fullDateFix: String = if (dayOfMonth < 10) "0$dayOfMonth." else "$dayOfMonth."
                 when (month) {
@@ -107,7 +107,9 @@ class AddHomeworkActivity : AppCompatActivity(), View.OnClickListener {
                 textToDate = fullDateFix
                 checkSendBtn(textInputHomeworkTask.text.toString())
             }
-        }, yearCurrent, monthCurrent, day).show()
+        }, yearCurrent, monthCurrent, day)
+        dialog.show()
+        dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_style)
     }
 
     private fun sendTask() {

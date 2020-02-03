@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Расписание</string>
 
+    <string name="main_activity_week1">Неделя 1</string>
+    <string name="main_activity_week2">Неделя 1</string>
     <string name="main_activity_day_off">Выходной день</string>
 
     <string name="schedule_adapter_teacher">Преподаватель:</string>

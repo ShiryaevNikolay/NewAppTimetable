@@ -40,6 +40,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        if (stylePref.getBoolean("ON_WEEK", false)) {
+            tv_week_main_activity.isVisible = true
+            if (stylePref.getBoolean("WEEK", true))
+                tv_week_main_activity.text = getString(R.string.main_activity_week1)
+            else
+                tv_week_main_activity.text = getString(R.string.main_activity_week2)
+        } else
+            tv_week_main_activity.isVisible = false
+
+
         when (Calendar.getInstance().get(Calendar.DAY_OF_WEEK)) {
             Calendar.MONDAY -> {
                 tv_day_main_activity.text = "Понедельник"

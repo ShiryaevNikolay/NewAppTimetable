@@ -25,6 +25,14 @@
             android:textAllCaps="true"/>
 
         <TextView
+            android:id="@+id/tv_week_main_activity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:gravity="center"
+            android:textColor="?android:attr/textColorSecondary"/>
+
+        <TextView
             android:id="@+id/tv_day_off_main_activity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

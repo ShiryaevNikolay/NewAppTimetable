@@ -21,45 +21,26 @@
         android:id="@+id/ll_dialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="15dp"
+        android:gravity="end">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/dialog_btn_negative"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center">
+            android:text="@string/dialog_delete_btn_negative"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            app:cornerRadius="8dp"/>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/dialog_btn_negative"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/dialog_delete_btn_negative"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="15dp"
-                app:cornerRadius="8dp"
-                android:padding="15dp"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/dialog_btn_positive"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/dialog_btn_positive"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/dialog_delete_btn_positive"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:theme="@style/AppTheme.ButtonNegative"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="15dp"
-                app:cornerRadius="8dp"
-                android:padding="15dp"
-                android:textColor="@color/colorRed"/>
-        </LinearLayout>
+            android:text="@string/dialog_delete_btn_positive"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:theme="@style/AppTheme.ButtonNegative"
+            app:cornerRadius="8dp"/>
     </LinearLayout>
 
 </RelativeLayout>
