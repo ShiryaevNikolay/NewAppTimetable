@@ -2,22 +2,18 @@ package com.example.newtimetable
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.newtimetable.adapters.LessonTeacherAdapter
 import com.example.newtimetable.database.LessonDBHelper
 import com.example.newtimetable.database.TeacherDBHelper
 import com.example.newtimetable.interfaces.OnClickItemListener
-import kotlinx.android.synthetic.main.activity_add_item.*
-import kotlinx.android.synthetic.main.activity_add_schedule.*
-import kotlinx.android.synthetic.main.activity_add_schedule.btn_ok
 import kotlinx.android.synthetic.main.activity_list.*
 import kotlinx.android.synthetic.main.activity_list.toolbar
 import kotlinx.android.synthetic.main.content_list.*
@@ -32,7 +28,10 @@ class SelectItemListActivity : AppCompatActivity(), OnClickItemListener {
 
     @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(getSharedPreferences("MyPref", Context.MODE_PRIVATE).getInt("THEME", R.style.AppTheme))
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("dark_theme", false))
+            setTheme(R.style.AppTheme_Dark)
+        else
+            setTheme(R.style.AppTheme)
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list)

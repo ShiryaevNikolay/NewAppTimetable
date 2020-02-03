@@ -7,4 +7,5 @@ class RequestCode {
     val REQUEST_CODE_SCHEDULE = 3
     val REQUEST_CODE_HOMEWORK = 4
     val REQUEST_CODE_HOMEWORK_CHANGE = 5
+    val REQUEST_CODE_SETTINGS = 6
 }

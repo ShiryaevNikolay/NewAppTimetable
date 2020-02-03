@@ -2,14 +2,13 @@ package com.example.newtimetable
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.view.isVisible
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.newtimetable.adapters.ScheduleAdapter
 import com.example.newtimetable.database.ScheduleDBHelper
@@ -30,25 +29,26 @@ class MainActivity : AppCompatActivity() {
     private var listItem: ArrayList<RecyclerSchedule> = ArrayList()
     private lateinit var database: SQLiteDatabase
     private lateinit var itemAdapter: ScheduleAdapter
-    private lateinit var stylePref: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        stylePref = getSharedPreferences("MyPref", Context.MODE_PRIVATE)
-        var theme: Int = stylePref.getInt("THEME", R.style.AppTheme)
-        setTheme(theme)
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("dark_theme", false))
+            setTheme(R.style.AppTheme_Dark)
+        else
+            setTheme(R.style.AppTheme)
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        if (stylePref.getBoolean("ON_WEEK", false)) {
-            tv_week_main_activity.isVisible = true
-            if (stylePref.getBoolean("WEEK", true))
-                tv_week_main_activity.text = getString(R.string.main_activity_week1)
-            else
-                tv_week_main_activity.text = getString(R.string.main_activity_week2)
-        } else
+        if (PreferenceManager.getDefaultSharedPreferences(this).getString("number_0f_week", "1") == "1") {
             tv_week_main_activity.isVisible = false
-
+        } else {
+            tv_week_main_activity.isVisible = true
+            if (PreferenceManager.getDefaultSharedPreferences(this).getString("this_week", "1") == "1") {
+                tv_week_main_activity.text = this.resources.getString(R.string.week1)
+            } else if (PreferenceManager.getDefaultSharedPreferences(this).getString("this_week", "2") == "2") {
+                tv_week_main_activity.text = this.resources.getString(R.string.week2)
+            }
+        }
 
         when (Calendar.getInstance().get(Calendar.DAY_OF_WEEK)) {
             Calendar.MONDAY -> {
@@ -109,16 +109,18 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_settings -> {
-                    stylePref = getSharedPreferences("MyPref", Context.MODE_PRIVATE)
-                    val editor: SharedPreferences.Editor = stylePref.edit()
-                    if (stylePref.getInt("THEME", R.style.AppTheme) == R.style.AppTheme)
-                        editor.putInt("THEME", R.style.AppTheme_Dark)
-                    else
-                        editor.putInt("THEME", R.style.AppTheme)
-                    editor.apply()
-                    theme = stylePref.getInt("THEME", R.style.AppTheme)
-                    setTheme(theme)
-                    recreate()
+                    startActivity(Intent(this, SettingsActivity::class.java))
+                    finish()
+//                    stylePref = getSharedPreferences("MyPref", Context.MODE_PRIVATE)
+//                    val editor: SharedPreferences.Editor = stylePref.edit()
+//                    if (stylePref.getInt("THEME", R.style.AppTheme) == R.style.AppTheme)
+//                        editor.putInt("THEME", R.style.AppTheme_Dark)
+//                    else
+//                        editor.putInt("THEME", R.style.AppTheme)
+//                    editor.apply()
+//                    theme = stylePref.getInt("THEME", R.style.AppTheme)
+//                    setTheme(theme)
+//                    recreate()
                     true
                 }
                 else -> false

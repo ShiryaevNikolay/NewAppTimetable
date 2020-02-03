@@ -3,13 +3,13 @@ package com.example.newtimetable
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ContentValues
-import android.content.Context
 import android.content.Intent
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.newtimetable.adapters.LessonTeacherAdapter
@@ -37,7 +37,10 @@ class ListActivity :
 
     @SuppressLint("Recycle")
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(getSharedPreferences("MyPref", Context.MODE_PRIVATE).getInt("THEME", R.style.AppTheme))
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("dark_theme", false))
+            setTheme(R.style.AppTheme_Dark)
+        else
+            setTheme(R.style.AppTheme)
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list)

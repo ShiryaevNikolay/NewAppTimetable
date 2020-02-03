@@ -1,0 +1,48 @@
+<!--
+  ~ Copyright 2018 The app Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        app:title="@string/category_one_title"
+        app:iconSpaceReserved="false">
+
+        <ListPreference
+            app:iconSpaceReserved="false"
+            app:defaultValue="1"
+            app:entries="@array/number_0f_week_entries"
+            app:entryValues="@array/number_0f_week_values"
+            app:key="number_0f_week"
+            app:title="@string/number_0f_week"
+            app:useSimpleSummaryProvider="true"/>
+
+        <ListPreference
+            app:iconSpaceReserved="false"
+            app:defaultValue="1"
+            app:entries="@array/week_entries"
+            app:entryValues="@array/week_values"
+            app:key="this_week"
+            app:title="@string/this_week"
+            app:useSimpleSummaryProvider="true" />
+
+        <SwitchPreferenceCompat
+            app:iconSpaceReserved="false"
+            app:key="dark_theme"
+            app:title="@string/theme_title" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
