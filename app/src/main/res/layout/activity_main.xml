@@ -43,7 +43,6 @@
         app:menu="@menu/nav_main_menu"
         android:layout_alignParentBottom="true"
         app:itemTextColor="@drawable/selector_nav_btn"
-        app:itemIconTint="@drawable/selector_nav_btn"
         app:itemHorizontalTranslationEnabled="false"
         app:labelVisibilityMode="unlabeled"/>
 </RelativeLayout>

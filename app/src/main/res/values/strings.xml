@@ -10,6 +10,7 @@
     <string name="nav_main_btn_teacher">Преподаватели</string>
     <string name="nav_main_btn_schedule">Расписание</string>
     <string name="nav_main_btn_homework">Домашняя работа</string>
+    <string name="nav_main_btn_settings">Настройки</string>
     <string name="title_activity_list">ListActivity</string>
 
     <string name="btn_ok">Ок</string>

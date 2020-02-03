@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="ThemeLight" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorWhite</item>
         <item name="colorPrimaryDark">@color/colorWhite</item>
@@ -11,8 +11,27 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowBackground">@color/colorWhite</item>
         <item name="android:statusBarColor">@color/colorPrimaryDark</item>
-        <item name="textAppearanceHeadline1">@color/colorPrimaryText</item>
+        <item name="bottomNavigationStyle">@style/BottomNavStyleLight</item>
     </style>
+
+    <style name="ThemeDark" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="colorPrimary">@color/gray_900</item>
+        <item name="colorPrimaryDark">@color/gray_900</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:navigationBarColor">@color/gray_900</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/gray_900</item>
+        <item name="android:statusBarColor">@color/gray_900</item>
+        <item name="android:textColor">@color/gray_100</item>
+        <item name="bottomNavigationStyle">@style/BottomNavStyleDark</item>
+        <item name="materialCardViewStyle">@style/CardView.Dark</item>
+        <item name="tabStyle">@style/TabLayoutStyleDark</item>
+    </style>
+
+    <style name="AppTheme" parent="ThemeLight"/>
+
+    <style name="AppTheme.Dark" parent="ThemeDark"/>
 
     <style name="AppTheme.ButtonNegative" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorAccent">@color/colorRed</item>

@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="ThemeLight.V23" parent="ThemeLight">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorWhite</item>
-        <item name="colorPrimaryDark">@color/colorWhite</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:navigationBarColor">@color/colorWhite</item>
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowBackground">@color/colorWhite</item>
+        <item name="android:statusBarColor">@color/colorWhite</item>
         <item name="android:windowLightStatusBar">true</item>
-        <item name="textAppearanceHeadline1">@color/colorPrimaryText</item>
+        <item name="android:titleTextColor">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="ThemeDark.V23" parent="ThemeDark">
+        <item name="android:statusBarColor">@color/gray_900</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+    <style name="AppTheme" parent="ThemeLight.V23"/>
+
+    <style name="AppTheme.Dark" parent="ThemeDark.V23">
+
     </style>
 </resources>

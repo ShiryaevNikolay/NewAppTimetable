@@ -2,6 +2,7 @@ package com.example.newtimetable
 
 import android.app.Activity
 import android.app.DatePickerDialog
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -19,6 +20,8 @@ class AddHomeworkActivity : AppCompatActivity(), View.OnClickListener {
     private var textToDate: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(getSharedPreferences("MyPref", Context.MODE_PRIVATE).getInt("THEME", R.style.AppTheme))
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_item)
 

@@ -2,7 +2,9 @@ package com.example.newtimetable
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import androidx.appcompat.app.AppCompatActivity
@@ -17,21 +19,24 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
-    companion object {
-        private var day = ""
-        private var itemId: Int? = null
-        private var clock: String? = null
-        private var hours: Int? = null
-        private var minutes: Int? = null
-        private var lesson: String? = null
-        private var teacher: String? = null
-        private var nameClass: String? = null
-        private var listItem: ArrayList<RecyclerSchedule> = ArrayList()
-        private lateinit var database: SQLiteDatabase
-        private lateinit var itemAdapter: ScheduleAdapter
-    }
+    private var day = ""
+    private var itemId: Int? = null
+    private var clock: String? = null
+    private var hours: Int? = null
+    private var minutes: Int? = null
+    private var lesson: String? = null
+    private var teacher: String? = null
+    private var nameClass: String? = null
+    private var listItem: ArrayList<RecyclerSchedule> = ArrayList()
+    private lateinit var database: SQLiteDatabase
+    private lateinit var itemAdapter: ScheduleAdapter
+    private lateinit var stylePref: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        stylePref = getSharedPreferences("MyPref", Context.MODE_PRIVATE)
+        var theme: Int = stylePref.getInt("THEME", R.style.AppTheme)
+        setTheme(theme)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -91,6 +96,19 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.nav_homework -> {
                     startActivity(Intent(this, HomeworkActivity::class.java))
+                    true
+                }
+                R.id.nav_settings -> {
+                    stylePref = getSharedPreferences("MyPref", Context.MODE_PRIVATE)
+                    val editor: SharedPreferences.Editor = stylePref.edit()
+                    if (stylePref.getInt("THEME", R.style.AppTheme) == R.style.AppTheme)
+                        editor.putInt("THEME", R.style.AppTheme_Dark)
+                    else
+                        editor.putInt("THEME", R.style.AppTheme)
+                    editor.apply()
+                    theme = stylePref.getInt("THEME", R.style.AppTheme)
+                    setTheme(theme)
+                    recreate()
                     true
                 }
                 else -> false
