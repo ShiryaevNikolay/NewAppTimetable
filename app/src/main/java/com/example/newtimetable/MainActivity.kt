@@ -2,14 +2,13 @@ package com.example.newtimetable
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.view.isVisible
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.newtimetable.adapters.ScheduleAdapter
 import com.example.newtimetable.database.ScheduleDBHelper
@@ -27,28 +26,30 @@ class MainActivity : AppCompatActivity() {
     private var lesson: String? = null
     private var teacher: String? = null
     private var nameClass: String? = null
+    private var week: String? = null
     private var listItem: ArrayList<RecyclerSchedule> = ArrayList()
     private lateinit var database: SQLiteDatabase
     private lateinit var itemAdapter: ScheduleAdapter
-    private lateinit var stylePref: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        stylePref = getSharedPreferences("MyPref", Context.MODE_PRIVATE)
-        var theme: Int = stylePref.getInt("THEME", R.style.AppTheme)
-        setTheme(theme)
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("dark_theme", false))
+            setTheme(R.style.AppTheme_Dark)
+        else
+            setTheme(R.style.AppTheme)
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        if (stylePref.getBoolean("ON_WEEK", false)) {
-            tv_week_main_activity.isVisible = true
-            if (stylePref.getBoolean("WEEK", true))
-                tv_week_main_activity.text = getString(R.string.main_activity_week1)
-            else
-                tv_week_main_activity.text = getString(R.string.main_activity_week2)
-        } else
+        if (PreferenceManager.getDefaultSharedPreferences(this).getString("number_0f_week", "1") == "1") {
             tv_week_main_activity.isVisible = false
-
+        } else {
+            tv_week_main_activity.isVisible = true
+            if (PreferenceManager.getDefaultSharedPreferences(this).getString("this_week", "1") == "1") {
+                tv_week_main_activity.text = this.resources.getString(R.string.week1)
+            } else if (PreferenceManager.getDefaultSharedPreferences(this).getString("this_week", "2") == "2") {
+                tv_week_main_activity.text = this.resources.getString(R.string.week2)
+            }
+        }
 
         when (Calendar.getInstance().get(Calendar.DAY_OF_WEEK)) {
             Calendar.MONDAY -> {
@@ -109,16 +110,8 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_settings -> {
-                    stylePref = getSharedPreferences("MyPref", Context.MODE_PRIVATE)
-                    val editor: SharedPreferences.Editor = stylePref.edit()
-                    if (stylePref.getInt("THEME", R.style.AppTheme) == R.style.AppTheme)
-                        editor.putInt("THEME", R.style.AppTheme_Dark)
-                    else
-                        editor.putInt("THEME", R.style.AppTheme)
-                    editor.apply()
-                    theme = stylePref.getInt("THEME", R.style.AppTheme)
-                    setTheme(theme)
-                    recreate()
+                    startActivity(Intent(this, SettingsActivity::class.java))
+                    finish()
                     true
                 }
                 else -> false
@@ -153,12 +146,17 @@ class MainActivity : AppCompatActivity() {
                     lesson = cursor.getString(cursor.getColumnIndex(ScheduleDBHelper(this).KEY_LESSON))
                     teacher = cursor.getString(cursor.getColumnIndex(ScheduleDBHelper(this).KEY_TEACHER))
                     nameClass = cursor.getString(cursor.getColumnIndex(ScheduleDBHelper(this).KEY_CLASS))
-                    sortList(hours!!, minutes!!)
+                    week = cursor.getString(cursor.getColumnIndex(ScheduleDBHelper(this).KEY_WEEK))
+                    if (PreferenceManager.getDefaultSharedPreferences(this).getString("number_0f_week", "1") == "1") {
+                        sortList(hours!!, minutes!!)
+                    } else {
+                        sortListWeek()
+                    }
                 }
             } while (cursor.moveToNext())
         }
         cursor.close()
-        itemAdapter = ScheduleAdapter(listItem)
+        itemAdapter = ScheduleAdapter(listItem, RequestCode().REQUEST_CODE_MAIN)
         tv_day_off_main_activity.isVisible = !flag
         rv_main_activity.adapter = itemAdapter
     }
@@ -178,17 +176,53 @@ class MainActivity : AppCompatActivity() {
                             indexI = j
                             if (minutes < listItem[j].minutes) {
                                 flagLoopTwo = true
-                                listItem.add(indexI, RecyclerSchedule(itemId!!, clock!!, hours, minutes, lesson!!, teacher!!, nameClass!!))
+                                listItem.add(indexI, RecyclerSchedule(itemId!!, clock!!, hours, minutes, lesson!!, teacher!!, nameClass!!, week!!))
                             }
                         }
                     }
-                    if (!flagLoopTwo) listItem.add(++indexI, RecyclerSchedule(itemId!!, clock!!, hours, minutes, lesson!!, teacher!!, nameClass!!))
+                    if (!flagLoopTwo) listItem.add(++indexI, RecyclerSchedule(itemId!!, clock!!, hours, minutes, lesson!!, teacher!!, nameClass!!, week!!))
                 } else if (hours < listItem[i].hours) {
                     flagLoopOne = true
-                    listItem.add(i, RecyclerSchedule(itemId!!, clock!!, hours, minutes, lesson!!, teacher!!, nameClass!!))
+                    listItem.add(i, RecyclerSchedule(itemId!!, clock!!, hours, minutes, lesson!!, teacher!!, nameClass!!, week!!))
                 }
             }
-            if (!flagLoopOne) listItem.add(RecyclerSchedule(itemId!!, clock!!, hours, minutes, lesson!!, teacher!!, nameClass!!))
-        } else listItem.add(RecyclerSchedule(itemId!!, clock!!, hours, minutes, lesson!!, teacher!!, nameClass!!))
+            if (!flagLoopOne) listItem.add(RecyclerSchedule(itemId!!, clock!!, hours, minutes, lesson!!, teacher!!, nameClass!!, week!!))
+        } else listItem.add(RecyclerSchedule(itemId!!, clock!!, hours, minutes, lesson!!, teacher!!, nameClass!!, week!!))
+    }
+
+    private fun sortListWeek() {
+        if (listItem.isNotEmpty()) {
+            var flagLoopOne = false
+            for (i in 0 until listItem.size) {
+                if (PreferenceManager.getDefaultSharedPreferences(this).getString("this_week", "1") != week && week != "12")
+                    continue
+                if (flagLoopOne) break
+                if (hours == listItem[i].hours) {
+                    flagLoopOne = true
+                    var flagLoopTwo = false
+                    var indexI = 0
+                    for (j in 0 until listItem.size) {
+                        if (flagLoopTwo) break
+                        if (hours == listItem[j].hours) {
+                            indexI = j
+                            if (minutes!! < listItem[j].minutes) {
+                                flagLoopTwo = true
+                                listItem.add(indexI, RecyclerSchedule(itemId!!, clock!!,
+                                    hours!!, minutes!!, lesson!!, teacher!!, nameClass!!, week!!))
+                            }
+                        }
+                    }
+                    if (!flagLoopTwo) listItem.add(++indexI, RecyclerSchedule(itemId!!, clock!!, hours!!, minutes!!, lesson!!, teacher!!, nameClass!!, week!!))
+                } else if (hours!! < listItem[i].hours) {
+                    flagLoopOne = true
+                    listItem.add(i, RecyclerSchedule(itemId!!, clock!!, hours!!, minutes!!, lesson!!, teacher!!, nameClass!!, week!!))
+                }
+            }
+            if (!flagLoopOne && (PreferenceManager.getDefaultSharedPreferences(this).getString("this_week", "1") == week || week == "12")) {
+                listItem.add(RecyclerSchedule(itemId!!, clock!!, hours!!, minutes!!, lesson!!, teacher!!, nameClass!!, week!!))
+            }
+        } else if (PreferenceManager.getDefaultSharedPreferences(this).getString("this_week", "1") == week || week == "12") {
+            listItem.add(RecyclerSchedule(itemId!!, clock!!, hours!!, minutes!!, lesson!!, teacher!!, nameClass!!, week!!))
+        }
     }
 }

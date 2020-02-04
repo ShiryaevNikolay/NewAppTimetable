@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <TextView
+        android:id="@+id/title_dialog"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_week_title"
+        android:textSize="20sp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:textColor="?android:attr/textColor"/>
+
+
+    <RadioGroup
+        android:id="@+id/radio_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title_dialog"
+        android:layout_margin="15dp">
+
+        <RadioButton
+            android:id="@+id/radioButtonWeek1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/week1"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"/>
+
+        <RadioButton
+            android:id="@+id/radioButtonWeek2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/week2"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"/>
+
+        <RadioButton
+            android:id="@+id/radioButtonEveryWeek"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/schedule_week"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"/>
+    </RadioGroup>
+
+
+    <LinearLayout
+        android:layout_below="@+id/radio_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/dialog_btn_negative"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dialog_class_btn_negative"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            app:cornerRadius="8dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="10dp"/>
+    </LinearLayout>
+</RelativeLayout>

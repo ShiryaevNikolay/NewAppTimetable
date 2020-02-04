@@ -30,6 +30,7 @@
     <string name="dialog_class_input">Номер аудитории</string>
     <string name="dialog_class_btn_positive">Добавить</string>
     <string name="dialog_class_btn_negative">Отмена</string>
+    <string name="dialog_week_title">Выберите неделю</string>
 
     <string name="tab_title_mon">ПН</string>
     <string name="tab_title_tues">ВТ</string>
@@ -42,10 +43,23 @@
     <string name="schedule_lesson">Выбрыть предмет</string>
     <string name="schedule_teacher">Выбрыть преподавателя</string>
     <string name="schedule_class">Выбрыть аудиторию</string>
+    <string name="schedule_week">Каждую неделю</string>
 
     <string name="homework_title">Домашнее задание</string>
     <string name="homework_add_date">Добавлено:</string>
     <string name="homework_to_date">Выполнить к:</string>
     <string name="homework_choose_date">Выбрать дату</string>
     <string name="homework_hint_task">Задания</string>
+
+
+    <string name="title_activity_settings">Настройки</string>
+    <string name="category_one_title">Основные настройки</string>
+    <string name="number_0f_week">Число повторяющихся недель</string>
+    <string name="info_number_0f_week">Это чисто соответствует количеству недель, которые повторяются.
+        Если ваше расписание каждую неделю одно и то же, вам нужно выбрать "1", что означает, что повторятся будет только одна неделя.
+        Или, например, если у вас есть неделя А и неделя Б, вам нужно выбрать "2", что означает, что недели будут повторяться как АБАБАБ…</string>
+    <string name="this_week">Текущая неделя</string>
+    <string name="week1">Неделя 1</string>
+    <string name="week2">Неделя 2</string>
+    <string name="theme_title">Тёмная тема</string>
 </resources>

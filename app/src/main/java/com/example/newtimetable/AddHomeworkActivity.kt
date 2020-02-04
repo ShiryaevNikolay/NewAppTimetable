@@ -2,7 +2,6 @@ package com.example.newtimetable
 
 import android.app.Activity
 import android.app.DatePickerDialog
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,6 +9,7 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
+import androidx.preference.PreferenceManager
 import com.example.newtimetable.util.RequestCode
 import kotlinx.android.synthetic.main.activity_add_item.*
 import java.util.*
@@ -20,7 +20,10 @@ class AddHomeworkActivity : AppCompatActivity(), View.OnClickListener {
     private var textToDate: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(getSharedPreferences("MyPref", Context.MODE_PRIVATE).getInt("THEME", R.style.AppTheme))
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("dark_theme", false))
+            setTheme(R.style.AppTheme_Dark)
+        else
+            setTheme(R.style.AppTheme)
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_item)

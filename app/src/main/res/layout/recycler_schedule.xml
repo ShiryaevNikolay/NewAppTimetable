@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:contentPadding="15dp"
     app:cardUseCompatPadding="true"
     app:cardElevation="1dp">
 
@@ -12,7 +11,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:paddingStart="15dp"
+        android:paddingEnd="11dp">
 
         <TextView
             android:id="@+id/clock_rv_schedule"
@@ -53,4 +56,10 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/indicator_week"
+        android:layout_gravity="end"
+        android:layout_width="4dp"
+        android:layout_height="match_parent"/>
 </com.google.android.material.card.MaterialCardView>

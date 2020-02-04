@@ -20,6 +20,7 @@ import com.example.newtimetable.dialogs.CustomDialog
 import com.example.newtimetable.interfaces.DialogDeleteListener
 import com.example.newtimetable.interfaces.ItemTouchHelperLestener
 import com.example.newtimetable.modules.SwipeDragItemHelper
+import com.example.newtimetable.util.RequestCode
 
 class ScheduleFragment : AbstractTabFragment(), ItemTouchHelperLestener, DialogDeleteListener {
     private lateinit var daySchedule: String
@@ -30,6 +31,7 @@ class ScheduleFragment : AbstractTabFragment(), ItemTouchHelperLestener, DialogD
     private var lesson: String? = null
     private var teacher: String? = null
     private var nameClass: String? = null
+    private var week: String? = null
     private lateinit var database: SQLiteDatabase
     private var listItem: ArrayList<RecyclerSchedule> = ArrayList()
     private lateinit var itemAdapter: ScheduleAdapter
@@ -92,6 +94,7 @@ class ScheduleFragment : AbstractTabFragment(), ItemTouchHelperLestener, DialogD
                     lesson = cursor.getString(cursor.getColumnIndex(ScheduleDBHelper(context).KEY_LESSON))
                     teacher = cursor.getString(cursor.getColumnIndex(ScheduleDBHelper(context).KEY_TEACHER))
                     nameClass = cursor.getString(cursor.getColumnIndex(ScheduleDBHelper(context).KEY_CLASS))
+                    week = cursor.getString(cursor.getColumnIndex(ScheduleDBHelper(context).KEY_WEEK))
                     sortList(hours!!, minutes!!)
                 }
             } while (cursor.moveToNext())
@@ -99,7 +102,7 @@ class ScheduleFragment : AbstractTabFragment(), ItemTouchHelperLestener, DialogD
         recyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.setHasFixedSize(true)
-        itemAdapter = ScheduleAdapter(listItem)
+        itemAdapter = ScheduleAdapter(listItem, RequestCode().REQUEST_CODE_SCHEDULE)
         recyclerView.adapter = itemAdapter
 
         val callback: SwipeDragItemHelper? = context?.let { SwipeDragItemHelper(this, it) }
@@ -141,17 +144,20 @@ class ScheduleFragment : AbstractTabFragment(), ItemTouchHelperLestener, DialogD
                             indexI = j
                             if (minutes < listItem[j].minutes) {
                                 flagLoopTwo = true
-                                listItem.add(indexI, RecyclerSchedule(itemId!!, clock!!, hours, minutes, lesson!!, teacher!!, nameClass!!))
+                                listItem.add(indexI, RecyclerSchedule(itemId!!, clock!!, hours, minutes, lesson!!, teacher!!, nameClass!!, week!!))
+                            } else if (minutes == listItem[j].minutes && week == "1") {
+                                flagLoopTwo = true
+                                listItem.add(indexI, RecyclerSchedule(itemId!!, clock!!, hours, minutes, lesson!!, teacher!!, nameClass!!, week!!))
                             }
                         }
                     }
-                    if (!flagLoopTwo) listItem.add(++indexI, RecyclerSchedule(itemId!!, clock!!, hours, minutes, lesson!!, teacher!!, nameClass!!))
+                    if (!flagLoopTwo) listItem.add(++indexI, RecyclerSchedule(itemId!!, clock!!, hours, minutes, lesson!!, teacher!!, nameClass!!, week!!))
                 } else if (hours < listItem[i].hours) {
                     flagLoopOne = true
-                    listItem.add(i, RecyclerSchedule(itemId!!, clock!!, hours, minutes, lesson!!, teacher!!, nameClass!!))
+                    listItem.add(i, RecyclerSchedule(itemId!!, clock!!, hours, minutes, lesson!!, teacher!!, nameClass!!, week!!))
                 }
             }
-            if (!flagLoopOne) listItem.add(RecyclerSchedule(itemId!!, clock!!, hours, minutes, lesson!!, teacher!!, nameClass!!))
-        } else listItem.add(RecyclerSchedule(itemId!!, clock!!, hours, minutes, lesson!!, teacher!!, nameClass!!))
+            if (!flagLoopOne) listItem.add(RecyclerSchedule(itemId!!, clock!!, hours, minutes, lesson!!, teacher!!, nameClass!!, week!!))
+        } else listItem.add(RecyclerSchedule(itemId!!, clock!!, hours, minutes, lesson!!, teacher!!, nameClass!!, week!!))
     }
 }

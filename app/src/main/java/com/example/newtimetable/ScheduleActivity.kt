@@ -2,11 +2,11 @@ package com.example.newtimetable
 
 import android.app.Activity
 import android.content.ContentValues
-import android.content.Context
 import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.preference.PreferenceManager
 import com.example.newtimetable.adapters.TabsFragmentAdapter
 import com.example.newtimetable.database.ScheduleDBHelper
 import com.example.newtimetable.util.RequestCode
@@ -18,7 +18,10 @@ class ScheduleActivity : AppCompatActivity() {
     private var tabPosition = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(getSharedPreferences("MyPref", Context.MODE_PRIVATE).getInt("THEME", R.style.AppTheme))
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("dark_theme", false))
+            setTheme(R.style.AppTheme_Dark)
+        else
+            setTheme(R.style.AppTheme)
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_schedule)
@@ -58,6 +61,7 @@ class ScheduleActivity : AppCompatActivity() {
                 contentValues.put(ScheduleDBHelper(this).KEY_LESSON, data?.getStringExtra("lesson"))
                 contentValues.put(ScheduleDBHelper(this).KEY_TEACHER, data?.getStringExtra("teacher"))
                 contentValues.put(ScheduleDBHelper(this).KEY_CLASS, data?.getStringExtra("numberClass"))
+                contentValues.put(ScheduleDBHelper(this).KEY_WEEK, data?.getStringExtra("week"))
                 database.insert(ScheduleDBHelper(this).TABLE_SCHEDULE, null, contentValues)
                 initTabs()
             }
