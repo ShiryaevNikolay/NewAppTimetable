@@ -12,21 +12,25 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.preference.PreferenceManager
 import com.example.newtimetable.database.ScheduleDBHelper
 import com.example.newtimetable.dialogs.CustomDialog
+import com.example.newtimetable.dialogs.RadioDialog
 import com.example.newtimetable.interfaces.DialogAddInputListener
+import com.example.newtimetable.interfaces.DialogRadioButtonListener
 import com.example.newtimetable.util.RequestCode
 import kotlinx.android.synthetic.main.activity_add_schedule.*
 import kotlinx.android.synthetic.main.activity_add_schedule.toolbar
 import java.util.*
 
-class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMenuItemClickListener, DialogAddInputListener {
+class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMenuItemClickListener, DialogAddInputListener, DialogRadioButtonListener {
     private var day: String? = ""
     private var clock: String? = ""
     private var hours: Int = 0
     private var minutes: Int = 0
+    private var week: String = "12"
     private var scheduleDBHelper: ScheduleDBHelper = ScheduleDBHelper(this)
     private lateinit var database: SQLiteDatabase
 
@@ -69,6 +73,11 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
         tv_class_schedule.setOnClickListener(this)
         tv_class_schedule.text = ""
         tv_class_schedule_icon.setOnClickListener(this)
+        tv_week_schedule.setOnClickListener(this)
+        tv_week_schedule.text = ""
+        tv_week_schedule_icon.setOnClickListener(this)
+        tr_week_schedule.isVisible =
+            PreferenceManager.getDefaultSharedPreferences(this).getString("number_0f_week", "1") != "1"
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -111,6 +120,11 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
                 val addClassDialog: DialogFragment = CustomDialog(this, "addClass")
                 addClassDialog.show(supportFragmentManager, "addClassDialog")
             }
+            R.id.tv_week_schedule,
+            R.id.tv_week_schedule_icon -> {
+                val chooseWeekDialog: DialogFragment = RadioDialog(this, week)
+                chooseWeekDialog.show(supportFragmentManager, "chooseWeek")
+            }
             R.id.btn_ok -> {
                 clickAddBtn()
             }
@@ -134,7 +148,16 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
                         if (cursor.getString(cursor.getColumnIndex(ScheduleDBHelper(this).KEY_CLOCK)) == fullTime &&
                             cursor.getString(cursor.getColumnIndex(ScheduleDBHelper(this).KEY_DAY)) == day
                         ) {
-                            flag = false
+                            if (cursor.getString(cursor.getColumnIndex(ScheduleDBHelper(this).KEY_WEEK)) == "12" && (week == "1" || week == "2")) {
+                                flag = false
+                                break
+                            } else if (cursor.getString(cursor.getColumnIndex(ScheduleDBHelper(this).KEY_WEEK)) != "12" &&
+                                        week == "12") {
+                                flag = false
+                            } else if (cursor.getString(cursor.getColumnIndex(ScheduleDBHelper(this).KEY_WEEK)) == week) {
+                                flag = false
+                                break
+                            }
                         }
                     } while (cursor.moveToNext())
                 }
@@ -195,8 +218,57 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
             data.putExtra("lesson", tv_lesson_schedule.text)
             data.putExtra("teacher", tv_teacher_schedule.text)
             data.putExtra("numberClass", tv_class_schedule.text)
+            data.putExtra("week", week)
             setResult(Activity.RESULT_OK, data)
             finish()
         }
+    }
+
+    override fun onClickRadioButtonDialog(choose: String) {
+        if (checkCondition(choose)) {
+            if (choose == "1" ) {
+                week = "1"
+                tv_week_schedule.text = this.resources.getString(R.string.week1)
+            } else if (choose == "2") {
+                week = "2"
+                tv_week_schedule.text = this.resources.getString(R.string.week2)
+            }
+        } else {
+            Toast.makeText(this, "В это время уже есть занятие", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onClickNegativeButtonDialog(choose: String) {
+        if (checkCondition("12")) {
+            week = "12"
+            tv_week_schedule.text = ""
+        } else {
+            Toast.makeText(this, "В это время уже есть занятие", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    @SuppressLint("Recycle")
+    private fun checkCondition(choose: String): Boolean {
+        var flag = true
+        val cursor: Cursor = database.query(ScheduleDBHelper(this).TABLE_SCHEDULE, null, null, null, null, null, null)
+        if (cursor.moveToFirst()) {
+            do {
+                if (cursor.getString(cursor.getColumnIndex(ScheduleDBHelper(this).KEY_CLOCK)) == tv_clock_schedule.text &&
+                    cursor.getString(cursor.getColumnIndex(ScheduleDBHelper(this).KEY_DAY)) == day
+                ) {
+                    if (cursor.getString(cursor.getColumnIndex(ScheduleDBHelper(this).KEY_WEEK)) == "12" && (choose == "1" || choose == "2")) {
+                        flag = false
+                        break
+                    } else if (cursor.getString(cursor.getColumnIndex(ScheduleDBHelper(this).KEY_WEEK)) != "12" &&
+                        choose == "12") {
+                        flag = false
+                    } else if (cursor.getString(cursor.getColumnIndex(ScheduleDBHelper(this).KEY_WEEK)) == choose) {
+                        flag = false
+                        break
+                    }
+                }
+            } while (cursor.moveToNext())
+        }
+        return flag
     }
 }

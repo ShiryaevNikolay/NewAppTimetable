@@ -30,6 +30,7 @@
     <string name="dialog_class_input">Номер аудитории</string>
     <string name="dialog_class_btn_positive">Добавить</string>
     <string name="dialog_class_btn_negative">Отмена</string>
+    <string name="dialog_week_title">Выберите неделю</string>
 
     <string name="tab_title_mon">ПН</string>
     <string name="tab_title_tues">ВТ</string>
@@ -42,6 +43,7 @@
     <string name="schedule_lesson">Выбрыть предмет</string>
     <string name="schedule_teacher">Выбрыть преподавателя</string>
     <string name="schedule_class">Выбрыть аудиторию</string>
+    <string name="schedule_week">Каждую неделю</string>
 
     <string name="homework_title">Домашнее задание</string>
     <string name="homework_add_date">Добавлено:</string>

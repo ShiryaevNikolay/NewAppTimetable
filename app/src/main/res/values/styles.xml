@@ -12,9 +12,9 @@
         <item name="android:textColor">@color/gray_700</item>
         <item name="android:textColorSecondary">@color/gray_600</item>
         <item name="android:textColorSecondaryInverse">@color/gray_300</item>
-        <item name="android:textColorTertiary">@color/colorPrimaryDark</item>
+        <item name="android:textColorTertiary">@color/gray_800</item>
         <item name="android:windowBackground">@color/colorWhite</item>
-        <item name="android:statusBarColor">@color/colorPrimaryDark</item>
+        <item name="android:statusBarColor">@color/gray_800</item>
         <item name="bottomNavigationStyle">@style/BottomNavStyleLight</item>
     </style>
 

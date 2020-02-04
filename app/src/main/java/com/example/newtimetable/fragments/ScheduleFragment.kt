@@ -30,6 +30,7 @@ class ScheduleFragment : AbstractTabFragment(), ItemTouchHelperLestener, DialogD
     private var lesson: String? = null
     private var teacher: String? = null
     private var nameClass: String? = null
+    private var week: String? = null
     private lateinit var database: SQLiteDatabase
     private var listItem: ArrayList<RecyclerSchedule> = ArrayList()
     private lateinit var itemAdapter: ScheduleAdapter
@@ -92,6 +93,7 @@ class ScheduleFragment : AbstractTabFragment(), ItemTouchHelperLestener, DialogD
                     lesson = cursor.getString(cursor.getColumnIndex(ScheduleDBHelper(context).KEY_LESSON))
                     teacher = cursor.getString(cursor.getColumnIndex(ScheduleDBHelper(context).KEY_TEACHER))
                     nameClass = cursor.getString(cursor.getColumnIndex(ScheduleDBHelper(context).KEY_CLASS))
+                    week = cursor.getString(cursor.getColumnIndex(ScheduleDBHelper(context).KEY_WEEK))
                     sortList(hours!!, minutes!!)
                 }
             } while (cursor.moveToNext())
@@ -141,17 +143,17 @@ class ScheduleFragment : AbstractTabFragment(), ItemTouchHelperLestener, DialogD
                             indexI = j
                             if (minutes < listItem[j].minutes) {
                                 flagLoopTwo = true
-                                listItem.add(indexI, RecyclerSchedule(itemId!!, clock!!, hours, minutes, lesson!!, teacher!!, nameClass!!))
+                                listItem.add(indexI, RecyclerSchedule(itemId!!, clock!!, hours, minutes, lesson!!, teacher!!, nameClass!!, week!!))
                             }
                         }
                     }
-                    if (!flagLoopTwo) listItem.add(++indexI, RecyclerSchedule(itemId!!, clock!!, hours, minutes, lesson!!, teacher!!, nameClass!!))
+                    if (!flagLoopTwo) listItem.add(++indexI, RecyclerSchedule(itemId!!, clock!!, hours, minutes, lesson!!, teacher!!, nameClass!!, week!!))
                 } else if (hours < listItem[i].hours) {
                     flagLoopOne = true
-                    listItem.add(i, RecyclerSchedule(itemId!!, clock!!, hours, minutes, lesson!!, teacher!!, nameClass!!))
+                    listItem.add(i, RecyclerSchedule(itemId!!, clock!!, hours, minutes, lesson!!, teacher!!, nameClass!!, week!!))
                 }
             }
-            if (!flagLoopOne) listItem.add(RecyclerSchedule(itemId!!, clock!!, hours, minutes, lesson!!, teacher!!, nameClass!!))
-        } else listItem.add(RecyclerSchedule(itemId!!, clock!!, hours, minutes, lesson!!, teacher!!, nameClass!!))
+            if (!flagLoopOne) listItem.add(RecyclerSchedule(itemId!!, clock!!, hours, minutes, lesson!!, teacher!!, nameClass!!, week!!))
+        } else listItem.add(RecyclerSchedule(itemId!!, clock!!, hours, minutes, lesson!!, teacher!!, nameClass!!, week!!))
     }
 }

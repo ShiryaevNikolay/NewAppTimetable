@@ -109,7 +109,8 @@
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:layout_marginBottom="25dp">
 
                 <TextView
                     android:id="@+id/tv_class_schedule_icon"
@@ -124,6 +125,30 @@
                     android:layout_marginStart="15dp"
                     android:layout_weight="1"
                     android:hint="@string/schedule_class"
+                    android:textSize="20sp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"/>
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tr_week_schedule"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tv_week_schedule_icon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/ic_calendar_sync" />
+
+                <TextView
+                    android:id="@+id/tv_week_schedule"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_weight="1"
+                    android:hint="@string/schedule_week"
                     android:textSize="20sp"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"/>

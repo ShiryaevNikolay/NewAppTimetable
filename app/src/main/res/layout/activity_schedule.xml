@@ -23,11 +23,8 @@
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabIndicatorColor="?android:attr/textColorTertiary"
-            app:tabIndicatorHeight="1dp"
-            app:tabIndicatorGravity="stretch"
-            app:tabSelectedTextColor="?android:attr/colorPrimary"
-            app:tabTextColor="?android:attr/textColorTertiary" />
+            app:tabIndicatorHeight="2dp"
+            app:tabSelectedTextColor="?android:attr/colorAccent" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.viewpager.widget.ViewPager

@@ -61,6 +61,7 @@ class ScheduleActivity : AppCompatActivity() {
                 contentValues.put(ScheduleDBHelper(this).KEY_LESSON, data?.getStringExtra("lesson"))
                 contentValues.put(ScheduleDBHelper(this).KEY_TEACHER, data?.getStringExtra("teacher"))
                 contentValues.put(ScheduleDBHelper(this).KEY_CLASS, data?.getStringExtra("numberClass"))
+                contentValues.put(ScheduleDBHelper(this).KEY_WEEK, data?.getStringExtra("week"))
                 database.insert(ScheduleDBHelper(this).TABLE_SCHEDULE, null, contentValues)
                 initTabs()
             }
