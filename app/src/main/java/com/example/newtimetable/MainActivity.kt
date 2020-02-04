@@ -156,7 +156,7 @@ class MainActivity : AppCompatActivity() {
             } while (cursor.moveToNext())
         }
         cursor.close()
-        itemAdapter = ScheduleAdapter(listItem)
+        itemAdapter = ScheduleAdapter(listItem, RequestCode().REQUEST_CODE_MAIN)
         tv_day_off_main_activity.isVisible = !flag
         rv_main_activity.adapter = itemAdapter
     }

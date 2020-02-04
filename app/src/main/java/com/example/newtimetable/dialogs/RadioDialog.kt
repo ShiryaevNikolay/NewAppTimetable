@@ -18,12 +18,14 @@ class RadioDialog(private var dialogRadioButtonListener: DialogRadioButtonListen
     ): View? {
         val view: View = inflater.inflate(R.layout.dialog_choose_week, container)
         dialog?.window?.setBackgroundDrawableResource(R.drawable.dialog_style)
-        if (week == "1")
-            view.radioButtonWeek1.isChecked = true
-        else if (week == "2")
-            view.radioButtonWeek2.isChecked = true
+        when (week) {
+            "1" -> view.radioButtonWeek1.isChecked = true
+            "2" -> view.radioButtonWeek2.isChecked = true
+            "12" -> view.radioButtonEveryWeek.isChecked = true
+        }
         view.radioButtonWeek1.setOnClickListener(this)
         view.radioButtonWeek2.setOnClickListener(this)
+        view.radioButtonEveryWeek.setOnClickListener(this)
         view.dialog_btn_negative.setOnClickListener(this)
         return view
     }
@@ -36,8 +38,11 @@ class RadioDialog(private var dialogRadioButtonListener: DialogRadioButtonListen
             R.id.radioButtonWeek2 -> {
                 dialogRadioButtonListener.onClickRadioButtonDialog("2")
             }
+            R.id.radioButtonEveryWeek -> {
+                dialogRadioButtonListener.onClickRadioButtonDialog("12")
+            }
             R.id.dialog_btn_negative -> {
-                dialogRadioButtonListener.onClickNegativeButtonDialog("12")
+                dialogRadioButtonListener.onClickNegativeButtonDialog(week)
             }
         }
         dismiss()

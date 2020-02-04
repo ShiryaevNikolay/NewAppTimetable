@@ -74,7 +74,6 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
         tv_class_schedule.text = ""
         tv_class_schedule_icon.setOnClickListener(this)
         tv_week_schedule.setOnClickListener(this)
-        tv_week_schedule.text = ""
         tv_week_schedule_icon.setOnClickListener(this)
         tr_week_schedule.isVisible =
             PreferenceManager.getDefaultSharedPreferences(this).getString("number_0f_week", "1") != "1"
@@ -226,12 +225,19 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
 
     override fun onClickRadioButtonDialog(choose: String) {
         if (checkCondition(choose)) {
-            if (choose == "1" ) {
-                week = "1"
-                tv_week_schedule.text = this.resources.getString(R.string.week1)
-            } else if (choose == "2") {
-                week = "2"
-                tv_week_schedule.text = this.resources.getString(R.string.week2)
+            when (choose) {
+                "1" -> {
+                    week = "1"
+                    tv_week_schedule.text = this.resources.getString(R.string.week1)
+                }
+                "2" -> {
+                    week = "2"
+                    tv_week_schedule.text = this.resources.getString(R.string.week2)
+                }
+                "12" -> {
+                    week = "12"
+                    tv_week_schedule.text = this.resources.getString(R.string.schedule_week)
+                }
             }
         } else {
             Toast.makeText(this, "В это время уже есть занятие", Toast.LENGTH_SHORT).show()
@@ -241,7 +247,7 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
     override fun onClickNegativeButtonDialog(choose: String) {
         if (checkCondition("12")) {
             week = "12"
-            tv_week_schedule.text = ""
+            tv_week_schedule.text = this.resources.getString(R.string.schedule_week)
         } else {
             Toast.makeText(this, "В это время уже есть занятие", Toast.LENGTH_SHORT).show()
         }

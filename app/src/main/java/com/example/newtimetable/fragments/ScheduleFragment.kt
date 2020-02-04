@@ -20,6 +20,7 @@ import com.example.newtimetable.dialogs.CustomDialog
 import com.example.newtimetable.interfaces.DialogDeleteListener
 import com.example.newtimetable.interfaces.ItemTouchHelperLestener
 import com.example.newtimetable.modules.SwipeDragItemHelper
+import com.example.newtimetable.util.RequestCode
 
 class ScheduleFragment : AbstractTabFragment(), ItemTouchHelperLestener, DialogDeleteListener {
     private lateinit var daySchedule: String
@@ -101,7 +102,7 @@ class ScheduleFragment : AbstractTabFragment(), ItemTouchHelperLestener, DialogD
         recyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.setHasFixedSize(true)
-        itemAdapter = ScheduleAdapter(listItem)
+        itemAdapter = ScheduleAdapter(listItem, RequestCode().REQUEST_CODE_SCHEDULE)
         recyclerView.adapter = itemAdapter
 
         val callback: SwipeDragItemHelper? = context?.let { SwipeDragItemHelper(this, it) }
@@ -142,6 +143,9 @@ class ScheduleFragment : AbstractTabFragment(), ItemTouchHelperLestener, DialogD
                         if (hours == listItem[j].hours) {
                             indexI = j
                             if (minutes < listItem[j].minutes) {
+                                flagLoopTwo = true
+                                listItem.add(indexI, RecyclerSchedule(itemId!!, clock!!, hours, minutes, lesson!!, teacher!!, nameClass!!, week!!))
+                            } else if (minutes == listItem[j].minutes && week == "1") {
                                 flagLoopTwo = true
                                 listItem.add(indexI, RecyclerSchedule(itemId!!, clock!!, hours, minutes, lesson!!, teacher!!, nameClass!!, week!!))
                             }
