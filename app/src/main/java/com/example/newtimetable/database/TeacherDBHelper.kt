@@ -11,14 +11,12 @@ class TeacherDBHelper(
     version: Int = 1
 ) : SQLiteOpenHelper(context, name, factory, version) {
 
-    val TABLE_TEACHER: String = "lesson"
+    val TABLE_TEACHER: String = "teacher"
     val KEY_ID: String = "_id"
-    val KEY_SURNAME: String = "surname"
-    val KEY_NAME: String = "name"
-    val KEY_PATRONYMIC: String = "patronymic"
+    val KEY_FULLNAME: String = "fullName"
 
     override fun onCreate(db: SQLiteDatabase?) {
-        db?.execSQL("CREATE TABLE $TABLE_TEACHER($KEY_ID INTEGER PRIMARY KEY, $KEY_SURNAME TEXT, $KEY_NAME TEXT, $KEY_PATRONYMIC TEXT)")
+        db?.execSQL("CREATE TABLE $TABLE_TEACHER($KEY_ID INTEGER PRIMARY KEY, $KEY_FULLNAME TEXT)")
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {

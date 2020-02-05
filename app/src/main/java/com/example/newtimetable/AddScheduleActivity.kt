@@ -86,9 +86,6 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
             if (resultCode == Activity.RESULT_OK) {
                 if (data?.getStringExtra("selectBtn") == "lesson") {
                     tv_lesson_schedule.text = data.getStringExtra("text")
-                    if (data.getStringExtra("type") != "") {
-                        tv_lesson_schedule.text = (tv_lesson_schedule.text as String?).plus("(" + data.getStringExtra("type") + ")")
-                    }
                     checkEmptyField()
                 } else if (data?.getStringExtra("selectBtn") == "teacher") {
                     tv_teacher_schedule.text = data.getStringExtra("text")

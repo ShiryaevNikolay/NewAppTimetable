@@ -12,15 +12,6 @@
     <string name="nav_main_btn_settings">Настройки</string>
     <string name="title_activity_list">ListActivity</string>
 
-    <string name="btn_ok">Ок</string>
-    <string name="btn_cancel">Отмена</string>
-
-    <string name="input_text_lesson">Название предмета</string>
-    <string name="input_text_lesson_type">Тип</string>
-    <string name="input_text_surname">Фамилия</string>
-    <string name="input_text_name">Имя</string>
-    <string name="input_text_patronymic">Отчество</string>
-
     <string name="dialog_delete_title">Удалить элемент(ы)?</string>
     <string name="dialog_delete_btn_positive">Удалить</string>
     <string name="dialog_delete_btn_negative">Отмена</string>
@@ -28,6 +19,8 @@
     <string name="dialog_class_input">Номер аудитории</string>
     <string name="dialog_class_btn_positive">Добавить</string>
     <string name="dialog_class_btn_negative">Отмена</string>
+    <string name="dialog_lesson_input">Предмет</string>
+    <string name="dialog_teacher_input">Преподаватель</string>
     <string name="dialog_week_title">Выберите неделю</string>
 
     <string name="tab_title_mon">ПН</string>

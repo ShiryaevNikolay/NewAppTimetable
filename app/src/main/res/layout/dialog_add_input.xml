@@ -13,7 +13,7 @@
         android:text="@string/dialog_class_title"
         android:textSize="20sp"
         android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
         android:textColor="?android:attr/textColor"/>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -22,8 +22,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/dialog_class_input"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="10dp"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp">

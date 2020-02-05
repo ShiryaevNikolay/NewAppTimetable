@@ -73,17 +73,14 @@ class SelectItemListActivity : AppCompatActivity(), OnClickItemListener {
 
     private fun fillingOutLessonList(cursor: Cursor, itemDBHelper: LessonDBHelper) {
         val text: String = cursor.getString(cursor.getColumnIndex(itemDBHelper.KEY_LESSON))
-        val type: String = cursor.getString(cursor.getColumnIndex(itemDBHelper.KEY_TYPE))
         val itemId: Int = cursor.getInt(cursor.getColumnIndex(itemDBHelper.KEY_ID))
-        listItem.add(RecyclerItem(text, type, itemId))
+        listItem.add(RecyclerItem(text, itemId))
     }
 
     private fun fillingOutTeacherList(cursor: Cursor, teacherDBHelper: TeacherDBHelper) {
-        val surname: String = cursor.getString(cursor.getColumnIndex(teacherDBHelper.KEY_SURNAME))
-        val name: String = cursor.getString(cursor.getColumnIndex(teacherDBHelper.KEY_NAME))
-        val patronymic: String = cursor.getString(cursor.getColumnIndex(teacherDBHelper.KEY_PATRONYMIC))
+        val teacher: String = cursor.getString(cursor.getColumnIndex(teacherDBHelper.KEY_FULLNAME))
         val itemId: Int = cursor.getInt(cursor.getColumnIndex(teacherDBHelper.KEY_ID))
-        listItem.add(RecyclerItem("$surname $name $patronymic", itemId))
+        listItem.add(RecyclerItem(teacher, itemId))
     }
 
     override fun onClickItemListener(position: Int) {
@@ -91,7 +88,6 @@ class SelectItemListActivity : AppCompatActivity(), OnClickItemListener {
         data.putExtra("text", listItem[position].text)
         if (intent.getStringExtra("selectBtn") == "lesson") {
             data.putExtra("selectBtn", "lesson")
-            data.putExtra("type", listItem[position].type)
         } else if (intent.getStringExtra("selectBtn") == "teacher") {
             data.putExtra("selectBtn", "teacher")
         }
