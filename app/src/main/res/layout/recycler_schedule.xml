@@ -14,44 +14,83 @@
         android:orientation="horizontal"
         android:paddingTop="15dp"
         android:paddingBottom="15dp"
-        android:paddingStart="15dp"
-        android:paddingEnd="11dp">
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp">
 
-        <TextView
-            android:id="@+id/clock_rv_schedule"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""
-            android:layout_marginEnd="15dp"
-            android:textColor="?android:attr/textColor"/>
+            android:orientation="vertical"
+            android:layout_marginEnd="20dp"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/clock_start_rv_schedule"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text=""
+                android:layout_weight="1"
+                android:textColor="?android:attr/textColor"
+                android:gravity="center"/>
+
+            <FrameLayout
+                android:id="@+id/period_time_rv_schedule"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_gravity="center"
+                    android:layout_width="1dp"
+                    android:layout_height="10dp"
+                    android:background="?android:attr/textColor"
+                    android:gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/clock_end_rv_schedule"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text=""
+                android:layout_weight="1"
+                android:textColor="?android:attr/textColor"
+                android:gravity="center"/>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:gravity="center">
 
             <TextView
                 android:id="@+id/lesson_rv_schedule"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text=""
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:textColor="?android:attr/textColor"/>
-
-            <TextView
-                android:id="@+id/class_rv_schedule"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:textColor="?android:attr/textColorSecondary"/>
+                android:textColor="?android:attr/textColor"
+                android:gravity="top"
+                android:textAllCaps="true"/>
 
             <TextView
                 android:id="@+id/teacher_rv_schedule"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text=""
-                android:textColor="?android:attr/textColorSecondary"/>
+                android:textColor="?android:attr/textColorSecondary"
+                android:gravity="center_vertical"/>
+
+            <TextView
+                android:id="@+id/class_rv_schedule"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="?android:attr/textColorSecondary"
+                android:gravity="bottom"/>
 
         </LinearLayout>
 
@@ -59,7 +98,7 @@
 
     <FrameLayout
         android:id="@+id/indicator_week"
-        android:layout_gravity="end"
+        android:layout_gravity="start"
         android:layout_width="4dp"
         android:layout_height="match_parent"/>
 </com.google.android.material.card.MaterialCardView>

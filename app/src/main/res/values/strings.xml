@@ -5,9 +5,6 @@
     <string name="main_activity_week2">Неделя 1</string>
     <string name="main_activity_day_off">Выходной день</string>
 
-    <string name="schedule_adapter_teacher">Преподаватель:</string>
-    <string name="schedule_adapter_class">Аудитория:</string>
-
     <string name="nav_main_btn_lesson">Занятия</string>
     <string name="nav_main_btn_teacher">Преподаватели</string>
     <string name="nav_main_btn_schedule">Расписание</string>
@@ -40,7 +37,8 @@
     <string name="tab_title_fri">ПТ</string>
     <string name="tab_title_sat">СБ</string>
 
-    <string name="schedule_clock">Выбрыть время</string>
+    <string name="schedule_clock_start">Начало</string>
+    <string name="schedule_clock_end">Конец</string>
     <string name="schedule_lesson">Выбрыть предмет</string>
     <string name="schedule_teacher">Выбрыть преподавателя</string>
     <string name="schedule_class">Выбрыть аудиторию</string>

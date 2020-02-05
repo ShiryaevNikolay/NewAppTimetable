@@ -34,11 +34,57 @@
             android:orientation="vertical">
 
             <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tv_clock_schedule_icon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/ic_clock" />
+
+                <TextView
+                    android:id="@+id/tv_clock_start_schedule"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:hint="@string/schedule_clock_start"
+                    android:textSize="20sp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:gravity="center"
+                    android:paddingEnd="10dp"
+                    tools:ignore="RtlSymmetry" />
+
+                <TextView
+                    android:layout_width="15dp"
+                    android:layout_height="2dp"
+                    android:textSize="20sp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:gravity="center"
+                    android:background="?android:attr/textColor"/>
+
+                <TextView
+                    android:id="@+id/tv_clock_end_schedule"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/schedule_clock_end"
+                    android:textSize="20sp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:gravity="center"
+                    android:paddingStart="10dp"
+                    tools:ignore="RtlSymmetry" />
+            </TableRow>
+
+            <TableRow
                 android:id="@+id/tr_week_schedule"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:layout_marginBottom="25dp">
+                android:layout_marginTop="25dp">
 
                 <TextView
                     android:id="@+id/tv_week_schedule_icon"
@@ -53,29 +99,6 @@
                     android:layout_marginStart="15dp"
                     android:layout_weight="1"
                     android:text="@string/schedule_week"
-                    android:textSize="20sp"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"/>
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:id="@+id/tv_clock_schedule_icon"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:background="@drawable/ic_clock" />
-
-                <TextView
-                    android:id="@+id/tv_clock_schedule"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:layout_weight="1"
-                    android:hint="@string/schedule_clock"
                     android:textSize="20sp"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"/>
