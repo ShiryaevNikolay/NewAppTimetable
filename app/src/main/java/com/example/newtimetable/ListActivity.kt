@@ -91,7 +91,8 @@ class ListActivity :
         if (resultCode == Activity.RESULT_OK) {
             val contentValues = ContentValues()
             if (data?.getStringExtra("onBtn") == "btn_lesson") {
-                contentValues.put(lessonDBHelper.KEY_TEXT, data.getStringExtra("text"))
+                contentValues.put(lessonDBHelper.KEY_LESSON, data.getStringExtra("text"))
+                contentValues.put(lessonDBHelper.KEY_TYPE, data.getStringExtra("type"))
                 if (requestCode == RequestCode().REQUEST_CODE_LIST_CHANGE) {
                     database.update(lessonDBHelper.TABLE_LESSON, contentValues, lessonDBHelper.KEY_ID + " = " + listItem[data.extras?.getInt("position")!!].itemId, null)
                 } else if (requestCode == RequestCode().REQUEST_CODE_LIST) {
@@ -127,9 +128,10 @@ class ListActivity :
     }
 
     private fun fillingOutLessonList(cursor: Cursor, itemDBHelper: LessonDBHelper) {
-        val text: String = cursor.getString(cursor.getColumnIndex(itemDBHelper.KEY_TEXT))
+        val text: String = cursor.getString(cursor.getColumnIndex(itemDBHelper.KEY_LESSON))
+        val type: String = cursor.getString(cursor.getColumnIndex(itemDBHelper.KEY_TYPE))
         val itemId: Int = cursor.getInt(cursor.getColumnIndex(itemDBHelper.KEY_ID))
-        listItem.add(RecyclerItem(text, itemId))
+        listItem.add(RecyclerItem(text, type, itemId))
     }
 
     private fun fillingOutTeacherList(cursor: Cursor, teacherDBHelper: TeacherDBHelper) {
@@ -147,6 +149,7 @@ class ListActivity :
         intent.putExtra("position", position)
         if (this.intent.getStringExtra("onBtn") == "btn_lesson") {
             intent.putExtra("text", listItem[position].text)
+            intent.putExtra("type", listItem[position].type)
         } else if (this.intent.getStringExtra("onBtn") == "btn_teacher") {
             cursor = database.query(teacherDBHelper.TABLE_TEACHER, null, teacherDBHelper.KEY_ID + " = ?", arrayOf(listItem[position].itemId.toString()), null, null, null)
             cursor.moveToFirst()
@@ -178,5 +181,9 @@ class ListActivity :
     override fun onClickNegativeDialog(position: Int) {
         listItem.add(position, itemList)
         itemAdapter.notifyItemInserted(position)
+    }
+
+    override fun onBackPressed() {
+        finish()
     }
 }

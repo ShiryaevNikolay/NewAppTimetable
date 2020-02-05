@@ -13,10 +13,11 @@ class LessonDBHelper(
 
     val TABLE_LESSON: String = "lesson"
     val KEY_ID: String = "_id"
-    val KEY_TEXT: String = "lesson"
+    val KEY_LESSON: String = "lesson"
+    val KEY_TYPE: String = "type"
 
     override fun onCreate(db: SQLiteDatabase?) {
-        db?.execSQL("CREATE TABLE $TABLE_LESSON($KEY_ID INTEGER PRIMARY KEY, $KEY_TEXT TEXT)")
+        db?.execSQL("CREATE TABLE $TABLE_LESSON($KEY_ID INTEGER PRIMARY KEY, $KEY_LESSON TEXT, $KEY_TYPE TEXT)")
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {

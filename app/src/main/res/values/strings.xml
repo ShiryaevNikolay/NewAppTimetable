@@ -19,6 +19,7 @@
     <string name="btn_cancel">Отмена</string>
 
     <string name="input_text_lesson">Название предмета</string>
+    <string name="input_text_lesson_type">Тип</string>
     <string name="input_text_surname">Фамилия</string>
     <string name="input_text_name">Имя</string>
     <string name="input_text_patronymic">Отчество</string>

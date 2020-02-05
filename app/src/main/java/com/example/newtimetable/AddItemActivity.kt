@@ -38,15 +38,18 @@ class AddItemActivity : AppCompatActivity(), MenuItem.OnMenuItemClickListener, V
         homework_choose_date.isVisible = false
         if (intent?.getStringExtra("onBtn").equals("btn_lesson")) {
             textInputLayoutLesson.isVisible = true
+            textInputLayoutLessonType.isVisible = true
             if (intent.extras?.getInt("requestCode") == RequestCode().REQUEST_CODE_LIST_CHANGE) {
                 text = intent?.getStringExtra("text").toString()
                 textInputLesson.setText(text)
+                textInputLessonType.setText(intent.getStringExtra("type"))
             }
             textInputLayoutSurname.isVisible = false
             textInputLayoutName.isVisible = false
             textInputLayoutPatronymic.isVisible = false
         } else if (intent?.getStringExtra("onBtn").equals("btn_teacher")) {
             textInputLayoutLesson.isVisible = false
+            textInputLayoutLessonType.isVisible = false
             textInputLayoutSurname.isVisible = true
             textInputLayoutName.isVisible = true
             textInputLayoutPatronymic.isVisible = true
@@ -56,16 +59,11 @@ class AddItemActivity : AppCompatActivity(), MenuItem.OnMenuItemClickListener, V
                 textInputPatronymic.setText(intent.getStringExtra("patronymic"))
             }
         }
-
-        btn_cancel.setOnClickListener {
-            setResult(Activity.RESULT_CANCELED)
-            finish()
-        }
-        btn_ok.setOnClickListener(this)
+        fab_ok.setOnClickListener(this)
 
         if (intent?.getStringExtra("onBtn").equals("btn_lesson")) {
             textInputLesson.addTextChangedListener {
-                val background = btn_ok.background
+                val background = fab_ok.background
                 if (it.toString() == "") {
                     background.setTint(ContextCompat.getColor(this, R.color.colorNotActive))
                     toolbar.menu.getItem(0).isVisible = false
@@ -73,11 +71,11 @@ class AddItemActivity : AppCompatActivity(), MenuItem.OnMenuItemClickListener, V
                     background.setTint(ContextCompat.getColor(this, R.color.colorAccent))
                     toolbar.menu.getItem(0).isVisible = true
                 }
-                btn_ok.background = background
+                fab_ok.background = background
             }
         } else if (intent?.getStringExtra("onBtn").equals("btn_teacher")) {
             textInputSurname.addTextChangedListener {
-                val background = btn_ok.background
+                val background = fab_ok.background
                 if (it.toString() == "") {
                     background.setTint(ContextCompat.getColor(this, R.color.colorNotActive))
                     toolbar.menu.getItem(0).isVisible = false
@@ -85,10 +83,10 @@ class AddItemActivity : AppCompatActivity(), MenuItem.OnMenuItemClickListener, V
                     background.setTint(ContextCompat.getColor(this, R.color.colorAccent))
                     toolbar.menu.getItem(0).isVisible = true
                 }
-                btn_ok.background = background
+                fab_ok.background = background
             }
             textInputName.addTextChangedListener {
-                val background = btn_ok.background
+                val background = fab_ok.background
                 if (it.toString() == "") {
                     background.setTint(ContextCompat.getColor(this, R.color.colorNotActive))
                     toolbar.menu.getItem(0).isVisible = false
@@ -96,10 +94,10 @@ class AddItemActivity : AppCompatActivity(), MenuItem.OnMenuItemClickListener, V
                     background.setTint(ContextCompat.getColor(this, R.color.colorAccent))
                     toolbar.menu.getItem(0).isVisible = true
                 }
-                btn_ok.background = background
+                fab_ok.background = background
             }
             textInputPatronymic.addTextChangedListener {
-                val background = btn_ok.background
+                val background = fab_ok.background
                 if (it.toString() == "") {
                     background.setTint(ContextCompat.getColor(this, R.color.colorNotActive))
                     toolbar.menu.getItem(0).isVisible = false
@@ -107,7 +105,7 @@ class AddItemActivity : AppCompatActivity(), MenuItem.OnMenuItemClickListener, V
                     background.setTint(ContextCompat.getColor(this, R.color.colorAccent))
                     toolbar.menu.getItem(0).isVisible = true
                 }
-                btn_ok.background = background
+                fab_ok.background = background
             }
         }
     }
@@ -133,6 +131,7 @@ class AddItemActivity : AppCompatActivity(), MenuItem.OnMenuItemClickListener, V
             if (textInputLesson.text.toString() != "") {
                 text = textInputLesson.text.toString()
                 data.putExtra("text", text)
+                data.putExtra("type", textInputLessonType.text.toString())
             }
         } else if (intent?.getStringExtra("onBtn").equals("btn_teacher")) {
             if (textInputSurname.text.toString() != "" || textInputName.text.toString() != "" || textInputPatronymic.text.toString() != "") {

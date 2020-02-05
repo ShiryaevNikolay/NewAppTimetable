@@ -24,8 +24,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/appbar"
-        android:layout_above="@+id/ll_btn_add_activity">
+        android:layout_below="@+id/appbar">
 
         <LinearLayout
             android:orientation="vertical"
@@ -35,7 +34,6 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayoutLesson"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 app:boxStrokeColor="?attr/colorPrimaryDark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -49,8 +47,21 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayoutLessonType"
+                app:boxStrokeColor="?attr/colorPrimaryDark"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/input_text_lesson_type">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textInputLessonType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayoutSurname"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 app:boxStrokeColor="?android:attr/windowBackground"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -65,7 +76,6 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayoutName"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 app:boxStrokeColor="?android:attr/windowBackground"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -80,7 +90,6 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayoutPatronymic"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 app:boxStrokeColor="?android:attr/windowBackground"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -95,7 +104,6 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayoutHomeworkTask"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 app:boxStrokeColor="?android:attr/windowBackground"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -135,37 +143,14 @@
         </LinearLayout>
     </ScrollView>
 
-    <LinearLayout
-        android:id="@+id/ll_btn_add_activity"
-        android:layout_width="match_parent"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_ok"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_alignParentBottom="true">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_cancel"
-            android:backgroundTint="@color/colorRed"
-            android:layout_weight="1"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="10dp"
-            app:cornerRadius="8dp"/>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_ok"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_ok"
-            android:backgroundTint="@color/colorNotActive"
-            android:layout_weight="1"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="20dp"
-            app:cornerRadius="8dp"/>
-    </LinearLayout>
+        android:layout_margin="@dimen/fab_margin"
+        app:srcCompat="@drawable/ic_done_fab"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        app:borderWidth="0dp"
+        android:backgroundTint="@color/colorNotActive"/>
 </RelativeLayout>

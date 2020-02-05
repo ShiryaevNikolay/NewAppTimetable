@@ -51,11 +51,7 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
         toolbar.menu.getItem(0).setOnMenuItemClickListener(this)
         toolbar.menu.getItem(1).isVisible = false
 
-        btn_cancel.setOnClickListener {
-            setResult(Activity.RESULT_CANCELED)
-            finish()
-        }
-        btn_ok.setOnClickListener(this)
+        fab_ok.setOnClickListener(this)
 
         day = intent.getStringExtra("day")
 
@@ -85,6 +81,9 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
             if (resultCode == Activity.RESULT_OK) {
                 if (data?.getStringExtra("selectBtn") == "lesson") {
                     tv_lesson_schedule.text = data.getStringExtra("text")
+                    if (data.getStringExtra("type") != "") {
+                        tv_lesson_schedule.text = (tv_lesson_schedule.text as String?).plus("(" + data.getStringExtra("type") + ")")
+                    }
                     checkEmptyField()
                 } else if (data?.getStringExtra("selectBtn") == "teacher") {
                     tv_teacher_schedule.text = data.getStringExtra("text")
@@ -124,7 +123,7 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
                 val chooseWeekDialog: DialogFragment = RadioDialog(this, week)
                 chooseWeekDialog.show(supportFragmentManager, "chooseWeek")
             }
-            R.id.btn_ok -> {
+            R.id.fab_ok -> {
                 clickAddBtn()
             }
         }
@@ -195,15 +194,15 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
             tv_teacher_schedule.text != "" &&
             tv_class_schedule.text != ""
         ) {
-            val background = btn_ok.background
+            val background = fab_ok.background
             background.setTint(ContextCompat.getColor(this, R.color.colorAccent))
             toolbar.menu.getItem(0).isVisible = true
-            btn_ok.background = background
+            fab_ok.background = background
         } else {
-            val background = btn_ok.background
+            val background = fab_ok.background
             background.setTint(ContextCompat.getColor(this, R.color.colorNotActive))
             toolbar.menu.getItem(0).isVisible = false
-            btn_ok.background = background
+            fab_ok.background = background
         }
     }
 

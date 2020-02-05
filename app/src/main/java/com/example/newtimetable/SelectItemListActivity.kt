@@ -72,9 +72,10 @@ class SelectItemListActivity : AppCompatActivity(), OnClickItemListener {
     }
 
     private fun fillingOutLessonList(cursor: Cursor, itemDBHelper: LessonDBHelper) {
-        val text: String = cursor.getString(cursor.getColumnIndex(itemDBHelper.KEY_TEXT))
+        val text: String = cursor.getString(cursor.getColumnIndex(itemDBHelper.KEY_LESSON))
+        val type: String = cursor.getString(cursor.getColumnIndex(itemDBHelper.KEY_TYPE))
         val itemId: Int = cursor.getInt(cursor.getColumnIndex(itemDBHelper.KEY_ID))
-        listItem.add(RecyclerItem(text, itemId))
+        listItem.add(RecyclerItem(text, type, itemId))
     }
 
     private fun fillingOutTeacherList(cursor: Cursor, teacherDBHelper: TeacherDBHelper) {
@@ -90,6 +91,7 @@ class SelectItemListActivity : AppCompatActivity(), OnClickItemListener {
         data.putExtra("text", listItem[position].text)
         if (intent.getStringExtra("selectBtn") == "lesson") {
             data.putExtra("selectBtn", "lesson")
+            data.putExtra("type", listItem[position].type)
         } else if (intent.getStringExtra("selectBtn") == "teacher") {
             data.putExtra("selectBtn", "teacher")
         }

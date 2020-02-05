@@ -40,15 +40,12 @@ class AddHomeworkActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         textInputLayoutLesson.isVisible = false
+        textInputLayoutLessonType.isVisible = false
         textInputLayoutSurname.isVisible = false
         textInputLayoutName.isVisible = false
         textInputLayoutPatronymic.isVisible = false
 
-        btn_cancel.setOnClickListener {
-            setResult(Activity.RESULT_CANCELED)
-            finish()
-        }
-        btn_ok.setOnClickListener { sendTask() }
+        fab_ok.setOnClickListener { sendTask() }
 
         tv_date_homework.setOnClickListener(this)
         tv_date_homework_icon.setOnClickListener(this)
@@ -61,10 +58,10 @@ class AddHomeworkActivity : AppCompatActivity(), View.OnClickListener {
             textAddDate = intent.extras!!.getString("addDate").toString()
             textToDate = intent.extras!!.getString("toDate").toString()
             tv_date_homework.text = textToDate
-            val background = btn_ok.background
+            val background = fab_ok.background
             background.setTint(ContextCompat.getColor(this, R.color.colorAccent))
             toolbar.menu.getItem(0).isVisible = true
-            btn_ok.background = background
+            fab_ok.background = background
         }
 
         textInputHomeworkTask.addTextChangedListener {
@@ -130,7 +127,7 @@ class AddHomeworkActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun checkSendBtn(it: String) {
-        val background = btn_ok.background
+        val background = fab_ok.background
         if (it == "") {
             background.setTint(ContextCompat.getColor(this, R.color.colorNotActive))
             toolbar.menu.getItem(0).isVisible = false
@@ -139,6 +136,6 @@ class AddHomeworkActivity : AppCompatActivity(), View.OnClickListener {
             toolbar.menu.getItem(0).isVisible = true
         }
         task = it
-        btn_ok.background = background
+        fab_ok.background = background
     }
 }

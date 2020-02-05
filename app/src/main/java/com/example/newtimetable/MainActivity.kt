@@ -1,7 +1,6 @@
 package com.example.newtimetable
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Intent
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
@@ -121,9 +120,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == RequestCode().REQUEST_CODE_MAIN) {
-            if (resultCode == Activity.RESULT_OK) {
-                fillingList()
-            }
+            fillingList()
         } else {
             super.onActivityResult(requestCode, resultCode, data)
         }
