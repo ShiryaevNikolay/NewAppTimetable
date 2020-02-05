@@ -27,9 +27,12 @@ import java.util.*
 
 class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMenuItemClickListener, DialogAddInputListener, DialogRadioButtonListener {
     private var day: String? = ""
-    private var clock: String? = ""
-    private var hours: Int = 0
-    private var minutes: Int = 0
+    private var clockStart: String? = ""
+    private var hoursStart: Int = 0
+    private var minutesStart: Int = 0
+    private var clockEnd: String? = ""
+    private var hoursEnd: Int = 0
+    private var minutesEnd: Int = 0
     private var week: String = "12"
     private var scheduleDBHelper: ScheduleDBHelper = ScheduleDBHelper(this)
     private lateinit var database: SQLiteDatabase
@@ -57,8 +60,10 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
 
         database = scheduleDBHelper.writableDatabase
 
-        tv_clock_schedule.setOnClickListener(this)
-        tv_clock_schedule.text = ""
+        tv_clock_start_schedule.setOnClickListener(this)
+        tv_clock_start_schedule.text = ""
+        tv_clock_end_schedule.setOnClickListener(this)
+        tv_clock_end_schedule.text = ""
         tv_clock_schedule_icon.setOnClickListener(this)
         tv_lesson_schedule.setOnClickListener(this)
         tv_lesson_schedule.text = ""
@@ -96,9 +101,12 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.tv_clock_schedule,
-            R.id.tv_clock_schedule_icon -> {
-                callTimePicker()
+            R.id.tv_clock_start_schedule -> {
+                callTimePicker(true)
+                checkEmptyField()
+            }
+            R.id.tv_clock_end_schedule -> {
+                callTimePicker(false)
                 checkEmptyField()
             }
             R.id.tv_lesson_schedule,
@@ -131,7 +139,7 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
 
     @Suppress("NAME_SHADOWING")
     @SuppressLint("Recycle")
-    fun callTimePicker() {
+    fun callTimePicker(clock: Boolean) {
         val calendar = Calendar.getInstance()
         val hour = calendar.get(Calendar.HOUR_OF_DAY)
         val minute = calendar.get(Calendar.MINUTE)
@@ -143,7 +151,7 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
                 val cursor: Cursor = database.query(ScheduleDBHelper(this).TABLE_SCHEDULE, null, null, null, null, null, null)
                 if (cursor.moveToFirst()) {
                     do {
-                        if (cursor.getString(cursor.getColumnIndex(ScheduleDBHelper(this).KEY_CLOCK)) == fullTime &&
+                        if (cursor.getString(cursor.getColumnIndex(ScheduleDBHelper(this).KEY_CLOCK_START)) == fullTime &&
                             cursor.getString(cursor.getColumnIndex(ScheduleDBHelper(this).KEY_DAY)) == day
                         ) {
                             if (cursor.getString(cursor.getColumnIndex(ScheduleDBHelper(this).KEY_WEEK)) == "12" && (week == "1" || week == "2")) {
@@ -160,10 +168,17 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
                     } while (cursor.moveToNext())
                 }
                 if (flag) {
-                    tv_clock_schedule.text = fullTime
-                    clock = tv_clock_schedule.text.toString()
-                    hours = hourOfDay
-                    minutes = minute
+                    if (clock) {
+                        tv_clock_start_schedule.text = fullTime
+                        clockStart = tv_clock_start_schedule.text.toString()
+                        hoursStart = hourOfDay
+                        minutesStart = minute
+                    } else {
+                        tv_clock_end_schedule.text = fullTime
+                        clockEnd = tv_clock_start_schedule.text.toString()
+                        hoursEnd = hourOfDay
+                        minutesEnd = minute
+                    }
                     checkEmptyField()
                 } else {
                     Toast.makeText(this, "В это время уже есть занятие", Toast.LENGTH_SHORT).show()
@@ -189,10 +204,8 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
     }
 
     private fun checkEmptyField() {
-        if (tv_clock_schedule.text != "" &&
-            tv_lesson_schedule.text != "" &&
-            tv_teacher_schedule.text != "" &&
-            tv_class_schedule.text != ""
+        if (tv_clock_start_schedule.text != "" &&
+            tv_lesson_schedule.text != ""
         ) {
             val background = fab_ok.background
             background.setTint(ContextCompat.getColor(this, R.color.colorAccent))
@@ -207,12 +220,15 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
     }
 
     private fun clickAddBtn() {
-        if (tv_clock_schedule.text != "" && tv_lesson_schedule.text != "" && tv_teacher_schedule.text != "" && tv_clock_schedule.text != "") {
+        if (tv_clock_start_schedule.text != "" && tv_lesson_schedule.text != "") {
             val data = Intent()
             data.putExtra("day", day)
-            data.putExtra("clock", tv_clock_schedule.text)
-            data.putExtra("hours", hours)
-            data.putExtra("minutes", minutes)
+            data.putExtra("clockStart", tv_clock_start_schedule.text)
+            data.putExtra("hoursStart", hoursStart)
+            data.putExtra("minutesStart", minutesStart)
+            data.putExtra("clockEnd", tv_clock_end_schedule.text)
+            data.putExtra("hoursEnd", hoursEnd)
+            data.putExtra("minutesEnd", minutesEnd)
             data.putExtra("lesson", tv_lesson_schedule.text)
             data.putExtra("teacher", tv_teacher_schedule.text)
             data.putExtra("numberClass", tv_class_schedule.text)
@@ -258,7 +274,7 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
         val cursor: Cursor = database.query(ScheduleDBHelper(this).TABLE_SCHEDULE, null, null, null, null, null, null)
         if (cursor.moveToFirst()) {
             do {
-                if (cursor.getString(cursor.getColumnIndex(ScheduleDBHelper(this).KEY_CLOCK)) == tv_clock_schedule.text &&
+                if (cursor.getString(cursor.getColumnIndex(ScheduleDBHelper(this).KEY_CLOCK_START)) == tv_clock_start_schedule.text &&
                     cursor.getString(cursor.getColumnIndex(ScheduleDBHelper(this).KEY_DAY)) == day
                 ) {
                     if (cursor.getString(cursor.getColumnIndex(ScheduleDBHelper(this).KEY_WEEK)) == "12" && (choose == "1" || choose == "2")) {

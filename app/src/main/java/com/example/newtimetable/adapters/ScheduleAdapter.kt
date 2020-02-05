@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.newtimetable.R
 import com.example.newtimetable.RecyclerSchedule
@@ -35,10 +36,21 @@ class ScheduleAdapter(private var listItem: ArrayList<RecyclerSchedule>, private
                 holder.itemView.indicator_week.background = ContextCompat.getDrawable(context, R.color.colorRed)
             }
         }
-        holder.itemView.clock_rv_schedule.text = itemList.clock
+        holder.itemView.clock_start_rv_schedule.text = itemList.clockStart
+        if (itemList.clockEnd == "") {
+            holder.itemView.clock_end_rv_schedule.isVisible = false
+            holder.itemView.period_time_rv_schedule.isVisible = false
+        }
+        holder.itemView.clock_end_rv_schedule.text = itemList.clockEnd
         holder.itemView.lesson_rv_schedule.text = itemList.lesson
-        holder.itemView.teacher_rv_schedule.text = context.resources.getString(R.string.schedule_adapter_teacher) + " " + itemList.teacher
-        holder.itemView.class_rv_schedule.text = context.resources.getString(R.string.schedule_adapter_class) + " " + itemList.nameClass
+        if (itemList.teacher == "") {
+            holder.itemView.teacher_rv_schedule.isVisible = false
+        }
+        holder.itemView.teacher_rv_schedule.text = itemList.teacher
+        if (itemList.nameClass == "") {
+            holder.itemView.class_rv_schedule.isVisible = false
+        }
+        holder.itemView.class_rv_schedule.text = itemList.nameClass
     }
 
     inner class ScheduleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
