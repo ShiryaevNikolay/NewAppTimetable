@@ -17,7 +17,6 @@
         <activity android:name=".SelectItemListActivity" />
         <activity android:name=".AddScheduleActivity" />
         <activity android:name=".ScheduleActivity" />
-        <activity android:name=".AddItemActivity" />
         <activity android:name=".ListActivity" />
         <activity
             android:name=".MainActivity"

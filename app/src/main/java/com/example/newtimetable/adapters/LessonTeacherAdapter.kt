@@ -23,9 +23,6 @@ class LessonTeacherAdapter(private var listItem: ArrayList<RecyclerItem>, privat
     override fun onBindViewHolder(holder: LessonTeacherHolder, position: Int) {
         val itemList: RecyclerItem = listItem[position]
         holder.itemView.tv_card_recycler.text = itemList.text
-        if (itemList.type != "" && itemList.type != null)
-            holder.itemView.tv_card_recycler.text =
-                (holder.itemView.tv_card_recycler.text as String?)?.plus("(" + itemList.type + ")")
         holder.itemView.setOnClickListener {
             onClickItemListener.onClickItemListener(holder.adapterPosition)
         }

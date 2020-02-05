@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.preference.PreferenceManager
 import com.example.newtimetable.util.RequestCode
@@ -38,12 +37,6 @@ class AddHomeworkActivity : AppCompatActivity(), View.OnClickListener {
             setResult(Activity.RESULT_CANCELED)
             finish()
         }
-
-        textInputLayoutLesson.isVisible = false
-        textInputLayoutLessonType.isVisible = false
-        textInputLayoutSurname.isVisible = false
-        textInputLayoutName.isVisible = false
-        textInputLayoutPatronymic.isVisible = false
 
         fab_ok.setOnClickListener { sendTask() }
 
