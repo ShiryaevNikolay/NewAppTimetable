@@ -8,6 +8,17 @@
     tools:context=".ListActivity"
     tools:showIn="@layout/activity_list">
 
+    <TextView
+        android:id="@+id/tv_empty_list_activity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/list_activity_empty"
+        android:gravity="center"
+        android:textColor="?android:attr/textColorSecondary"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
+        android:textSize="20sp"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_list_activity"
         android:layout_width="match_parent"

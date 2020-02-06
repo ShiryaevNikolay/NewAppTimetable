@@ -23,6 +23,8 @@ class CustomDialog() : DialogFragment(), View.OnClickListener, TextWatcher {
     private var position: Int? = null
     private lateinit var dialogDeleteListener: DialogDeleteListener
     private lateinit var dialogAddInputListener: DialogAddInputListener
+    private var requestCode = false
+    private var itemId: Int = 0
 
     constructor(dialogDeleteListener: DialogDeleteListener, position: Int) : this() {
         this.dialogDeleteListener = dialogDeleteListener
@@ -32,6 +34,14 @@ class CustomDialog() : DialogFragment(), View.OnClickListener, TextWatcher {
     constructor(dialogAddInputListener: DialogAddInputListener, title: String) : this() {
         this.dialogAddInputListener = dialogAddInputListener
         this.title = title
+    }
+
+    constructor(dialogAddInputListener: DialogAddInputListener, title: String, requestCode: Boolean, textInput: String, itemId: Int) : this() {
+        this.dialogAddInputListener = dialogAddInputListener
+        this.title = title
+        this.requestCode = requestCode
+        this.textInput = textInput
+        this.itemId = itemId
     }
 
     @SuppressLint("InflateParams")
@@ -52,12 +62,15 @@ class CustomDialog() : DialogFragment(), View.OnClickListener, TextWatcher {
                 view.textInputDialog.addTextChangedListener(this)
                 view.textInputLayoutDialog.hint = context?.resources?.getString(R.string.dialog_lesson_input)
                 view.title_dialog.isVisible = false
+                if (requestCode) view.textInputDialog.setText(textInput)
+                view.textInputDialog.isFocusableInTouchMode = true
             }
             "addTeacher" -> {
                 view = inflater.inflate(R.layout.dialog_add_input, null)
                 view.textInputDialog.addTextChangedListener(this)
                 view.textInputLayoutDialog.hint = context?.resources?.getString(R.string.dialog_teacher_input)
                 view.title_dialog.isVisible = false
+                if (requestCode) view.textInputDialog.setText(textInput)
             }
         }
         view.dialog_btn_negative.setOnClickListener(this)
@@ -77,7 +90,7 @@ class CustomDialog() : DialogFragment(), View.OnClickListener, TextWatcher {
             if (title == "delete") {
                 dialogDeleteListener.onClickPositiveDialog()
             } else if (title == "addClass" || title == "addLesson" || title == "addTeacher") {
-                dialogAddInputListener.onClickPositiveDialog(textInput)
+                dialogAddInputListener.onClickPositiveDialog(textInput, requestCode, itemId)
             }
         }
         dismiss()

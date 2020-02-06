@@ -38,11 +38,11 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical">
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/tv_clock_schedule_icon"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:background="@drawable/ic_clock" />
+                    app:srcCompat="@drawable/ic_clock"/>
 
                 <TextView
                     android:id="@+id/tv_clock_start_schedule"
@@ -86,22 +86,28 @@
                 android:gravity="center_vertical"
                 android:layout_marginTop="25dp">
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/tv_week_schedule_icon"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:background="@drawable/ic_calendar_sync" />
+                    app:srcCompat="@drawable/ic_calendar_sync" />
 
                 <TextView
                     android:id="@+id/tv_week_schedule"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
-                    android:layout_weight="1"
                     android:text="@string/schedule_week"
                     android:textSize="20sp"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_marginStart="15dp"
+                    android:id="@+id/iv_indicator_week_schedule"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    app:srcCompat="@drawable/ic_checkbox_unselect"/>
             </TableRow>
 
             <TableRow
@@ -111,11 +117,11 @@
                 android:layout_marginBottom="25dp"
                 android:gravity="center_vertical">
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/tv_lesson_schedule_icon"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:background="@drawable/ic_bookshelf" />
+                    app:srcCompat="@drawable/ic_bookshelf" />
 
                 <TextView
                     android:id="@+id/tv_lesson_schedule"
@@ -135,11 +141,11 @@
                 android:gravity="center_vertical"
                 android:layout_marginBottom="25dp">
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/tv_teacher_schedule_icon"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:background="@drawable/ic_teacher" />
+                    app:srcCompat="@drawable/ic_teacher" />
 
                 <TextView
                     android:id="@+id/tv_teacher_schedule"
@@ -158,11 +164,11 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical">
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/tv_class_schedule_icon"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:background="@drawable/ic_door_open" />
+                    app:srcCompat="@drawable/ic_door_open" />
 
                 <TextView
                     android:id="@+id/tv_class_schedule"

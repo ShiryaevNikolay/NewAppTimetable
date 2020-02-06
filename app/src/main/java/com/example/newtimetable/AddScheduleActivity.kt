@@ -76,8 +76,14 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
         tv_class_schedule_icon.setOnClickListener(this)
         tv_week_schedule.setOnClickListener(this)
         tv_week_schedule_icon.setOnClickListener(this)
+        tv_week_schedule_icon.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent))
         tr_week_schedule.isVisible =
             PreferenceManager.getDefaultSharedPreferences(this).getString("number_0f_week", "1") != "1"
+        if (week == "12")
+            if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("dark_theme", false))
+                iv_indicator_week_schedule.setColorFilter(ContextCompat.getColor(this, R.color.gray_700))
+            else
+                iv_indicator_week_schedule.setColorFilter(ContextCompat.getColor(this, R.color.gray_500))
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -86,9 +92,11 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
             if (resultCode == Activity.RESULT_OK) {
                 if (data?.getStringExtra("selectBtn") == "lesson") {
                     tv_lesson_schedule.text = data.getStringExtra("text")
+                    tv_lesson_schedule_icon.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent))
                     checkEmptyField()
                 } else if (data?.getStringExtra("selectBtn") == "teacher") {
                     tv_teacher_schedule.text = data.getStringExtra("text")
+                    tv_teacher_schedule_icon.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent))
                     checkEmptyField()
                 }
                 checkEmptyField()
@@ -167,6 +175,7 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
                 if (flag) {
                     if (clock) {
                         tv_clock_start_schedule.text = fullTime
+                        tv_clock_schedule_icon.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent))
                         clockStart = tv_clock_start_schedule.text.toString()
                         hoursStart = hourOfDay
                         minutesStart = minute
@@ -191,8 +200,12 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
         return true
     }
 
-    override fun onClickPositiveDialog(text: String) {
+    override fun onClickPositiveDialog(text: String, requestCode: Boolean, itemId: Int) {
         tv_class_schedule.text = text
+        if (text != "")
+            tv_class_schedule_icon.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent))
+        else
+            tv_class_schedule_icon.setImageResource(R.drawable.ic_door_open)
         checkEmptyField()
     }
 
@@ -241,14 +254,23 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
                 "1" -> {
                     week = "1"
                     tv_week_schedule.text = this.resources.getString(R.string.week1)
+                    iv_indicator_week_schedule.setImageResource(R.drawable.ic_circle)
+                    iv_indicator_week_schedule.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent))
                 }
                 "2" -> {
                     week = "2"
                     tv_week_schedule.text = this.resources.getString(R.string.week2)
+                    iv_indicator_week_schedule.setImageResource(R.drawable.ic_circle)
+                    iv_indicator_week_schedule.setColorFilter(ContextCompat.getColor(this, R.color.colorRed))
                 }
                 "12" -> {
                     week = "12"
                     tv_week_schedule.text = this.resources.getString(R.string.schedule_week)
+                    iv_indicator_week_schedule.setImageResource(R.drawable.ic_checkbox_unselect)
+                    if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("dark_theme", false))
+                        iv_indicator_week_schedule.setColorFilter(ContextCompat.getColor(this, R.color.gray_700))
+                    else
+                        iv_indicator_week_schedule.setColorFilter(ContextCompat.getColor(this, R.color.gray_500))
                 }
             }
         } else {

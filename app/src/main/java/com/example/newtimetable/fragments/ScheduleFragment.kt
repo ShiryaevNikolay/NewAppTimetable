@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,6 +22,7 @@ import com.example.newtimetable.interfaces.DialogDeleteListener
 import com.example.newtimetable.interfaces.ItemTouchHelperLestener
 import com.example.newtimetable.modules.SwipeDragItemHelper
 import com.example.newtimetable.util.RequestCode
+import kotlinx.android.synthetic.main.fragment_schedule.view.*
 
 class ScheduleFragment : AbstractTabFragment(), ItemTouchHelperLestener, DialogDeleteListener {
     private lateinit var daySchedule: String
@@ -86,10 +88,12 @@ class ScheduleFragment : AbstractTabFragment(), ItemTouchHelperLestener, DialogD
         val cursor: Cursor = database.query(ScheduleDBHelper(context).TABLE_SCHEDULE, null, null, null, null, null, null)
         listItem.clear()
         // добавляем в список данные (названия предметов) из базы данных
+        var flag = true
         if (cursor.moveToFirst()) {
             do {
                 // проверяем, совпадает ли день недели в базе данных с днём, куда добавляем данные
                 if (cursor.getString(cursor.getColumnIndex(ScheduleDBHelper(context).KEY_DAY)) == daySchedule) {
+                    flag = false
                     itemId = cursor.getInt(cursor.getColumnIndex(ScheduleDBHelper(context).KEY_ID))
                     clockStart = cursor.getString(cursor.getColumnIndex(ScheduleDBHelper(context).KEY_CLOCK_START))
                     hoursStart = cursor.getInt(cursor.getColumnIndex(ScheduleDBHelper(context).KEY_HOURS_START))
@@ -110,6 +114,8 @@ class ScheduleFragment : AbstractTabFragment(), ItemTouchHelperLestener, DialogD
         recyclerView.setHasFixedSize(true)
         itemAdapter = ScheduleAdapter(listItem, RequestCode().REQUEST_CODE_SCHEDULE)
         recyclerView.adapter = itemAdapter
+
+        view.tv_day_off_schedule_activity.isVisible = flag
 
         val callback: SwipeDragItemHelper? = context?.let { SwipeDragItemHelper(this, it) }
         val itemTouchHelper = callback?.let { ItemTouchHelper(it) }

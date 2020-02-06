@@ -5,6 +5,8 @@
     <string name="main_activity_week2">Неделя 1</string>
     <string name="main_activity_day_off">Выходной день</string>
 
+    <string name="list_activity_empty">Список пуст</string>
+
     <string name="nav_main_btn_lesson">Занятия</string>
     <string name="nav_main_btn_teacher">Преподаватели</string>
     <string name="nav_main_btn_schedule">Расписание</string>

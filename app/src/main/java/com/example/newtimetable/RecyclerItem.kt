@@ -1,3 +1,3 @@
 package com.example.newtimetable
 
-class RecyclerItem(var text: String, var itemId: Int)
+class RecyclerItem(var text: String, var itemId: Int, var checkBox: Boolean)
