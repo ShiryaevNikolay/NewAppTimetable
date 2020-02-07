@@ -11,11 +11,12 @@ import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.newtimetable.adapters.ScheduleAdapter
 import com.example.newtimetable.database.ScheduleDBHelper
+import com.example.newtimetable.interfaces.OnClickItemListener
 import com.example.newtimetable.util.RequestCode
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), OnClickItemListener {
 
     private var day = ""
     private var itemId: Int? = null
@@ -90,20 +91,7 @@ class MainActivity : AppCompatActivity() {
         fillingList()
 
         nav_view_main_activity.setOnNavigationItemSelectedListener {
-            when(it.itemId) {
-                R.id.nav_lesson -> {
-                    val intent = Intent(this, ListActivity::class.java)
-                    intent.putExtra("onBtn", "btn_lesson")
-                    startActivity(intent)
-                    true
-                }
-                R.id.nav_teacher -> {
-                    val intent = Intent(this, ListActivity::class.java)
-                    intent.putExtra("onBtn", "btn_teacher")
-                    startActivity(intent)
-                    true
-                }
-                R.id.nav_schedule -> {
+            when(it.itemId) {R.id.nav_schedule -> {
                     startActivityForResult(Intent(this, ScheduleActivity::class.java), RequestCode().REQUEST_CODE_MAIN)
                     true
                 }
@@ -159,7 +147,7 @@ class MainActivity : AppCompatActivity() {
             } while (cursor.moveToNext())
         }
         cursor.close()
-        itemAdapter = ScheduleAdapter(listItem, RequestCode().REQUEST_CODE_MAIN)
+        itemAdapter = ScheduleAdapter(listItem, RequestCode().REQUEST_CODE_MAIN, this)
         tv_day_off_main_activity.isVisible = !flag
         rv_main_activity.adapter = itemAdapter
     }
@@ -227,5 +215,9 @@ class MainActivity : AppCompatActivity() {
         } else if (PreferenceManager.getDefaultSharedPreferences(this).getString("this_week", "1") == week || week == "12") {
             listItem.add(RecyclerSchedule(itemId!!, clockStart!!, clockEnd!!, hoursStart!!, minutesStart!!, hoursEnd!!, minutesEnd!!, lesson!!, teacher!!, nameClass!!, week!!))
         }
+    }
+
+    override fun onClickItemListener(position: Int) {
+        //...
     }
 }

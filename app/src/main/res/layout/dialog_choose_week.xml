@@ -45,7 +45,7 @@
             android:id="@+id/radioButtonEveryWeek"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/schedule_week"
+            android:text="@string/dialog_every_week"
             android:paddingTop="15dp"
             android:paddingBottom="15dp"/>
     </RadioGroup>

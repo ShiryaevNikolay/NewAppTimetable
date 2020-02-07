@@ -33,15 +33,57 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_lesson"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/schedule_lesson">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tiet_lesson"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_teacher"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/schedule_teacher"
+                android:layout_marginTop="15dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tiet_teacher"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_class"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/schedule_class"
+                android:layout_marginTop="15dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tiet_class"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:layout_marginTop="15dp">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/tv_clock_schedule_icon"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     app:srcCompat="@drawable/ic_clock"/>
 
                 <TextView
@@ -84,12 +126,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:layout_marginTop="25dp">
+                android:layout_marginTop="15dp">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/tv_week_schedule_icon"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     app:srcCompat="@drawable/ic_calendar_sync" />
 
                 <TextView
@@ -97,7 +139,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
-                    android:text="@string/schedule_week"
+                    android:text=""
+                    android:hint="@string/schedule_week"
                     android:textSize="20sp"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"/>
@@ -108,78 +151,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="20dp"
                     app:srcCompat="@drawable/ic_checkbox_unselect"/>
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:layout_marginBottom="25dp"
-                android:gravity="center_vertical">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/tv_lesson_schedule_icon"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    app:srcCompat="@drawable/ic_bookshelf" />
-
-                <TextView
-                    android:id="@+id/tv_lesson_schedule"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:layout_weight="1"
-                    android:hint="@string/schedule_lesson"
-                    android:textSize="20sp"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"/>
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:layout_marginBottom="25dp">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/tv_teacher_schedule_icon"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    app:srcCompat="@drawable/ic_teacher" />
-
-                <TextView
-                    android:id="@+id/tv_teacher_schedule"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:layout_weight="1"
-                    android:hint="@string/schedule_teacher"
-                    android:textSize="20sp"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"/>
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/tv_class_schedule_icon"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    app:srcCompat="@drawable/ic_door_open" />
-
-                <TextView
-                    android:id="@+id/tv_class_schedule"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:layout_weight="1"
-                    android:hint="@string/schedule_class"
-                    android:textSize="20sp"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"/>
             </TableRow>
         </LinearLayout>
     </ScrollView>

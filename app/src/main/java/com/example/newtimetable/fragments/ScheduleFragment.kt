@@ -2,6 +2,7 @@ package com.example.newtimetable.fragments
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
@@ -13,18 +14,18 @@ import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.newtimetable.AddScheduleActivity
 import com.example.newtimetable.R
 import com.example.newtimetable.RecyclerSchedule
 import com.example.newtimetable.adapters.ScheduleAdapter
 import com.example.newtimetable.database.ScheduleDBHelper
 import com.example.newtimetable.dialogs.CustomDialog
-import com.example.newtimetable.interfaces.DialogDeleteListener
-import com.example.newtimetable.interfaces.ItemTouchHelperLestener
+import com.example.newtimetable.interfaces.*
 import com.example.newtimetable.modules.SwipeDragItemHelper
 import com.example.newtimetable.util.RequestCode
 import kotlinx.android.synthetic.main.fragment_schedule.view.*
 
-class ScheduleFragment : AbstractTabFragment(), ItemTouchHelperLestener, DialogDeleteListener {
+class ScheduleFragment : AbstractTabFragment(), ItemTouchHelperLestener, DialogDeleteListener, OnClickItemListener {
     private lateinit var daySchedule: String
     private var itemId: Int? = null
     private var clockStart: String? = null
@@ -41,7 +42,8 @@ class ScheduleFragment : AbstractTabFragment(), ItemTouchHelperLestener, DialogD
     private var listItem: ArrayList<RecyclerSchedule> = ArrayList()
     private lateinit var itemAdapter: ScheduleAdapter
     private lateinit var recyclerView: RecyclerView
-    private lateinit var item: RecyclerSchedule
+    private var listItemRemove: ArrayList<RecyclerSchedule> = ArrayList()
+    private var positionItemRemove: ArrayList<Int> = ArrayList()
 
     fun getInstance(context: Context, position: Int, database: SQLiteDatabase): ScheduleFragment {
         val args = Bundle()
@@ -112,7 +114,7 @@ class ScheduleFragment : AbstractTabFragment(), ItemTouchHelperLestener, DialogD
         recyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.setHasFixedSize(true)
-        itemAdapter = ScheduleAdapter(listItem, RequestCode().REQUEST_CODE_SCHEDULE)
+        itemAdapter = ScheduleAdapter(listItem, RequestCode().REQUEST_CODE_SCHEDULE, this)
         recyclerView.adapter = itemAdapter
 
         view.tv_day_off_schedule_activity.isVisible = flag
@@ -124,21 +126,36 @@ class ScheduleFragment : AbstractTabFragment(), ItemTouchHelperLestener, DialogD
     }
 
     override fun onItemDismiss(position: Int) {
-        item = listItem[position]
+        positionItemRemove.clear()
+        listItemRemove.add(listItem[position])
+        positionItemRemove.add(position)
         listItem.removeAt(position)
         itemAdapter.notifyItemRemoved(position)
+
+        view?.tv_day_off_schedule_activity?.isVisible = itemAdapter.itemCount == 0
 
         val dialogDelete: DialogFragment = CustomDialog(this, position)
         fragmentManager?.let { dialogDelete.show(it, "deleteDialog") }
     }
 
     override fun onClickPositiveDialog() {
-        database.delete(ScheduleDBHelper(context).TABLE_SCHEDULE, ScheduleDBHelper(context).KEY_ID + " = " + item.itemId, null)
+        for (i in 0 until listItemRemove.size) {
+            database.delete(ScheduleDBHelper(context).TABLE_SCHEDULE, ScheduleDBHelper(context).KEY_ID + " = " + listItemRemove[i].itemId, null)
+        }
+        listItemRemove.clear()
+        itemAdapter.notifyDataSetChanged()
+        view?.tv_day_off_schedule_activity?.isVisible = itemAdapter.itemCount == 0
     }
 
     override fun onClickNegativeDialog(position: Int) {
-        listItem.add(position, item)
-        itemAdapter.notifyItemInserted(position)
+        for (i in 0 until positionItemRemove.size) {
+            listItem.add(positionItemRemove[i], listItemRemove[i])
+            itemAdapter.notifyItemInserted(positionItemRemove[i])
+        }
+        listItemRemove.clear()
+        positionItemRemove.clear()
+
+        view?.tv_day_off_schedule_activity?.isVisible = itemAdapter.itemCount == 0
     }
 
     private fun sortList(hoursStart: Int, minutesStart: Int) {
@@ -171,5 +188,23 @@ class ScheduleFragment : AbstractTabFragment(), ItemTouchHelperLestener, DialogD
             }
             if (!flagLoopOne) listItem.add(RecyclerSchedule(itemId!!, clockStart!!, clockEnd!!, hoursStart, minutesStart, hoursEnd!!, minutesEnd!!, lesson!!, teacher!!, nameClass!!, week!!))
         } else listItem.add(RecyclerSchedule(itemId!!, clockStart!!, clockEnd!!, hoursStart, minutesStart, hoursEnd!!, minutesEnd!!, lesson!!, teacher!!, nameClass!!, week!!))
+    }
+
+    override fun onClickItemListener(position: Int) {
+        val intent = Intent(context, AddScheduleActivity::class.java)
+        intent.putExtra("day", daySchedule)
+        intent.putExtra("itemId", listItem[position].itemId)
+        intent.putExtra("lesson", listItem[position].lesson)
+        intent.putExtra("teacher", listItem[position].teacher)
+        intent.putExtra("nameClass", listItem[position].nameClass)
+        intent.putExtra("clockStart", listItem[position].clockStart)
+        intent.putExtra("clockEnd", listItem[position].clockEnd)
+        intent.putExtra("hoursStart", listItem[position].hoursStart)
+        intent.putExtra("hoursEnd", listItem[position].hoursEnd)
+        intent.putExtra("minutesStart", listItem[position].minutesStart)
+        intent.putExtra("minutesEnd", listItem[position].minutesEnd)
+        intent.putExtra("week", listItem[position].week)
+        intent.putExtra("requestCode", RequestCode().REQUEST_CODE_SCHEDULE_CHANGE)
+        startActivityForResult(intent, RequestCode().REQUEST_CODE_SCHEDULE_CHANGE)
     }
 }

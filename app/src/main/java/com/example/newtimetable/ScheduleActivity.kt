@@ -52,22 +52,32 @@ class ScheduleActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK) {
+            val contentValues = ContentValues()
+            contentValues.put(ScheduleDBHelper(this).KEY_DAY, data?.getStringExtra("day"))
+            contentValues.put(ScheduleDBHelper(this).KEY_CLOCK_START, data?.getStringExtra("clockStart"))
+            contentValues.put(ScheduleDBHelper(this).KEY_HOURS_START, data?.extras?.getInt("hoursStart"))
+            contentValues.put(ScheduleDBHelper(this).KEY_MINUTES_START, data?.extras?.getInt("minutesStart"))
+            contentValues.put(ScheduleDBHelper(this).KEY_CLOCK_END, data?.getStringExtra("clockEnd"))
+            contentValues.put(ScheduleDBHelper(this).KEY_HOURS_END, data?.extras?.getInt("hoursEnd"))
+            contentValues.put(ScheduleDBHelper(this).KEY_MINUTES_END, data?.extras?.getInt("minutesEnd"))
+            contentValues.put(ScheduleDBHelper(this).KEY_LESSON, data?.getStringExtra("lesson"))
+            contentValues.put(ScheduleDBHelper(this).KEY_TEACHER, data?.getStringExtra("teacher"))
+            contentValues.put(ScheduleDBHelper(this).KEY_CLASS, data?.getStringExtra("numberClass"))
+            contentValues.put(ScheduleDBHelper(this).KEY_WEEK, data?.getStringExtra("week"))
             if (requestCode == RequestCode().REQUEST_CODE_SCHEDULE) {
-                val contentValues = ContentValues()
-                contentValues.put(ScheduleDBHelper(this).KEY_DAY, data?.getStringExtra("day"))
-                contentValues.put(ScheduleDBHelper(this).KEY_CLOCK_START, data?.getStringExtra("clockStart"))
-                contentValues.put(ScheduleDBHelper(this).KEY_HOURS_START, data?.extras?.getInt("hoursStart"))
-                contentValues.put(ScheduleDBHelper(this).KEY_MINUTES_START, data?.extras?.getInt("minutesStart"))
-                contentValues.put(ScheduleDBHelper(this).KEY_CLOCK_END, data?.getStringExtra("clockEnd"))
-                contentValues.put(ScheduleDBHelper(this).KEY_HOURS_END, data?.extras?.getInt("hoursEnd"))
-                contentValues.put(ScheduleDBHelper(this).KEY_MINUTES_END, data?.extras?.getInt("minutesEnd"))
-                contentValues.put(ScheduleDBHelper(this).KEY_LESSON, data?.getStringExtra("lesson"))
-                contentValues.put(ScheduleDBHelper(this).KEY_TEACHER, data?.getStringExtra("teacher"))
-                contentValues.put(ScheduleDBHelper(this).KEY_CLASS, data?.getStringExtra("numberClass"))
-                contentValues.put(ScheduleDBHelper(this).KEY_WEEK, data?.getStringExtra("week"))
                 database.insert(ScheduleDBHelper(this).TABLE_SCHEDULE, null, contentValues)
-                initTabs()
+            } else {
+                database.update(ScheduleDBHelper(this).TABLE_SCHEDULE, contentValues, ScheduleDBHelper(this).KEY_ID + " = " + data?.extras?.getInt("itemId"), null)
+                when (data?.getStringExtra("day")) {
+                    "mon" -> tabPosition = 0
+                    "tues" -> tabPosition = 1
+                    "wed" -> tabPosition = 2
+                    "thurs" -> tabPosition = 3
+                    "fri" -> tabPosition = 4
+                    "sat" -> tabPosition = 5
+                }
             }
+            initTabs()
         } else {
             super.onActivityResult(requestCode, resultCode, data)
         }
