@@ -98,7 +98,7 @@
 
     <FrameLayout
         android:id="@+id/indicator_week"
-        android:layout_gravity="start"
-        android:layout_width="4dp"
+        android:layout_gravity="end"
+        android:layout_width="5dp"
         android:layout_height="match_parent"/>
 </com.google.android.material.card.MaterialCardView>

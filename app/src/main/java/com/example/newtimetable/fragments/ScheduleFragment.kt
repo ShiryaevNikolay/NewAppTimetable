@@ -2,6 +2,7 @@ package com.example.newtimetable.fragments
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
@@ -10,21 +11,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.newtimetable.AddScheduleActivity
 import com.example.newtimetable.R
 import com.example.newtimetable.RecyclerSchedule
 import com.example.newtimetable.adapters.ScheduleAdapter
 import com.example.newtimetable.database.ScheduleDBHelper
 import com.example.newtimetable.dialogs.CustomDialog
-import com.example.newtimetable.interfaces.DialogDeleteListener
-import com.example.newtimetable.interfaces.ItemTouchHelperLestener
+import com.example.newtimetable.interfaces.*
 import com.example.newtimetable.modules.SwipeDragItemHelper
 import com.example.newtimetable.util.RequestCode
 import kotlinx.android.synthetic.main.fragment_schedule.view.*
 
-class ScheduleFragment : AbstractTabFragment(), ItemTouchHelperLestener, DialogDeleteListener {
+class ScheduleFragment : AbstractTabFragment(), ItemTouchHelperLestener, DialogDeleteListener, OnClickItemListener {
     private lateinit var daySchedule: String
     private var itemId: Int? = null
     private var clockStart: String? = null
@@ -41,12 +43,15 @@ class ScheduleFragment : AbstractTabFragment(), ItemTouchHelperLestener, DialogD
     private var listItem: ArrayList<RecyclerSchedule> = ArrayList()
     private lateinit var itemAdapter: ScheduleAdapter
     private lateinit var recyclerView: RecyclerView
-    private lateinit var item: RecyclerSchedule
+    private var listItemRemove: ArrayList<RecyclerSchedule> = ArrayList()
+    private var positionItemRemove: ArrayList<Int> = ArrayList()
+    private var requestCode: Int? = null
 
-    fun getInstance(context: Context, position: Int, database: SQLiteDatabase): ScheduleFragment {
+    fun getInstance(context: Context, position: Int, database: SQLiteDatabase, requestCode: Int): ScheduleFragment {
         val args = Bundle()
         val fragment = ScheduleFragment()
         fragment.database = database
+        fragment.requestCode = requestCode
         fragment.arguments = args
         when (position) {
             0 -> {
@@ -72,6 +77,9 @@ class ScheduleFragment : AbstractTabFragment(), ItemTouchHelperLestener, DialogD
             5 -> {
                 context.getString(R.string.tab_title_sat).let { fragment.setTitle(it) }
                 fragment.daySchedule = "sat"
+            }
+            6 -> {
+                fragment.daySchedule = "sun"
             }
         }
         return fragment
@@ -105,46 +113,67 @@ class ScheduleFragment : AbstractTabFragment(), ItemTouchHelperLestener, DialogD
                     teacher = cursor.getString(cursor.getColumnIndex(ScheduleDBHelper(context).KEY_TEACHER))
                     nameClass = cursor.getString(cursor.getColumnIndex(ScheduleDBHelper(context).KEY_CLASS))
                     week = cursor.getString(cursor.getColumnIndex(ScheduleDBHelper(context).KEY_WEEK))
-                    sortList(hoursStart!!, minutesStart!!)
+                    sortListWeek()
                 }
             } while (cursor.moveToNext())
         }
         recyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.setHasFixedSize(true)
-        itemAdapter = ScheduleAdapter(listItem, RequestCode().REQUEST_CODE_SCHEDULE)
+        itemAdapter = requestCode?.let { ScheduleAdapter(listItem, it, this) }!!
         recyclerView.adapter = itemAdapter
 
         view.tv_day_off_schedule_activity.isVisible = flag
 
-        val callback: SwipeDragItemHelper? = context?.let { SwipeDragItemHelper(this, it) }
-        val itemTouchHelper = callback?.let { ItemTouchHelper(it) }
-        itemTouchHelper?.attachToRecyclerView(recyclerView)
+        if (requestCode != RequestCode().REQUEST_CODE_MAIN) {
+            val callback: SwipeDragItemHelper? = context?.let { SwipeDragItemHelper(this, it) }
+            val itemTouchHelper = callback?.let { ItemTouchHelper(it) }
+            itemTouchHelper?.attachToRecyclerView(recyclerView)
+        }
         return view
     }
 
     override fun onItemDismiss(position: Int) {
-        item = listItem[position]
+        positionItemRemove.clear()
+        listItemRemove.add(listItem[position])
+        positionItemRemove.add(position)
         listItem.removeAt(position)
         itemAdapter.notifyItemRemoved(position)
+
+        view?.tv_day_off_schedule_activity?.isVisible = itemAdapter.itemCount == 0
 
         val dialogDelete: DialogFragment = CustomDialog(this, position)
         fragmentManager?.let { dialogDelete.show(it, "deleteDialog") }
     }
 
     override fun onClickPositiveDialog() {
-        database.delete(ScheduleDBHelper(context).TABLE_SCHEDULE, ScheduleDBHelper(context).KEY_ID + " = " + item.itemId, null)
+        for (i in 0 until listItemRemove.size) {
+            database.delete(ScheduleDBHelper(context).TABLE_SCHEDULE, ScheduleDBHelper(context).KEY_ID + " = " + listItemRemove[i].itemId, null)
+        }
+        listItemRemove.clear()
+        itemAdapter.notifyDataSetChanged()
+        view?.tv_day_off_schedule_activity?.isVisible = itemAdapter.itemCount == 0
     }
 
     override fun onClickNegativeDialog(position: Int) {
-        listItem.add(position, item)
-        itemAdapter.notifyItemInserted(position)
+        for (i in 0 until positionItemRemove.size) {
+            listItem.add(positionItemRemove[i], listItemRemove[i])
+            itemAdapter.notifyItemInserted(positionItemRemove[i])
+        }
+        listItemRemove.clear()
+        positionItemRemove.clear()
+
+        view?.tv_day_off_schedule_activity?.isVisible = itemAdapter.itemCount == 0
     }
 
-    private fun sortList(hoursStart: Int, minutesStart: Int) {
+    private fun sortListWeek() {
         if (listItem.isNotEmpty()) {
             var flagLoopOne = false
             for (i in 0 until listItem.size) {
+                if (PreferenceManager.getDefaultSharedPreferences(activity).getString("number_0f_week", "1") != "1" && requestCode == RequestCode().REQUEST_CODE_MAIN) {
+                    if (PreferenceManager.getDefaultSharedPreferences(activity).getString("this_week", "1") != week && week != "12")
+                        continue
+                }
                 if (flagLoopOne) break
                 if (hoursStart == listItem[i].hoursStart) {
                     flagLoopOne = true
@@ -154,22 +183,50 @@ class ScheduleFragment : AbstractTabFragment(), ItemTouchHelperLestener, DialogD
                         if (flagLoopTwo) break
                         if (hoursStart == listItem[j].hoursStart) {
                             indexI = j
-                            if (minutesStart < listItem[j].minutesStart) {
+                            if (minutesStart!! < listItem[j].minutesStart) {
                                 flagLoopTwo = true
-                                listItem.add(indexI, RecyclerSchedule(itemId!!, clockStart!!, clockEnd!!, hoursStart, minutesStart, hoursEnd!!, minutesEnd!!, lesson!!, teacher!!, nameClass!!, week!!))
-                            } else if (minutesStart == listItem[j].minutesStart && week == "1") {
-                                flagLoopTwo = true
-                                listItem.add(indexI, RecyclerSchedule(itemId!!, clockStart!!, clockEnd!!, hoursStart, minutesStart, hoursEnd!!, minutesEnd!!, lesson!!, teacher!!, nameClass!!, week!!))
+                                listItem.add(indexI, RecyclerSchedule(itemId!!, clockStart!!, clockEnd!!,
+                                    hoursStart!!, minutesStart!!, hoursEnd!!, minutesEnd!!, lesson!!, teacher!!, nameClass!!, week!!))
                             }
                         }
                     }
-                    if (!flagLoopTwo) listItem.add(++indexI, RecyclerSchedule(itemId!!, clockStart!!, clockEnd!!, hoursStart, minutesStart, hoursEnd!!, minutesEnd!!, lesson!!, teacher!!, nameClass!!, week!!))
-                } else if (hoursStart < listItem[i].hoursStart) {
+                    if (!flagLoopTwo) listItem.add(++indexI, RecyclerSchedule(itemId!!, clockStart!!, clockEnd!!, hoursStart!!, minutesStart!!, hoursEnd!!, minutesEnd!!, lesson!!, teacher!!, nameClass!!, week!!))
+                } else if (hoursStart!! < listItem[i].hoursStart) {
                     flagLoopOne = true
-                    listItem.add(i, RecyclerSchedule(itemId!!, clockStart!!, clockEnd!!, hoursStart, minutesStart, hoursEnd!!, minutesEnd!!, lesson!!, teacher!!, nameClass!!, week!!))
+                    listItem.add(i, RecyclerSchedule(itemId!!, clockStart!!, clockEnd!!, hoursStart!!, minutesStart!!, hoursEnd!!, minutesEnd!!, lesson!!, teacher!!, nameClass!!, week!!))
                 }
             }
-            if (!flagLoopOne) listItem.add(RecyclerSchedule(itemId!!, clockStart!!, clockEnd!!, hoursStart, minutesStart, hoursEnd!!, minutesEnd!!, lesson!!, teacher!!, nameClass!!, week!!))
-        } else listItem.add(RecyclerSchedule(itemId!!, clockStart!!, clockEnd!!, hoursStart, minutesStart, hoursEnd!!, minutesEnd!!, lesson!!, teacher!!, nameClass!!, week!!))
+            if (!flagLoopOne) {
+                if ((PreferenceManager.getDefaultSharedPreferences(activity).getString("this_week", "1") == week || week == "12") && requestCode == RequestCode().REQUEST_CODE_MAIN) {
+                    listItem.add(RecyclerSchedule(itemId!!, clockStart!!, clockEnd!!, hoursStart!!, minutesStart!!, hoursEnd!!, minutesEnd!!, lesson!!, teacher!!, nameClass!!, week!!))
+                } else if (requestCode == RequestCode().REQUEST_CODE_SCHEDULE) {
+                    listItem.add(RecyclerSchedule(itemId!!, clockStart!!, clockEnd!!, hoursStart!!, minutesStart!!, hoursEnd!!, minutesEnd!!, lesson!!, teacher!!, nameClass!!, week!!))
+                }
+            }
+        } else if ((PreferenceManager.getDefaultSharedPreferences(activity).getString("this_week", "1") == week || week == "12") && requestCode == RequestCode().REQUEST_CODE_MAIN) {
+            listItem.add(RecyclerSchedule(itemId!!, clockStart!!, clockEnd!!, hoursStart!!, minutesStart!!, hoursEnd!!, minutesEnd!!, lesson!!, teacher!!, nameClass!!, week!!))
+        } else if (requestCode == RequestCode().REQUEST_CODE_SCHEDULE) {
+            listItem.add(RecyclerSchedule(itemId!!, clockStart!!, clockEnd!!, hoursStart!!, minutesStart!!, hoursEnd!!, minutesEnd!!, lesson!!, teacher!!, nameClass!!, week!!))
+        }
+    }
+
+    override fun onClickItemListener(position: Int) {
+        if (requestCode != RequestCode().REQUEST_CODE_MAIN) {
+            val intent = Intent(context, AddScheduleActivity::class.java)
+            intent.putExtra("day", daySchedule)
+            intent.putExtra("itemId", listItem[position].itemId)
+            intent.putExtra("lesson", listItem[position].lesson)
+            intent.putExtra("teacher", listItem[position].teacher)
+            intent.putExtra("nameClass", listItem[position].nameClass)
+            intent.putExtra("clockStart", listItem[position].clockStart)
+            intent.putExtra("clockEnd", listItem[position].clockEnd)
+            intent.putExtra("hoursStart", listItem[position].hoursStart)
+            intent.putExtra("hoursEnd", listItem[position].hoursEnd)
+            intent.putExtra("minutesStart", listItem[position].minutesStart)
+            intent.putExtra("minutesEnd", listItem[position].minutesEnd)
+            intent.putExtra("week", listItem[position].week)
+            intent.putExtra("requestCode", RequestCode().REQUEST_CODE_SCHEDULE_CHANGE)
+            startActivityForResult(intent, RequestCode().REQUEST_CODE_SCHEDULE_CHANGE)
+        }
     }
 }

@@ -1,6 +1,14 @@
 <resources>
     <string name="app_name">Расписание</string>
 
+    <string name="main_activity_this_day_mon">Понедельник</string>
+    <string name="main_activity_this_day_tues">Вторник</string>
+    <string name="main_activity_this_day_wed">Среда</string>
+    <string name="main_activity_this_day_thurs">Четверг</string>
+    <string name="main_activity_this_day_fri">Пятница</string>
+    <string name="main_activity_this_day_sat">Суббота</string>
+    <string name="main_activity_this_day_sun">Воскресенье</string>
+
     <string name="main_activity_week1">Неделя 1</string>
     <string name="main_activity_week2">Неделя 1</string>
     <string name="main_activity_day_off">Выходной день</string>
@@ -24,6 +32,7 @@
     <string name="dialog_lesson_input">Предмет</string>
     <string name="dialog_teacher_input">Преподаватель</string>
     <string name="dialog_week_title">Выберите неделю</string>
+    <string name="dialog_every_week">Каждую неделю</string>
 
     <string name="tab_title_mon">ПН</string>
     <string name="tab_title_tues">ВТ</string>
@@ -34,10 +43,11 @@
 
     <string name="schedule_clock_start">Начало</string>
     <string name="schedule_clock_end">Конец</string>
-    <string name="schedule_lesson">Выбрыть предмет</string>
-    <string name="schedule_teacher">Выбрыть преподавателя</string>
-    <string name="schedule_class">Выбрыть аудиторию</string>
-    <string name="schedule_week">Каждую неделю</string>
+    <string name="schedule_lesson">Предмет</string>
+    <string name="schedule_lesson_type">Тип</string>
+    <string name="schedule_teacher">Преподаватель</string>
+    <string name="schedule_class">Аудитория</string>
+    <string name="schedule_week">Неделя</string>
 
     <string name="homework_title">Домашнее задание</string>
     <string name="homework_add_date">Добавлено:</string>
@@ -55,5 +65,6 @@
     <string name="this_week">Текущая неделя</string>
     <string name="week1">Неделя 1</string>
     <string name="week2">Неделя 2</string>
+    <string name="ever_week">Каждую неделю</string>
     <string name="theme_title">Тёмная тема</string>
 </resources>

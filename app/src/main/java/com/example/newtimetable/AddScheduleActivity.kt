@@ -13,27 +13,29 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
 import androidx.preference.PreferenceManager
 import com.example.newtimetable.database.ScheduleDBHelper
-import com.example.newtimetable.dialogs.CustomDialog
 import com.example.newtimetable.dialogs.RadioDialog
-import com.example.newtimetable.interfaces.DialogAddInputListener
 import com.example.newtimetable.interfaces.DialogRadioButtonListener
 import com.example.newtimetable.util.RequestCode
 import kotlinx.android.synthetic.main.activity_add_schedule.*
 import kotlinx.android.synthetic.main.activity_add_schedule.toolbar
 import java.util.*
 
-class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMenuItemClickListener, DialogAddInputListener, DialogRadioButtonListener {
+class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.OnMenuItemClickListener, DialogRadioButtonListener {
     private var day: String? = ""
+    private var lesson: String? = ""
+    private var teacher: String? = ""
+    private var nameClass: String? = ""
     private var clockStart: String? = ""
     private var hoursStart: Int = 0
     private var minutesStart: Int = 0
     private var clockEnd: String? = ""
     private var hoursEnd: Int = 0
     private var minutesEnd: Int = 0
-    private var week: String = "12"
+    private var week: String = ""
     private var scheduleDBHelper: ScheduleDBHelper = ScheduleDBHelper(this)
     private lateinit var database: SQLiteDatabase
 
@@ -60,47 +62,65 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
 
         database = scheduleDBHelper.writableDatabase
 
+        if (intent.extras?.getInt("requestCode") == RequestCode().REQUEST_CODE_SCHEDULE_CHANGE) {
+            day = intent.getStringExtra("day")
+            tiet_lesson.setText(intent.getStringExtra("lesson"))
+            lesson = intent.getStringExtra("lesson")
+            tiet_teacher.setText(intent.getStringExtra("teacher"))
+            teacher = intent.getStringExtra("teacher")
+            tiet_class.setText(intent.getStringExtra("nameClass"))
+            nameClass = intent.getStringExtra("nameClass")
+            tv_clock_start_schedule.text = intent.getStringExtra("clockStart")
+            clockStart = intent.getStringExtra("clockStart")
+            tv_clock_end_schedule.text = intent.getStringExtra("clockEnd")
+            clockEnd = intent.getStringExtra("clockEnd")
+            iv_indicator_week_schedule.isVisible = true
+            when (intent.getStringExtra("week")!!) {
+                "1" -> {
+                    week = "1"
+                    tv_week_schedule.text = this.resources.getString(R.string.week1)
+                    iv_indicator_week_schedule.setImageResource(R.drawable.ic_circle)
+                    iv_indicator_week_schedule.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent))
+                }
+                "2" -> {
+                    week = "2"
+                    tv_week_schedule.text = this.resources.getString(R.string.week2)
+                    iv_indicator_week_schedule.setImageResource(R.drawable.ic_circle)
+                    iv_indicator_week_schedule.setColorFilter(ContextCompat.getColor(this, R.color.colorRed))
+                }
+                "12" -> {
+                    week = "12"
+                    tv_week_schedule.text = this.resources.getString(R.string.dialog_every_week)
+                    iv_indicator_week_schedule.setImageResource(R.drawable.ic_checkbox_unselect)
+                    if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("dark_theme", false))
+                        iv_indicator_week_schedule.setColorFilter(ContextCompat.getColor(this, R.color.gray_700))
+                    else
+                        iv_indicator_week_schedule.setColorFilter(ContextCompat.getColor(this, R.color.gray_500))
+                }
+            }
+            checkEmptyField()
+            hoursStart = intent.extras!!.getInt("hoursStart")
+            minutesStart = intent.extras!!.getInt("minutesStart")
+            hoursEnd = intent.extras!!.getInt("hoursEnd")
+            minutesEnd = intent.extras!!.getInt("minutesEnd")
+        } else {
+            tv_clock_start_schedule.text = ""
+            tv_clock_end_schedule.text = ""
+            iv_indicator_week_schedule.isVisible = false
+        }
         tv_clock_start_schedule.setOnClickListener(this)
-        tv_clock_start_schedule.text = ""
         tv_clock_end_schedule.setOnClickListener(this)
-        tv_clock_end_schedule.text = ""
-        tv_clock_schedule_icon.setOnClickListener(this)
-        tv_lesson_schedule.setOnClickListener(this)
-        tv_lesson_schedule.text = ""
-        tv_lesson_schedule_icon.setOnClickListener(this)
-        tv_teacher_schedule.setOnClickListener(this)
-        tv_teacher_schedule.text = ""
-        tv_teacher_schedule_icon.setOnClickListener(this)
-        tv_class_schedule.setOnClickListener(this)
-        tv_class_schedule.text = ""
-        tv_class_schedule_icon.setOnClickListener(this)
         tv_week_schedule.setOnClickListener(this)
-        tv_week_schedule_icon.setOnClickListener(this)
-        tv_week_schedule_icon.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent))
         tr_week_schedule.isVisible =
             PreferenceManager.getDefaultSharedPreferences(this).getString("number_0f_week", "1") != "1"
-        if (week == "12")
-            if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("dark_theme", false))
-                iv_indicator_week_schedule.setColorFilter(ContextCompat.getColor(this, R.color.gray_700))
-            else
-                iv_indicator_week_schedule.setColorFilter(ContextCompat.getColor(this, R.color.gray_500))
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == RequestCode().REQUEST_CODE_LIST) {
-            if (resultCode == Activity.RESULT_OK) {
-                if (data?.getStringExtra("selectBtn") == "lesson") {
-                    tv_lesson_schedule.text = data.getStringExtra("text")
-                    tv_lesson_schedule_icon.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent))
-                    checkEmptyField()
-                } else if (data?.getStringExtra("selectBtn") == "teacher") {
-                    tv_teacher_schedule.text = data.getStringExtra("text")
-                    tv_teacher_schedule_icon.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent))
-                    checkEmptyField()
-                }
-                checkEmptyField()
-            }
+        tiet_lesson.addTextChangedListener {
+            lesson = it.toString()
+        }
+        tiet_teacher.addTextChangedListener {
+            teacher = it.toString()
+        }
+        tiet_class.addTextChangedListener {
+            nameClass = it.toString()
         }
     }
 
@@ -113,23 +133,6 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
             R.id.tv_clock_end_schedule -> {
                 callTimePicker(false)
                 checkEmptyField()
-            }
-            R.id.tv_lesson_schedule,
-            R.id.tv_lesson_schedule_icon -> {
-                val intent = Intent(this, SelectItemListActivity::class.java)
-                intent.putExtra("selectBtn", "lesson")
-                startActivityForResult(intent, RequestCode().REQUEST_CODE_LIST)
-            }
-            R.id.tv_teacher_schedule,
-            R.id.tv_teacher_schedule_icon -> {
-                val intent = Intent(this, SelectItemListActivity::class.java)
-                intent.putExtra("selectBtn", "teacher")
-                startActivityForResult(intent, RequestCode().REQUEST_CODE_LIST)
-            }
-            R.id.tv_class_schedule,
-            R.id.tv_class_schedule_icon -> {
-                val addClassDialog: DialogFragment = CustomDialog(this, "addClass")
-                addClassDialog.show(supportFragmentManager, "addClassDialog")
             }
             R.id.tv_week_schedule,
             R.id.tv_week_schedule_icon -> {
@@ -175,7 +178,6 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
                 if (flag) {
                     if (clock) {
                         tv_clock_start_schedule.text = fullTime
-                        tv_clock_schedule_icon.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent))
                         clockStart = tv_clock_start_schedule.text.toString()
                         hoursStart = hourOfDay
                         minutesStart = minute
@@ -200,27 +202,17 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
         return true
     }
 
-    override fun onClickPositiveDialog(text: String, requestCode: Boolean, itemId: Int) {
-        tv_class_schedule.text = text
-        if (text != "")
-            tv_class_schedule_icon.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent))
-        else
-            tv_class_schedule_icon.setImageResource(R.drawable.ic_door_open)
-        checkEmptyField()
-    }
-
-    override fun onClickNegativeDialog() {
-        checkEmptyField()
-    }
-
     private fun checkEmptyField() {
         if (tv_clock_start_schedule.text != "" &&
-            tv_lesson_schedule.text != ""
+            lesson != ""
         ) {
-            val background = fab_ok.background
-            background.setTint(ContextCompat.getColor(this, R.color.colorAccent))
-            toolbar.menu.getItem(0).isVisible = true
-            fab_ok.background = background
+            if ((PreferenceManager.getDefaultSharedPreferences(this).getString("number_0f_week", "1") != "1" && week != "") ||
+                PreferenceManager.getDefaultSharedPreferences(this).getString("number_0f_week", "1") == "1") {
+                val background = fab_ok.background
+                background.setTint(ContextCompat.getColor(this, R.color.colorAccent))
+                toolbar.menu.getItem(0).isVisible = true
+                fab_ok.background = background
+            }
         } else {
             val background = fab_ok.background
             background.setTint(ContextCompat.getColor(this, R.color.colorNotActive))
@@ -230,7 +222,10 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
     }
 
     private fun clickAddBtn() {
-        if (tv_clock_start_schedule.text != "" && tv_lesson_schedule.text != "") {
+        if (tv_clock_start_schedule.text != "" && lesson != "") {
+            if (PreferenceManager.getDefaultSharedPreferences(this).getString("number_0f_week", "1") == "1") {
+                week = "12"
+            }
             val data = Intent()
             data.putExtra("day", day)
             data.putExtra("clockStart", tv_clock_start_schedule.text)
@@ -239,10 +234,12 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
             data.putExtra("clockEnd", tv_clock_end_schedule.text)
             data.putExtra("hoursEnd", hoursEnd)
             data.putExtra("minutesEnd", minutesEnd)
-            data.putExtra("lesson", tv_lesson_schedule.text)
-            data.putExtra("teacher", tv_teacher_schedule.text)
-            data.putExtra("numberClass", tv_class_schedule.text)
+            data.putExtra("lesson", lesson)
+            data.putExtra("teacher", teacher)
+            data.putExtra("numberClass", nameClass)
             data.putExtra("week", week)
+            data.putExtra("itemId", intent.extras?.getInt("itemId"))
+            data.putExtra("position", intent.extras?.getInt("position"))
             setResult(Activity.RESULT_OK, data)
             finish()
         }
@@ -250,6 +247,7 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
 
     override fun onClickRadioButtonDialog(choose: String) {
         if (checkCondition(choose)) {
+            iv_indicator_week_schedule.isVisible = true
             when (choose) {
                 "1" -> {
                     week = "1"
@@ -265,7 +263,7 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
                 }
                 "12" -> {
                     week = "12"
-                    tv_week_schedule.text = this.resources.getString(R.string.schedule_week)
+                    tv_week_schedule.text = this.resources.getString(R.string.dialog_every_week)
                     iv_indicator_week_schedule.setImageResource(R.drawable.ic_checkbox_unselect)
                     if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("dark_theme", false))
                         iv_indicator_week_schedule.setColorFilter(ContextCompat.getColor(this, R.color.gray_700))
@@ -273,6 +271,7 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
                         iv_indicator_week_schedule.setColorFilter(ContextCompat.getColor(this, R.color.gray_500))
                 }
             }
+            checkEmptyField()
         } else {
             Toast.makeText(this, "В это время уже есть занятие", Toast.LENGTH_SHORT).show()
         }
@@ -281,7 +280,7 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
     override fun onClickNegativeButtonDialog(choose: String) {
         if (checkCondition("12")) {
             week = "12"
-            tv_week_schedule.text = this.resources.getString(R.string.schedule_week)
+            tv_week_schedule.text = this.resources.getString(R.string.dialog_every_week)
         } else {
             Toast.makeText(this, "В это время уже есть занятие", Toast.LENGTH_SHORT).show()
         }

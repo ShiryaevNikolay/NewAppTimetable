@@ -10,12 +10,18 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.newtimetable.R
 import com.example.newtimetable.RecyclerSchedule
+import com.example.newtimetable.interfaces.OnClickItemListener
 import com.example.newtimetable.util.RequestCode
 import kotlinx.android.synthetic.main.recycler_schedule.view.*
 
-class ScheduleAdapter(private var listItem: ArrayList<RecyclerSchedule>, private val fromActivity: Int) : RecyclerView.Adapter<ScheduleAdapter.ScheduleViewHolder>() {
+class ScheduleAdapter(
+    private var listItem: ArrayList<RecyclerSchedule>,
+    private val fromActivity: Int,
+    private var onClickItemListener: OnClickItemListener
+) : RecyclerView.Adapter<ScheduleAdapter.ScheduleViewHolder>() {
 
     private lateinit var context: Context
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScheduleViewHolder {
         context = parent.context
@@ -51,6 +57,10 @@ class ScheduleAdapter(private var listItem: ArrayList<RecyclerSchedule>, private
             holder.itemView.class_rv_schedule.isVisible = false
         }
         holder.itemView.class_rv_schedule.text = itemList.nameClass
+
+        holder.itemView.setOnClickListener {
+            onClickItemListener.onClickItemListener(holder.adapterPosition)
+        }
     }
 
     inner class ScheduleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
