@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.example.newtimetable.fragments.AbstractTabFragment
 import com.example.newtimetable.fragments.ScheduleFragment
+import com.example.newtimetable.util.RequestCode
 
 class TabsFragmentAdapter(
     context: Context,
@@ -43,5 +44,7 @@ class TabsFragmentAdapter(
         tabs[3] = ScheduleFragment().getInstance(context,3, database, requestCode)
         tabs[4] = ScheduleFragment().getInstance(context,4, database, requestCode)
         tabs[5] = ScheduleFragment().getInstance(context,5, database, requestCode)
+        if (requestCode == RequestCode().REQUEST_CODE_MAIN)
+            tabs[6] = ScheduleFragment().getInstance(context,6, database, requestCode)
     }
 }

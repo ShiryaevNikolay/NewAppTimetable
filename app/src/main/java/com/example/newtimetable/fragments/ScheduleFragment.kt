@@ -78,6 +78,9 @@ class ScheduleFragment : AbstractTabFragment(), ItemTouchHelperLestener, DialogD
                 context.getString(R.string.tab_title_sat).let { fragment.setTitle(it) }
                 fragment.daySchedule = "sat"
             }
+            6 -> {
+                fragment.daySchedule = "sun"
+            }
         }
         return fragment
     }
