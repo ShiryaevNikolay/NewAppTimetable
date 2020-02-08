@@ -84,7 +84,7 @@ class ScheduleActivity : AppCompatActivity() {
     }
 
     private fun initTabs() {
-        adapter = TabsFragmentAdapter(this, supportFragmentManager, database)
+        adapter = TabsFragmentAdapter(this, supportFragmentManager, database, RequestCode().REQUEST_CODE_SCHEDULE)
         viewPager.adapter = adapter
         tabLayout.setupWithViewPager(viewPager)
         tabLayout.setScrollPosition(tabPosition, 0f, true)
