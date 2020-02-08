@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.view.isVisible
 import androidx.preference.PreferenceManager
+import androidx.viewpager.widget.ViewPager
 import com.example.newtimetable.adapters.DaysFragmentAdapter
 import com.example.newtimetable.adapters.TabsFragmentAdapter
 import com.example.newtimetable.database.ScheduleDBHelper
@@ -19,6 +20,8 @@ class MainActivity : AppCompatActivity(), OnClickItemListener {
 
     private lateinit var database: SQLiteDatabase
     private var tabPosition: Int = 0
+    private lateinit var adapter: TabsFragmentAdapter
+    private lateinit var adapterThisDay: DaysFragmentAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("dark_theme", false))
@@ -72,6 +75,48 @@ class MainActivity : AppCompatActivity(), OnClickItemListener {
                 else -> false
             }
         }
+
+        viewPager.addOnPageChangeListener(object: ViewPager.OnPageChangeListener {
+            override fun onPageScrollStateChanged(state: Int) {
+
+            }
+
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+            }
+
+            override fun onPageSelected(position: Int) {
+                if (viewPagerDay.currentItem != position) {
+                    viewPagerDay.adapter = adapterThisDay
+                    viewPagerDay.setCurrentItem(position, true)
+                }
+            }
+
+        })
+        viewPagerDay.addOnPageChangeListener(object: ViewPager.OnPageChangeListener {
+            override fun onPageScrollStateChanged(state: Int) {
+
+            }
+
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+
+            }
+
+            override fun onPageSelected(position: Int) {
+                if (viewPager.currentItem != position) {
+                    viewPager.adapter = adapter
+                    viewPager.setCurrentItem(position, true)
+                }
+            }
+
+        })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -87,8 +132,8 @@ class MainActivity : AppCompatActivity(), OnClickItemListener {
     }
 
     private fun initTabs() {
-        val adapter = TabsFragmentAdapter(this, supportFragmentManager, database, RequestCode().REQUEST_CODE_MAIN)
-        val adapterThisDay = DaysFragmentAdapter(this, supportFragmentManager)
+        adapter = TabsFragmentAdapter(this, supportFragmentManager, database, RequestCode().REQUEST_CODE_MAIN)
+        adapterThisDay = DaysFragmentAdapter(this, supportFragmentManager)
         viewPager.adapter = adapter
         viewPagerDay.adapter = adapterThisDay
         viewPager.currentItem = tabPosition

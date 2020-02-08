@@ -101,16 +101,7 @@ class ScheduleFragment : AbstractTabFragment(), ItemTouchHelperLestener, DialogD
             do {
                 // проверяем, совпадает ли день недели в базе данных с днём, куда добавляем данные
                 if (cursor.getString(cursor.getColumnIndex(ScheduleDBHelper(context).KEY_DAY)) == daySchedule) {
-                    if (requestCode == RequestCode().REQUEST_CODE_MAIN) {
-                        if (PreferenceManager.getDefaultSharedPreferences(activity).getString("number_0f_week", "1") != "1" &&
-                            PreferenceManager.getDefaultSharedPreferences(activity).getString("this_week", "12") == cursor.getString(cursor.getColumnIndex(ScheduleDBHelper(context).KEY_WEEK))) {
-                            flag = false
-                        } else if (PreferenceManager.getDefaultSharedPreferences(activity).getString("number_0f_week", "1") == "1") {
-                            flag = false
-                        }
-                    } else if (requestCode == RequestCode().REQUEST_CODE_SCHEDULE) {
-                        flag = false
-                    }
+                    flag = false
                     itemId = cursor.getInt(cursor.getColumnIndex(ScheduleDBHelper(context).KEY_ID))
                     clockStart = cursor.getString(cursor.getColumnIndex(ScheduleDBHelper(context).KEY_CLOCK_START))
                     hoursStart = cursor.getInt(cursor.getColumnIndex(ScheduleDBHelper(context).KEY_HOURS_START))
