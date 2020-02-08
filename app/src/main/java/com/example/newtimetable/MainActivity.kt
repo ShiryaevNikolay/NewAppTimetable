@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.view.isVisible
 import androidx.preference.PreferenceManager
+import com.example.newtimetable.adapters.DaysFragmentAdapter
 import com.example.newtimetable.adapters.TabsFragmentAdapter
 import com.example.newtimetable.database.ScheduleDBHelper
 import com.example.newtimetable.interfaces.OnClickItemListener
@@ -16,7 +17,6 @@ import java.util.*
 
 class MainActivity : AppCompatActivity(), OnClickItemListener {
 
-    private var day = ""
     private lateinit var database: SQLiteDatabase
     private var tabPosition: Int = 0
 
@@ -41,60 +41,32 @@ class MainActivity : AppCompatActivity(), OnClickItemListener {
         }
 
         when (Calendar.getInstance().get(Calendar.DAY_OF_WEEK)) {
-            Calendar.MONDAY -> {
-                tv_day_main_activity.text = "Понедельник"
-                day = "mon"
-                tabPosition = 0
-            }
-            Calendar.TUESDAY -> {
-                tv_day_main_activity.text = "Вторник"
-                day = "tues"
-                tabPosition = 1
-            }
-            Calendar.WEDNESDAY -> {
-                tv_day_main_activity.text = "Среда"
-                day = "wed"
-                tabPosition = 2
-            }
-            Calendar.THURSDAY -> {
-                tv_day_main_activity.text = "Четверг"
-                day = "thurs"
-                tabPosition = 3
-            }
-            Calendar.FRIDAY -> {
-                tv_day_main_activity.text = "Пятница"
-                day = "fri"
-                tabPosition = 4
-            }
-            Calendar.SATURDAY -> {
-                tv_day_main_activity.text = "Суббота"
-                day = "sat"
-                tabPosition = 5
-            }
-            Calendar.SUNDAY -> {
-                tv_day_main_activity.text = "Воскресенье"
-                day = "sun"
-                tabPosition = 6
-            }
+            Calendar.MONDAY -> tabPosition = 0
+            Calendar.TUESDAY -> tabPosition = 1
+            Calendar.WEDNESDAY -> tabPosition = 2
+            Calendar.THURSDAY -> tabPosition = 3
+            Calendar.FRIDAY -> tabPosition = 4
+            Calendar.SATURDAY -> tabPosition = 5
+            Calendar.SUNDAY -> tabPosition = 6
         }
 
         database = ScheduleDBHelper(this).writableDatabase
         initTabs()
 
-//        fillingList()
-
         nav_view_main_activity.setOnNavigationItemSelectedListener {
-            when(it.itemId) {R.id.nav_schedule -> {
+            when(it.itemId) {
+                R.id.nav_settings -> {
+                    startActivity(Intent(this, SettingsActivity::class.java))
+                    finish()
+                    true
+                }
+                R.id.nav_schedule -> {
+                    tabPosition = viewPager.currentItem
                     startActivityForResult(Intent(this, ScheduleActivity::class.java), RequestCode().REQUEST_CODE_MAIN)
                     true
                 }
                 R.id.nav_homework -> {
                     startActivity(Intent(this, HomeworkActivity::class.java))
-                    true
-                }
-                R.id.nav_settings -> {
-                    startActivity(Intent(this, SettingsActivity::class.java))
-                    finish()
                     true
                 }
                 else -> false
@@ -116,7 +88,10 @@ class MainActivity : AppCompatActivity(), OnClickItemListener {
 
     private fun initTabs() {
         val adapter = TabsFragmentAdapter(this, supportFragmentManager, database, RequestCode().REQUEST_CODE_MAIN)
+        val adapterThisDay = DaysFragmentAdapter(this, supportFragmentManager)
         viewPager.adapter = adapter
+        viewPagerDay.adapter = adapterThisDay
         viewPager.currentItem = tabPosition
+        viewPagerDay.currentItem = tabPosition
     }
 }

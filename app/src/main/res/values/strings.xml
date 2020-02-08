@@ -1,6 +1,14 @@
 <resources>
     <string name="app_name">Расписание</string>
 
+    <string name="main_activity_this_day_mon">Понедельник</string>
+    <string name="main_activity_this_day_tues">Вторник</string>
+    <string name="main_activity_this_day_wed">Среда</string>
+    <string name="main_activity_this_day_thurs">Четверг</string>
+    <string name="main_activity_this_day_fri">Пятница</string>
+    <string name="main_activity_this_day_sat">Суббота</string>
+    <string name="main_activity_this_day_sun">Воскресенье</string>
+
     <string name="main_activity_week1">Неделя 1</string>
     <string name="main_activity_week2">Неделя 1</string>
     <string name="main_activity_day_off">Выходной день</string>
