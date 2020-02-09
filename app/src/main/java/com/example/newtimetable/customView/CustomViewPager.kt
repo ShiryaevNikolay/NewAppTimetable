@@ -1,4 +1,4 @@
-package com.example.newtimetable.CustomView
+package com.example.newtimetable.customView
 
 import android.content.Context
 import android.util.AttributeSet
