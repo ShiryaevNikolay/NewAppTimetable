@@ -3,7 +3,7 @@
     <!-- Base application theme. -->
     <style name="ThemeLight" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorWhite</item>
+        <item name="colorPrimary">@color/colorAccent</item>
         <item name="colorPrimaryDark">@color/colorWhite</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:navigationBarColor">@color/colorWhite</item>
@@ -16,10 +16,11 @@
         <item name="android:windowBackground">@color/colorWhite</item>
         <item name="android:statusBarColor">@color/gray_800</item>
         <item name="bottomNavigationStyle">@style/BottomNavStyleLight</item>
+        <item name="textInputStyle">@style/TextInputLayoutLight</item>
     </style>
 
     <style name="ThemeDark" parent="Theme.MaterialComponents.NoActionBar">
-        <item name="colorPrimary">@color/gray_900</item>
+        <item name="colorPrimary">@color/colorAccent</item>
         <item name="colorPrimaryDark">@color/gray_900</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:navigationBarColor">@color/gray_900</item>
@@ -35,22 +36,23 @@
         <item name="materialCardViewStyle">@style/CardView.Dark</item>
         <item name="tabStyle">@style/TabLayoutStyleDark</item>
         <item name="android:datePickerStyle">@style/DatePickerStyleDark</item>
+        <item name="textInputStyle">@style/TextInputLayoutLight</item>
     </style>
 
     <style name="AppTheme" parent="ThemeLight"/>
 
     <style name="AppTheme.Dark" parent="ThemeDark"/>
 
-    <style name="AppTheme.ButtonNegative" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="colorAccent">@color/colorRed</item>
+    <style name="AppTheme.ButtonNegative" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="colorPrimary">@color/colorRed</item>
+    </style>
+
+    <style name="AppTheme.ButtonPositive" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="colorPrimary">@color/colorAccent</item>
     </style>
     
     <style name="CheckBoxStyle" parent="Widget.AppCompat.CompoundButton.CheckBox">
         <item name="android:button">@drawable/selector_checkbox</item>
     </style>
-
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

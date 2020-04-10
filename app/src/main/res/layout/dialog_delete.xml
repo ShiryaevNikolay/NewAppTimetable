@@ -34,6 +34,7 @@
             android:layout_height="wrap_content"
             android:text="@string/dialog_delete_btn_negative"
             style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:theme="@style/AppTheme.ButtonPositive"
             app:cornerRadius="8dp"/>
 
         <com.google.android.material.button.MaterialButton

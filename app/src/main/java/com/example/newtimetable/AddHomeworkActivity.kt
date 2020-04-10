@@ -1,5 +1,6 @@
 package com.example.newtimetable
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
@@ -51,10 +52,7 @@ class AddHomeworkActivity : AppCompatActivity(), View.OnClickListener {
             textAddDate = intent.extras!!.getString("addDate").toString()
             textToDate = intent.extras!!.getString("toDate").toString()
             tv_date_homework.text = textToDate
-            val background = fab_ok.background
-            background.setTint(ContextCompat.getColor(this, R.color.colorAccent))
             toolbar.menu.getItem(0).isVisible = true
-            fab_ok.background = background
         }
 
         textInputHomeworkTask.addTextChangedListener {
@@ -73,6 +71,7 @@ class AddHomeworkActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    @SuppressLint("ResourceAsColor")
     private fun callDatePicker() {
         val calendar = Calendar.getInstance()
         val day = calendar.get(Calendar.DAY_OF_MONTH)
@@ -102,6 +101,7 @@ class AddHomeworkActivity : AppCompatActivity(), View.OnClickListener {
             }
         }, yearCurrent, monthCurrent, day)
         dialog.show()
+//        dialog.getButton(DatePickerDialog.BUTTON_NEGATIVE)
         dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_style)
     }
 

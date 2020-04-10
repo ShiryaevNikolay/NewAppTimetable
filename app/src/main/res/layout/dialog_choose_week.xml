@@ -63,6 +63,7 @@
             android:layout_height="wrap_content"
             android:text="@string/dialog_class_btn_negative"
             style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:theme="@style/AppTheme.ButtonNegative"
             app:cornerRadius="8dp"
             android:layout_marginEnd="15dp"
             android:layout_marginBottom="10dp"/>

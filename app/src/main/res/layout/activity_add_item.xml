@@ -10,13 +10,13 @@
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:elevation="0dp">
+        app:elevation="0dp"
+        android:background="?android:attr/windowBackground">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:popupTheme="@style/AppTheme.PopupOverlay"
             app:navigationIcon="@drawable/ic_back"
             app:menu="@menu/toolbar_menu"/>
     </com.google.android.material.appbar.AppBarLayout>
@@ -34,7 +34,6 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayoutHomeworkTask"
-                app:boxStrokeColor="?android:attr/windowBackground"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/homework_hint_task"
@@ -78,9 +77,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@drawable/ic_done_fab"
+        android:src="@drawable/ic_done_fab"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         app:borderWidth="0dp"
-        android:backgroundTint="@color/colorNotActive"/>
+        android:backgroundTint="@color/colorNotActive"
+        app:tint="?android:attr/windowBackground"/>
 </RelativeLayout>

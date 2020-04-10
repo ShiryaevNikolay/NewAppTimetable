@@ -26,4 +26,8 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:headerBackground">@color/gray_800</item>
     </style>
+
+    <style name="TextInputLayoutLight" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="hintTextColor">?android:attr/colorAccent</item>
+    </style>
 </resources>

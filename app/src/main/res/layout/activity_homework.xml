@@ -9,13 +9,13 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:elevation="0dp">
+        app:elevation="0dp"
+        android:background="?android:attr/windowBackground">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:popupTheme="@style/AppTheme.PopupOverlay"
             app:navigationIcon="@drawable/ic_back"
             app:title="@string/homework_title"
             app:titleTextColor="?android:attr/textColorTertiary"
@@ -34,16 +34,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/fab_margin"
-            app:srcCompat="@drawable/ic_delete"
+            android:src="@drawable/ic_delete"
             android:backgroundTint="@color/colorRed"
-            app:borderWidth="0dp"/>
+            app:borderWidth="0dp"
+            app:tint="?android:attr/windowBackground"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/fab_margin"
-            app:srcCompat="@drawable/ic_add"
-            app:borderWidth="0dp"/>
+            android:src="@drawable/ic_add"
+            app:borderWidth="0dp"
+            app:tint="?android:attr/windowBackground"
+            android:backgroundTint="@color/colorAccent"/>
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

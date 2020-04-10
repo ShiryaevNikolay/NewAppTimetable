@@ -98,7 +98,6 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
                         iv_indicator_week_schedule.setColorFilter(ContextCompat.getColor(this, R.color.gray_500))
                 }
             }
-            checkEmptyField()
             hoursStart = intent.extras!!.getInt("hoursStart")
             minutesStart = intent.extras!!.getInt("minutesStart")
             hoursEnd = intent.extras!!.getInt("hoursEnd")
@@ -115,6 +114,7 @@ class AddScheduleActivity : AppCompatActivity(), View.OnClickListener, MenuItem.
             PreferenceManager.getDefaultSharedPreferences(this).getString("number_0f_week", "1") != "1"
         tiet_lesson.addTextChangedListener {
             lesson = it.toString()
+            checkEmptyField()
         }
         tiet_teacher.addTextChangedListener {
             teacher = it.toString()
